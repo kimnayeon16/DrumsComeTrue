@@ -1,8 +1,11 @@
-package com.example.drumcomestrue.common.exception;
+package com.example.drumcomestrue.common.handler;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.drumcomestrue.common.exception.ApplicationException;
+import com.example.drumcomestrue.common.exception.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,4 +24,5 @@ public class ApplicationExceptionHandler {
 		log.info("{}: {}", exception.getClass().getSimpleName(), exception.getMessage(), exception);
 		return ResponseEntity.internalServerError().body(ErrorResponse.create());
 	}
+
 }

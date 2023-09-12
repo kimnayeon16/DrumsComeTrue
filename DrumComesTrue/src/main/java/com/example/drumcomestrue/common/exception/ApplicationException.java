@@ -12,7 +12,7 @@ public class ApplicationException extends RuntimeException{
 
 	public ApplicationException(ApplicationError error){
 		super(error.getMessage());
-		this.status=error.getStatus();
+		this.status=error.getHttpStatus();
 		this.code = error.getCode();
 	}
 }

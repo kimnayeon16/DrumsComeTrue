@@ -2,6 +2,7 @@ package com.example.drumcomestrue;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -9,6 +10,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +26,11 @@ public class ApiDocument {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	protected void printAndMakeSnippet(ResultActions resultActions, String title) throws Exception {
+		resultActions.andDo(print())
+			.andDo(toDocument(title));
+	}
 
 	protected RestDocumentationResultHandler toDocument(String title) {
 		return document(title, getDocumentRequest(), getDocumentResponse());
