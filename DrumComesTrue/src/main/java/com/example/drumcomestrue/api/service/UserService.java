@@ -2,6 +2,7 @@ package com.example.drumcomestrue.api.service;
 
 import org.springframework.stereotype.Service;
 
+import com.example.drumcomestrue.api.request.user.LoginRequest;
 import com.example.drumcomestrue.api.request.user.SignupRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -11,5 +12,8 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	public void signup(SignupRequest signupRequest) {
+	}
+
+	public void login(LoginRequest loginRequest) {
 	}
 }
