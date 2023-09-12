@@ -54,4 +54,41 @@ include::{snippets}/signup-success/http-request.adoc[]
 .response
 include::{snippets}/signup-success/http-response.adoc[]
 
-===== 실패
+===== 실패(아이디 중복)
+.request
+include::{snippets}/signup-id-exist-fail/http-request.adoc[]
+
+.response
+include::{snippets}/signup-id-exist-fail/http-response.adoc[]
+
+===== 실패(닉네임 중복)
+.request
+include::{snippets}/signup-nickname-exist-fail/http-request.adoc[]
+
+.response
+include::{snippets}/signup-nickname-exist-fail/http-response.adoc[]
+
+==== 로그인
+----
+/api/v1/user/login
+----
+===== 성공
+.request
+include::{snippets}/login-success/http-request.adoc[]
+
+.response
+include::{snippets}/login-success/http-response.adoc[]
+
+===== 실패(아이디 없음)
+.request
+include::{snippets}/login-nickname-not-found-fail/http-request.adoc[]
+
+.response
+include::{snippets}/login-nickname-not-found-fail/http-response.adoc[]
+
+===== 실패(비밀번호 다름)
+.request
+include::{snippets}/login-password-not-match-fail/http-request.adoc[]
+
+.response
+include::{snippets}/login-password-not-match-fail/http-response.adoc[]
