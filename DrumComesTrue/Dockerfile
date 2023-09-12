@@ -7,7 +7,8 @@ COPY src $APP_HOMES/src
 
 RUN chmod +x $APP_HOMES/gradlew
 RUN $APP_HOMES/gradlew clean build
-RUN $APP_HOMES/gradlew build
+RUN $APP_HOMES/gradlew bootJar
 COPY build/libs/*.jar app.jar
 
+EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app.jar"]
