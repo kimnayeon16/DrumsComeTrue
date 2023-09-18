@@ -1,9 +1,0 @@
-[source,bash]
-----
-$ curl 'http://localhost/api/v1/user/login' -i -X POST \
-    -H 'Content-Type: application/json;charset=UTF-8' \
-    -d '{
-  "userId" : "아이디",
-  "userPw" : "비밀번호"
-}'
-----
