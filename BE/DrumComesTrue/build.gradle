@@ -61,6 +61,11 @@ dependencies {
 
     // Spring REST Docs와 함께 사용되며, 생성된 API 문서를 Asciidoctor 형식으로 출력하기 위한 라이브러리
     // testImplementation 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    //Security 적용
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation 'com.google.code.gson:gson:2.8.7'
 }
 
 test {
