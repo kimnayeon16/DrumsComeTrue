@@ -1,7 +1,0 @@
-[source,options="nowrap"]
-----
-{
-  "userId" : "아이디",
-  "userPw" : "비밀번호"
-}
-----

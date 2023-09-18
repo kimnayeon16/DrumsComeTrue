@@ -1,8 +1,0 @@
-[source,bash]
-----
-$ echo '{
-  "userId" : "아이디",
-  "userPw" : "비밀번호"
-}' | http POST 'http://localhost/api/v1/user/login' \
-    'Content-Type:application/json;charset=UTF-8'
-----
