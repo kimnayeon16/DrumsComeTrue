@@ -25,9 +25,7 @@ public enum ApplicationError {
 	DUPLICATE_USERNAME(HttpStatus.BAD_REQUEST, "U005", "해당 닉네임이 이미 존재합니다."	),
 	LOGIN_ID_IS_FAILED(HttpStatus.BAD_REQUEST,"U006","해당 아이디는 없는 아이디입니다"),
 	LOGIN_PW_IS_FAILED(HttpStatus.BAD_REQUEST,"U007","해당 비밀번호는 없는 비밀번호입니다"),
-
-
-
+	NOTFOUND_PHONE_NUMBER(HttpStatus.NOT_FOUND,"U007","해당 핸드폰번호는 없는 번호입니다"),
 
 	INTERNAL_SERVER_ERROR(HttpStatus.BAD_REQUEST,"X001", "서버 오류입니다")
 	;

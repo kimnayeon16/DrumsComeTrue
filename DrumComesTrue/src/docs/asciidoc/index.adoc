@@ -92,3 +92,57 @@ include::{snippets}/login-password-not-match-fail/http-request.adoc[]
 
 .response
 include::{snippets}/login-password-not-match-fail/http-response.adoc[]
+
+==== 아이디, 비밀번호 찾기 - 전화번호 코드 발급받기
+----
+/api/v1/user/verify/{phonNumber}
+----
+===== 성공
+.request
+include::{snippets}/phone-number-send-success/http-request.adoc[]
+
+.response
+include::{snippets}/phone-number-send-success/http-response.adoc[]
+
+===== 실패
+.request
+include::{snippets}/phone-number-send-fail/http-request.adoc[]
+
+.response
+include::{snippets}/phone-number-send-fail/http-response.adoc[]
+
+==== 발급된 코드로 아이디 찾기
+----
+/api/v1/user/findId/{verifyNumber}
+----
+===== 성공
+.request
+include::{snippets}/id-find-user-success/http-request.adoc[]
+
+.response
+include::{snippets}/id-find-user-success/http-response.adoc[]
+
+===== 실패
+.request
+include::{snippets}/id-find-user-fail/http-request.adoc[]
+
+.response
+include::{snippets}/id-find-user-fail/http-response.adoc[]
+
+==== 발급된 코드로 비밀번호 찾기
+----
+/api/v1/user/findPw/{verifyNumber}
+----
+===== 성공
+.request
+include::{snippets}/pw-find-user-success/http-request.adoc[]
+
+.response
+include::{snippets}/pw-find-user-success/http-response.adoc[]
+
+===== 실패
+.request
+include::{snippets}/pw-find-user-fail/http-request.adoc[]
+
+.response
+include::{snippets}/pw-find-user-fail/http-response.adoc[]
