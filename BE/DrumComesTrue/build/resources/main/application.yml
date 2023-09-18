@@ -27,5 +27,6 @@ spring:
       hibernate:
         format_sql: true
 server:
+  port: 8000
   servlet:
     context-path: /api/v1
