@@ -28,5 +28,9 @@ spring:
         format_sql: true
 server:
   port: 8000
+  ssl:
+        key-store: classpath:keystore.p12
+        key-store-password: sssl107
+        key-store-type: PKCS12
   servlet:
     context-path: /api/v1
