@@ -1,5 +1,0 @@
-[source,bash]
-----
-$ http GET 'http://localhost/api/v1/user/verify/010-9999-9999' \
-    'Content-Type:application/json;charset=UTF-8'
-----
