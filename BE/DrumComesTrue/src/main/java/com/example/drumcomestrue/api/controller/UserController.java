@@ -30,6 +30,11 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 
+	@GetMapping("/login/check/{userId}")
+	public ResponseEntity<Void> check(@PathVariable("userId") String userId){
+		return ResponseEntity.ok().build();
+	}
+
 	@PostMapping("/login")
 	public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest){
 		userService.login(loginRequest);
