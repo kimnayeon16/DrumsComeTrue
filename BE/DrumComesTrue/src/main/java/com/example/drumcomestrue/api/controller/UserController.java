@@ -1,5 +1,6 @@
 package com.example.drumcomestrue.api.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,9 +37,9 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest){
+	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
 		userService.login(loginRequest);
-		return ResponseEntity.ok().build();
+		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
 
 	@GetMapping("/verify/{phoneNumber}")
