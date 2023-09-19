@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.example.drumcomestrue.ApiDocument;
-import com.example.drumcomestrue.TestSecurityConfig;
+// import com.example.drumcomestrue.TestSecurityConfig;
 import com.example.drumcomestrue.api.request.user.LoginRequest;
 import com.example.drumcomestrue.api.request.user.SignupRequest;
 import com.example.drumcomestrue.api.response.user.FindIdResponse;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Import(TestSecurityConfig.class)
+// @Import(TestSecurityConfig.class)
 @WebMvcTest(UserController.class)
 public class UserControllerTest extends ApiDocument {
 
