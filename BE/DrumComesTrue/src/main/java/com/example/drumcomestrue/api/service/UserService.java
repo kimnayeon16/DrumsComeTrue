@@ -1,7 +1,7 @@
 package com.example.drumcomestrue.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+// import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.drumcomestrue.api.request.user.LoginRequest;
@@ -9,7 +9,7 @@ import com.example.drumcomestrue.api.request.user.SignupRequest;
 import com.example.drumcomestrue.api.response.user.FindIdResponse;
 import com.example.drumcomestrue.api.response.user.FindPwResponse;
 import com.example.drumcomestrue.api.response.user.FindResponse;
-import com.example.drumcomestrue.common.config.PasswordEncorderConfig;
+// import com.example.drumcomestrue.common.config.PasswordEncorderConfig;
 import com.example.drumcomestrue.common.error.DuplicateException;
 import com.example.drumcomestrue.common.exception.ApplicationError;
 import com.example.drumcomestrue.db.entity.User;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 	
-	private final PasswordEncoder passwordEncoder;
+	// private final PasswordEncoder passwordEncoder;
 
 	private final UserRepository userRepository;
 	public void signup(SignupRequest signupRequest) {
@@ -30,7 +30,8 @@ public class UserService {
 
 		User user = User.builder()
 			.userId(signupRequest.getUserId())
-			.userPw(passwordEncoder.encode(signupRequest.getUserPw()))
+			// .userPw(passwordEncoder.encode(signupRequest.getUserPw()))
+			.userPw(signupRequest.getUserPw())
 			.userName(signupRequest.getUserName())
 			.phoneNumber(signupRequest.getUserNumber())
 			.build();
