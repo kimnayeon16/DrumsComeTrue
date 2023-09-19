@@ -63,7 +63,7 @@ dependencies {
     // testImplementation 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     //Security 적용
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     implementation 'com.google.code.gson:gson:2.8.7'
 }
