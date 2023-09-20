@@ -1,5 +1,6 @@
 package com.ssafy.drumscometrue.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -63,6 +64,12 @@ class LoginActivity : AppCompatActivity() {
                         // 성공적으로 로그인
                         Log.d("success", response.body().toString())
                         Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
+
+//                        // 로그인 성공 시 메인페이지로 이동
+//                        val intent = Intent(this@LoginActivity, MainPageActivity::class.java)
+//                        startActivity(intent)
+//                        finish()
+
                     } else {
                         // 실패 (400 Bad Request 등)
                         Log.d("error", response.errorBody().toString())
