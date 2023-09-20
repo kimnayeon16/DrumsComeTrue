@@ -450,12 +450,11 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
     private fun hit(landmarkList : com.google.mediapipe.tasks.components.containers.NormalizedLandmark, hitEstimation : MutableMap<String, Boolean>) : MutableMap<String, Boolean>{
         if(landmarkList.y() > 0.2) {
             if(hitEstimation["Crash"] == false && landmarkList.x() > 0.1 && landmarkList.x() < 0.35){
-                println("Crash Hit")
+                Log.d("Crash","Crash Hit")
                 // 사운드 재생
                 val soundId = soundMap["crash"]
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
-                    println(hitEstimation["crash"])
                 }
             }
             hitEstimation["crash"] = true
@@ -464,7 +463,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
 
         if(landmarkList.y() > 0.35) {
             if(hitEstimation["hiHat"] == false && landmarkList.x() > 0 && landmarkList.x() < 0.22){
-                println("openHat Hit")
+                Log.d("openHat Hit","openHat Hit")
                 // 사운드 재생
                 val soundId = soundMap["openHat"]
                 soundId?.let {
@@ -472,7 +471,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
                 }
             }
             if(hitEstimation["hTom"] == false && landmarkList.x() > 0.3 && landmarkList.x() < 0.47){
-                println("hTom Hit")
+                Log.d("hTom Hit","hTom Hit")
                 // 사운드 재생
                 val soundId = soundMap["hTom"]
                 soundId?.let {
@@ -480,7 +479,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
                 }
             }
             if(hitEstimation["mTom"] == false && landmarkList.x() > 0.5 && landmarkList.x() < 0.7){
-                println("mTom Hit")
+                Log.d("mTom Hit","mTom Hit")
                 // 사운드 재생
                 val soundId = soundMap["mTom"]
                 soundId?.let {
@@ -488,7 +487,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
                 }
             }
             if(hitEstimation["ride"] == false && landmarkList.x() > 0.8 && landmarkList.x() < 1){
-                println("ride Hit")
+                Log.d("ride Hit","ride Hit")
                 // 사운드 재생
                 val soundId = soundMap["ride"]
                 soundId?.let {
@@ -504,7 +503,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
 
         if(landmarkList.y() > 0.5){
             if(hitEstimation["snare"] == false && landmarkList.x() > 0.2 && landmarkList.x() < 0.4){
-                println("snare Hit")
+                Log.d("snare Hit","snare Hit")
                 // 사운드 재생
                 val soundId = soundMap["snare"]
                 soundId?.let {
@@ -512,7 +511,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
                 }
             }
             if(hitEstimation["floorTom"] == false && landmarkList.x() > 0.7 && landmarkList.x() < 0.9){
-                println("floorTom Hit")
+                Log.d("floorTom Hit","floorTom Hit")
                 // 사운드 재생
                 val soundId = soundMap["floorTom"]
                 soundId?.let {
@@ -528,8 +527,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
 
     private fun hitLeftHihat(leftFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
         if(leftHihat == false && leftFoot.y() > 0.88 && leftFoot.x() > 0.6 && leftFoot.x() < 0.8){
-            kotlin.io.println("[Foot] pedalHat hit!")
-            kotlin.io.println(leftFoot.y())
+            Log.d("[Foot] pedalHat hit!","[Foot] pedalHat hit! ${leftFoot.y()}")
             val soundId = soundMap["pedalHat"]
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
@@ -539,8 +537,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
     }
     private fun hitRightBass(rightFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
         if(rightBass == false && rightFoot.y() > 0.88 && rightFoot.x() > 0.2 && rightFoot.x() < 0.45){
-            kotlin.io.println("[Foot] Bass hit!")
-            kotlin.io.println(rightFoot.y())
+            Log.d("[Foot] Bass hit!","[Foot] Bass hit! ${rightFoot.y()}")
             val soundId = soundMap["bass"]
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
