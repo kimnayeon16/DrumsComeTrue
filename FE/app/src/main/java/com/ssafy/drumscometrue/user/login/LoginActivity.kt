@@ -66,25 +66,15 @@ class LoginActivity : AppCompatActivity() {
             apiService.login(loginReq)
                 .enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                        Log.d("Resp onResp?", "실행됨")
-                        val responseBodyString = response.body()?.string() ?: response.errorBody()?.string() ?: "Empty Response"
+                        Log.d("HTTP Status Code", response.code().toString())
                         try {
                             if(response.isSuccessful) {
-                                val loginResponse = Gson().fromJson(responseBodyString, LoginResp::class.java)
-                                val userId = loginResponse.userId ?: "Unknown User ID"
-                                val userPw = loginResponse.userPw ?: "Unknown Password"
-                                Log.d("success", loginResponse.toString())
-                                Toast.makeText(this@LoginActivity, "로그인 성공: ID: $userId, PW: $userPw", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@LoginActivity, "로그인 성공: ID: ${loginReq.loginId}, PW: ${loginReq.loginPwd}", Toast.LENGTH_SHORT).show()
                             } else {
-                                val errorResponse = Gson().fromJson(responseBodyString, ErrorResp::class.java)
-                                val code = errorResponse.code
-                                val message = errorResponse.message
-
-                                Log.d("error", errorResponse.message)
-                                Toast.makeText(this@LoginActivity, "오류: ${errorResponse.message}", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@LoginActivity, "오류 ", Toast.LENGTH_SHORT).show()
                             }
                         } catch (e: JsonSyntaxException) {
-                            Log.d("error", "JSON 파싱 오류: $responseBodyString")
+                            Log.d("error", "JSON 파싱 오류: ")
                             Toast.makeText(this@LoginActivity, "파싱 오류: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
