@@ -1,7 +1,8 @@
 package com.ssafy.drumscometrue.retrofit2
 
-import com.ssafy.drumscometrue.user.LoginReq
-import com.ssafy.drumscometrue.user.LoginRes
+import com.ssafy.drumscometrue.user.login.LoginReq
+import com.ssafy.drumscometrue.user.login.LoginRes
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -14,5 +15,5 @@ interface ApiService {
     @POST("${endPoint}/login")
     fun login(
         @Body req: LoginReq
-    ): Call<LoginRes>
+    ): Call<ResponseBody>
 }
