@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.commonresp.ErrorResp
+import com.ssafy.drumscometrue.freePlay.FreePlayActivity
 import com.ssafy.drumscometrue.retrofit2.ApiService
 import com.ssafy.drumscometrue.user.JoinActivity
 import okhttp3.ResponseBody
@@ -107,7 +108,7 @@ class LoginActivity : AppCompatActivity() {
         val drumTestBtn = findViewById<Button>(R.id.drum_test)
 
         drumTestBtn.setOnClickListener {
-            var intent = Intent(this, JoinActivity::class.java)
+            var intent = Intent(this, FreePlayActivity::class.java)
             startActivity(intent)
         }
     }
