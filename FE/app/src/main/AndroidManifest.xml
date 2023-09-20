@@ -4,6 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <!-- Declare features -->
+    <uses-feature android:name="android.hardware.camera" />
+
+    <!-- Declare permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,6 +23,10 @@
         <activity
             android:name=".kpop.KpopListActivity"
             android:exported="false" />
+        <activity
+            android:name=".freePlay.FreePlayActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity android:name=".user.login.LoginActivity"></activity>
         <activity android:name=".user.JoinActivity"></activity>
         <activity
