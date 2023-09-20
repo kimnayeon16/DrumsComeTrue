@@ -528,9 +528,9 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
 
     private fun hitLeftHihat(leftFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
         if(leftHihat == false && leftFoot.y() > 0.88 && leftFoot.x() > 0.6 && leftFoot.x() < 0.8){
-            kotlin.io.println("[Foot] pedalHat hit!")
+            kotlin.io.println("[Foot] bass hit!")
             kotlin.io.println(leftFoot.y())
-            val soundId = soundMap["pedalHat"]
+            val soundId = soundMap["bass"]
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
             }
@@ -539,9 +539,9 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
     }
     private fun hitRightBass(rightFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
         if(rightBass == false && rightFoot.y() > 0.88 && rightFoot.x() > 0.2 && rightFoot.x() < 0.45){
-            kotlin.io.println("[Foot] Bass hit!")
+            kotlin.io.println("[Foot] pedalHat hit!")
             kotlin.io.println(rightFoot.y())
-            val soundId = soundMap["bass"]
+            val soundId = soundMap["pedalHat"]
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
             }
