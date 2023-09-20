@@ -68,7 +68,7 @@ public class UserControllerTest extends ApiDocument {
 			.userId(USER_ID)
 			.userPw(USER_PASSWORD)
 			.userName(USER_NAME)
-			.userNumber(USER_NUMBER)
+			.phoneNumber(USER_NUMBER)
 			.build();
 		loginRequest = LoginRequest.builder()
 			.userId(USER_ID)

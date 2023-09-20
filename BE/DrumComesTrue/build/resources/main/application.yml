@@ -54,10 +54,10 @@ spring:
         format_sql: true
 server:
   port: 8000
-#  ssl:
-#        key-store: classpath:key.p12
-#        key-store-password: sslmaster
-#        key-store-type: PKCS12
+  ssl:
+        key-store: classpath:key.p12
+        key-store-password: sslmaster
+        key-store-type: PKCS12
 jwt:
   secretKey: dasdasf234fuhvertsv34789yhi3sfgg
   access:
