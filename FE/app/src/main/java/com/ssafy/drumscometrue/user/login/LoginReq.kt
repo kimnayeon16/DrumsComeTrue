@@ -1,4 +1,4 @@
-package com.ssafy.drumscometrue.user
+package com.ssafy.drumscometrue.user.login
 
 import com.google.gson.annotations.SerializedName
 

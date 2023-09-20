@@ -26,7 +26,8 @@
         <activity
             android:name=".freePlay.FreePlayActivity"
             android:exported="false" />
-        <activity android:name=".user.LoginActivity"></activity>
+        <activity android:name=".user.login.LoginActivity"></activity>
+        <activity android:name=".user.JoinActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
