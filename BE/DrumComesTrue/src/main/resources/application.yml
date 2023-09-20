@@ -8,6 +8,32 @@ spring:
     username: root
     password: q1w2e3r4
     driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 구글 클라이언트 ID
+            client-secret: 구글 클라이언트 Secret
+            scope: profile, email
+
+          kakao:
+            client-id: e828c60d2aa66198c12dab645b40f9e6
+            client-secret: u0ZpXoXzBFtxOkFlEIV2JogwxjyA0gLu
+            redirect-uri: http://localhost:8000/login/oauth2/code/kakao
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            scope: profile_nickname, profile_image
+            client-name: Kakao
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+  profiles:
+    include: oauth
 
 # spring.jpa.show-sql: JPA? ???? SQL ??? ??? ???? ??? ??
 # spring.jpa.hibernate.ddl-auto: Hibernate? DDL (??? ?? ??) ?? ?? ??? ??
@@ -32,5 +58,11 @@ server:
         key-store: classpath:key.p12
         key-store-password: sslmaster
         key-store-type: PKCS12
-  servlet:
-    context-path: /api/v1
+jwt:
+  secretKey: dasdasf234fuhvertsv34789yhi3sfgg
+  access:
+    expiration: 3600000
+    header: Authorization
+  refresh:
+    expiration: 1209600000
+    header: Authorization-refresh

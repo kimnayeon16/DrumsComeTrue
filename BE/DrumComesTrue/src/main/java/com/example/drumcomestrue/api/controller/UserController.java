@@ -14,12 +14,13 @@ import com.example.drumcomestrue.api.request.user.SignupRequest;
 import com.example.drumcomestrue.api.response.user.FindIdResponse;
 import com.example.drumcomestrue.api.response.user.FindPwResponse;
 import com.example.drumcomestrue.api.response.user.FindResponse;
+import com.example.drumcomestrue.api.response.user.LoginResponse;
 import com.example.drumcomestrue.api.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -33,14 +34,17 @@ public class UserController {
 
 	@GetMapping("/login/check/{userId}")
 	public ResponseEntity<Void> check(@PathVariable("userId") String userId){
+		userService.check(userId);
 		return ResponseEntity.ok().build();
 	}
+
 
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
 		userService.login(loginRequest);
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
+
 
 	@GetMapping("/verify/{phoneNumber}")
 	public ResponseEntity<FindResponse> verify(@PathVariable("phoneNumber") String phoneNumber){
@@ -72,3 +76,7 @@ public class UserController {
 	// }
 
 }
+
+
+
+
