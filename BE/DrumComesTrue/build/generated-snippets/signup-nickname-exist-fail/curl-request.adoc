@@ -6,6 +6,6 @@ $ curl 'http://localhost/api/v1/user/signup' -i -X POST \
   "userId" : "아이디",
   "userName" : "이름",
   "userPw" : "비밀번호",
-  "userNumber" : "010-9999-9999"
+  "phoneNumber" : "010-9999-9999"
 }'
 ----

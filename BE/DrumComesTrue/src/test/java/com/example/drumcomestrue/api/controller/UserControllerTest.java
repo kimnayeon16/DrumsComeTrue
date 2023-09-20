@@ -6,10 +6,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.example.drumcomestrue.ApiDocument;
 // import com.example.drumcomestrue.TestSecurityConfig;
+import com.example.drumcomestrue.TestSecurityConfig;
 import com.example.drumcomestrue.api.request.user.LoginRequest;
 import com.example.drumcomestrue.api.request.user.SignupRequest;
 import com.example.drumcomestrue.api.response.user.FindIdResponse;
@@ -28,7 +33,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-// @Import(TestSecurityConfig.class)
+@Import(TestSecurityConfig.class)
 @WebMvcTest(UserController.class)
 public class UserControllerTest extends ApiDocument {
 
@@ -134,7 +139,6 @@ public class UserControllerTest extends ApiDocument {
 
 	private ResultActions 회원가입_요청(SignupRequest signupRequest) throws Exception {
 		return mockMvc.perform(post(CONTEXT_PATH+"/user/signup")
-			.contextPath(CONTEXT_PATH)
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(toJson(signupRequest)));
 	}
@@ -197,7 +201,6 @@ public class UserControllerTest extends ApiDocument {
 
 	private ResultActions 로그인_요청() throws Exception {
 		return mockMvc.perform(post(CONTEXT_PATH+"/user/login")
-			.contextPath(CONTEXT_PATH)
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(toJson(loginRequest)));
 	}
@@ -252,7 +255,6 @@ public class UserControllerTest extends ApiDocument {
 
 	private ResultActions 전화번호_발송_요청() throws Exception {
 		return mockMvc.perform(get(CONTEXT_PATH+"/user/verify/{phoneNumber}",USER_NUMBER)
-			.contextPath(CONTEXT_PATH)
 			.contentType(MediaType.APPLICATION_JSON));
 	}
 
@@ -299,7 +301,6 @@ public class UserControllerTest extends ApiDocument {
 
 	private ResultActions 아이디찾기_요청() throws Exception {
 		return mockMvc.perform(get(CONTEXT_PATH+"/user/findId/{verifyNumber}",VERIFY_NUMBER)
-			.contextPath(CONTEXT_PATH)
 			.contentType(MediaType.APPLICATION_JSON));
 	}
 
@@ -345,7 +346,6 @@ public class UserControllerTest extends ApiDocument {
 
 	private ResultActions 비밀번호찾기_요청() throws Exception {
 		return mockMvc.perform(get(CONTEXT_PATH+"/user/findPw/{verifyNumber}",VERIFY_NUMBER)
-			.contextPath(CONTEXT_PATH)
 			.contentType(MediaType.APPLICATION_JSON));
 	}
 
