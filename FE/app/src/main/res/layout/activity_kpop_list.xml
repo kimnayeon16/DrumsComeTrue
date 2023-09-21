@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
+        android:background="@color/white"
         >
 
         <TextView
@@ -22,10 +23,10 @@
             android:gravity="center"
             android:text="Drums Come True"
             android:textSize="30sp"
-             />
+            />
 
         <TextView
-            android:id="@+id/titleKpop"
+            android:id="@+id/title_kpop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="K-POP 연주하기"
@@ -58,6 +59,7 @@
                 android:padding="10dp">
 
                 <TextView
+                    android:id="@+id/song_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
@@ -67,6 +69,7 @@
                     tools:text="곡명" />
 
                 <TextView
+                    android:id="@+id/singer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
@@ -77,6 +80,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/btn_play"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
