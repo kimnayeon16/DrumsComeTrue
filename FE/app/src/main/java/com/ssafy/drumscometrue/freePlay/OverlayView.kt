@@ -23,6 +23,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.mediapipe.tasks.vision.core.RunningMode
+import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarker
 import com.google.mediapipe.tasks.vision.poselandmarker.PoseLandmarkerResult
 import com.ssafy.drumscometrue.R
 import kotlin.math.max
@@ -75,17 +76,23 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
         results?.let { poseLandmarkerResult ->
-            if (!poseLandmarkerResult.landmarks().isEmpty()) {
-                canvas.drawPoint(
-                poseLandmarkerResult.landmarks().get(0).get(32).x() * imageWidth * scaleFactor,
-                poseLandmarkerResult.landmarks().get(0).get(32).y() * imageHeight * scaleFactor,
-                pointPaint
-            )
-            canvas.drawPoint(
-                poseLandmarkerResult.landmarks().get(0).get(31).x() * imageWidth * scaleFactor,
-                poseLandmarkerResult.landmarks().get(0).get(31).y() * imageHeight * scaleFactor,
-                pointPaint
-            )
+            for(landmark in poseLandmarkerResult.landmarks()) {
+                for(normalizedLandmark in landmark) {
+                    canvas.drawPoint(
+                        normalizedLandmark.x() * imageWidth * scaleFactor,
+                        normalizedLandmark.y() * imageHeight * scaleFactor,
+                        pointPaint
+                    )
+                }
+
+                PoseLandmarker.POSE_LANDMARKS.forEach {
+                    canvas.drawLine(
+                        poseLandmarkerResult.landmarks().get(0).get(it!!.start()).x() * imageWidth * scaleFactor,
+                        poseLandmarkerResult.landmarks().get(0).get(it.start()).y() * imageHeight * scaleFactor,
+                        poseLandmarkerResult.landmarks().get(0).get(it.end()).x() * imageWidth * scaleFactor,
+                        poseLandmarkerResult.landmarks().get(0).get(it.end()).y() * imageHeight * scaleFactor,
+                        linePaint)
+                }
             }
         }
     }
