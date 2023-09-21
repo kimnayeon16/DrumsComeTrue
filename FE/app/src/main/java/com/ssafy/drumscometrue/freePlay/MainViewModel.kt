@@ -16,8 +16,6 @@
 package com.ssafy.drumscometrue.freePlay
 
 import androidx.lifecycle.ViewModel
-import com.ssafy.drumscometrue.freePlay.HandLandmarkerHelper
-import com.ssafy.drumscometrue.freePlay.PoseLandmarkerHelper
 
 /**
  * Android앱에서 사용되는 ViewModel클래스
@@ -35,16 +33,6 @@ class MainViewModel : ViewModel() {
     private var _minPosePresenceConfidence: Float = PoseLandmarkerHelper
         .DEFAULT_POSE_PRESENCE_CONFIDENCE
 
-    //hand 변수 초기화
-    private var _delegateHand: Int = HandLandmarkerHelper.DELEGATE_GPU
-    private var _minHandDetectionConfidence: Float =
-        HandLandmarkerHelper.DEFAULT_HAND_DETECTION_CONFIDENCE
-    private var _minHandTrackingConfidence: Float = HandLandmarkerHelper
-        .DEFAULT_HAND_TRACKING_CONFIDENCE
-    private var _minHandPresenceConfidence: Float = HandLandmarkerHelper
-        .DEFAULT_HAND_PRESENCE_CONFIDENCE
-    private var _maxHands: Int = HandLandmarkerHelper.DEFAULT_NUM_HANDS
-
     /**
      * Getter메서드
      * 현재 설정 값을 반환하는 게터 메서드
@@ -60,19 +48,6 @@ class MainViewModel : ViewModel() {
     val currentMinPosePresenceConfidence: Float
         get() =
             _minPosePresenceConfidence
-
-
-    val currentDelegateHand: Int get() = _delegateHand
-    val currentMinHandDetectionConfidence: Float
-        get() =
-            _minHandDetectionConfidence
-    val currentMinHandTrackingConfidence: Float
-        get() =
-            _minHandTrackingConfidence
-    val currentMinHandPresenceConfidence: Float
-        get() =
-            _minHandPresenceConfidence
-    val currentMaxHands: Int get() = _maxHands
 
 
     /**
@@ -96,25 +71,5 @@ class MainViewModel : ViewModel() {
 
     fun setModel(model: Int) {
         _model = model
-    }
-
-
-
-    fun setDelegateHand(delegate: Int) {
-        _delegateHand = delegate
-    }
-
-    fun setMinHandDetectionConfidence(confidence: Float) {
-        _minHandDetectionConfidence = confidence
-    }
-    fun setMinHandTrackingConfidence(confidence: Float) {
-        _minHandTrackingConfidence = confidence
-    }
-    fun setMinHandPresenceConfidence(confidence: Float) {
-        _minHandPresenceConfidence = confidence
-    }
-
-    fun setMaxHands(maxResults: Int) {
-        _maxHands = maxResults
     }
 }

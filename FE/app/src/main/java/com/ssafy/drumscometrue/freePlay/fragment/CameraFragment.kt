@@ -16,7 +16,6 @@
 package com.ssafy.drumscometrue.freePlay.fragment
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Bundle
@@ -24,7 +23,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Toast
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
@@ -42,9 +40,7 @@ import com.ssafy.drumscometrue.R
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarkerResult
 import com.ssafy.drumscometrue.databinding.FragmentCameraBinding
-import com.ssafy.drumscometrue.freePlay.HandLandmarkerHelper
 import com.ssafy.drumscometrue.freePlay.PoseLandmarkerHelper
-import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -54,7 +50,7 @@ import java.util.concurrent.TimeUnit
  * 카메라를 사용하여 실시간으로 사용자의 포즈를 감지하고 표시하는 데 사용되는 프래그먼트
  * TensorFlow와 CameraX라이브러리를 사용하여 구현
  */
-class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, HandLandmarkerHelper.LandmarkerListener {
+class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
 
     /**
      * 클래스 내부에 정적인 변수와 메서드를 선언하는 데 사용
@@ -70,8 +66,6 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
         get() = _fragmentCameraBinding!!
 
     private lateinit var poseLandmarkerHelper: PoseLandmarkerHelper
-    private lateinit var handLandmarkerHelper: HandLandmarkerHelper
-    private var handLandmarkerResult: HandLandmarkerResult? = null
 
     private val viewModel: MainViewModel by activityViewModels()
     //카메라 미리보기 및 이미지 분석과 관련된 변수들 -> glSurfaceView로 변경해도 될듯
@@ -90,7 +84,6 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
     private val soundMap = mutableMapOf<String, Int>()
 
     private var start = false
-    private var footStart = false
     private var leftHandEstimation = mutableMapOf<String, Boolean>(
         "crash" to false,
         "ride" to false,
@@ -153,17 +146,6 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
             // 안드로이드 앱은 메인 스레드에서 UI를 처리
             // 시간이 걸리는 작업을 메인에서 하면 UI가 끊어질 수 있어 백그라운드 스레드에서 처리
             backgroundExecutor.execute { poseLandmarkerHelper.clearPoseLandmarker() }
-        }
-
-        if(this::handLandmarkerHelper.isInitialized) {
-            viewModel.setMaxHands(handLandmarkerHelper.maxNumHands)
-            viewModel.setMinHandDetectionConfidence(handLandmarkerHelper.minHandDetectionConfidence)
-            viewModel.setMinHandTrackingConfidence(handLandmarkerHelper.minHandTrackingConfidence)
-            viewModel.setMinHandPresenceConfidence(handLandmarkerHelper.minHandPresenceConfidence)
-            viewModel.setDelegateHand(handLandmarkerHelper.currentDelegate)
-
-            // Close the HandLandmarkerHelper and release resources
-            backgroundExecutor.execute { handLandmarkerHelper.clearHandLandmarker() }
         }
     }
 
@@ -236,21 +218,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
                 currentDelegate = viewModel.currentDelegate,
                 poseLandmarkerHelperListener = this
             )
-
-            // Create the HandLandmarkerHelper that will handle hand detection
-            handLandmarkerHelper = HandLandmarkerHelper(
-                context = requireContext(),
-                runningMode = RunningMode.LIVE_STREAM,
-                minHandDetectionConfidence = viewModel.currentMinHandDetectionConfidence,
-                minHandTrackingConfidence = viewModel.currentMinHandTrackingConfidence,
-                minHandPresenceConfidence = viewModel.currentMinHandPresenceConfidence,
-                maxNumHands = viewModel.currentMaxHands,
-                currentDelegate = viewModel.currentDelegateHand,
-                handLandmarkerHelperListener = this
-            )
-
         }
-
     }
 
 
@@ -273,8 +241,8 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
                 // 카메라 미리보기, 이미지 캡쳐 및 다른 사용 사례를 설정하고 연결하는 작업을 수행
                 bindCameraUseCases()
             }, ContextCompat.getMainExecutor(requireContext())
-                //콜백을 메인 스레드에서 실행하기 위해 ContextCompat를 사용하여 메인 Executor가져옴
-                //Android에서 UI업데이트 및 UI관련 작업은 주로 메인 스레드에서 처리되기때문
+            //콜백을 메인 스레드에서 실행하기 위해 ContextCompat를 사용하여 메인 Executor가져옴
+            //Android에서 UI업데이트 및 UI관련 작업은 주로 메인 스레드에서 처리되기때문
         )
     }
 
@@ -316,7 +284,6 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
                     it.setAnalyzer(backgroundExecutor) { image ->   // 이미지 분석기에 분석할 작업 설정 -> 이미지 분석기가 카메라에서 받아온 이미지를 처리하는 부분
                         // 한번에 하면 java.lang.IllegalStateException: Image is already closed이런 오류 나옴
                         // ImageProxy를 직접 생성하는 것은 안됨
-                        detectHands(image)
                         detectPose(image)
                         image.close()
                     }
@@ -327,7 +294,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
 
         //카메라 사용 사례 바인딩
         try {
-                camera = cameraProvider.bindToLifecycle(
+            camera = cameraProvider.bindToLifecycle(
                 this, cameraSelector, preview, imageAnalyzer
             )
 
@@ -348,21 +315,6 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
         //poseLandmarkerHelper 객체가 초기화 되었는지 확인
         if(this::poseLandmarkerHelper.isInitialized) {
             poseLandmarkerHelper.detectLiveStream(  //라이브 스트리밍 이미지에서 포즈 감지
-                imageProxy = imageProxy,    // 카메라에서 가져온 이미지 데이터를 포함하는 객체 -> 포즈 감지를 위해 분석
-                isFrontCamera = cameraFacing == CameraSelector.LENS_FACING_FRONT
-            )
-        }
-    }
-
-    /**
-     * 이미지 프록시를 사용하여 라이브 스트리밍 중 포즈 감지를 수행함
-     * 이미지에서 손을 감지하는 메서드
-     * HandLandmarkerHelper를 사용하여 포즈 감지
-     * */
-    private fun detectHands(imageProxy: ImageProxy) {
-        //poseLandmarkerHelper 객체가 초기화 되었는지 확인
-        if(this::handLandmarkerHelper.isInitialized) {
-            handLandmarkerHelper.detectLiveStream(  //라이브 스트리밍 이미지에서 포즈 감지
                 imageProxy = imageProxy,    // 카메라에서 가져온 이미지 데이터를 포함하는 객체 -> 포즈 감지를 위해 분석
                 isFrontCamera = cameraFacing == CameraSelector.LENS_FACING_FRONT
             )
@@ -449,7 +401,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
     /** hit판단 */
     private fun hit(landmarkList : com.google.mediapipe.tasks.components.containers.NormalizedLandmark, hitEstimation : MutableMap<String, Boolean>) : MutableMap<String, Boolean>{
         if(landmarkList.y() > 0.2) {
-            if(hitEstimation["Crash"] == false && landmarkList.x() > 0.1 && landmarkList.x() < 0.35){
+            if(hitEstimation["crash"] == false && landmarkList.x() > 0.1 && landmarkList.x() < 0.35){
                 Log.d("Crash","Crash Hit")
                 // 사운드 재생
                 val soundId = soundMap["crash"]
@@ -459,7 +411,6 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
             }
             hitEstimation["crash"] = true
         }
-
 
         if(landmarkList.y() > 0.35) {
             if(hitEstimation["hiHat"] == false && landmarkList.x() > 0 && landmarkList.x() < 0.22){
@@ -527,8 +478,9 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
 
     private fun hitLeftHihat(leftFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
         if(leftHihat == false && leftFoot.y() > 0.88 && leftFoot.x() > 0.6 && leftFoot.x() < 0.8){
-            Log.d("[Foot] pedalHat hit!","[Foot] pedalHat hit! ${leftFoot.y()}")
-            val soundId = soundMap["pedalHat"]
+
+            Log.d("[Foot] bass hit!","[Foot] bass hit! ${leftFoot.y()}")
+            val soundId = soundMap["bass"]
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
             }
@@ -537,8 +489,10 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
     }
     private fun hitRightBass(rightFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
         if(rightBass == false && rightFoot.y() > 0.88 && rightFoot.x() > 0.2 && rightFoot.x() < 0.45){
-            Log.d("[Foot] Bass hit!","[Foot] Bass hit! ${rightFoot.y()}")
-            val soundId = soundMap["bass"]
+
+            Log.d("[Foot] pedalHat hit!","[Foot] pedalHat hit! ${rightFoot.y()}")
+            val soundId = soundMap["pedalHat"]
+
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
             }
@@ -605,18 +559,37 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
                 var pose = resultBundle.results.get(0)
                 if(pose.landmarks().size > 0){
                     if(pose.landmarks().get(0).size > 32){
-//                        kotlin.io.println(x.landmarks().get(0).get(32))
-                        var leftFoot = pose.landmarks().get(0).get(32)
-                        var rightFoot = pose.landmarks().get(0).get(31)
 
-//                        kotlin.io.println(leftFoot.y())
-//                        kotlin.io.println(leftFoot.x())
+                        var leftHand = pose.landmarks().get(0).get(17)
+                        var rightHand = pose.landmarks().get(0).get(18)
+                        var leftFoot = pose.landmarks().get(0).get(31)
+                        var rightFoot = pose.landmarks().get(0).get(32)
 
+                        if(!start){
+                            leftHandEstimation = settingEstimation(leftHand)
+                            rightHandEstimation = settingEstimation(rightHand)
+                            settingLeftHihat(leftFoot)
+                            settingRightBass(rightFoot)
+                            start = true
+                        }
+
+
+                        //hit
+                        //foot
                         hitLeftHihat(leftFoot)
                         hitRightBass(rightFoot)
+                        //hands
+                        leftHandEstimation = hit(leftHand,leftHandEstimation)
+                        rightHandEstimation = hit(rightHand,rightHandEstimation)
 
+
+                        //back
+                        //foot
                         backLeftHihat(leftFoot)
                         backRightBass(rightFoot)
+                        //hands
+                        leftHandEstimation = back(leftHand,leftHandEstimation)
+                        rightHandEstimation = back(rightHand,rightHandEstimation)
                     }
                 }
 
@@ -628,92 +601,10 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener, Hand
     }
 
     /**
-     * 손 감지 결과를 처리하고 UI를 업데이트
-     * PoseLandmarkerHelper.LandmarkerListener의 onResults함수 재정의
-     * */
-    override fun onResults(
-        resultBundle: HandLandmarkerHelper.ResultBundle
-    ) {
-        activity?.runOnUiThread {
-            if (_fragmentCameraBinding != null) {
-
-                // Pass necessary information to OverlayViewHand for drawing on the canvas
-                fragmentCameraBinding.overlayHand.setResults(
-                    resultBundle.results.first(),
-                    resultBundle.inputImageHeight,
-                    resultBundle.inputImageWidth,
-                    RunningMode.LIVE_STREAM
-                )
-                //화면에서 양 손이 반대로 나옴 resultBundle.results.get(0).handednesses()
-                // 양손 확인
-                resultBundle.result?.landmarks()?.let {
-                    if(it.size > 0){
-//                        kotlin.io.println(resultBundle.result.landmarks().get(0).get(3).javaClass)
-                        var rightHand: com.google.mediapipe.tasks.components.containers.NormalizedLandmark? = null
-                        var leftHand: com.google.mediapipe.tasks.components.containers.NormalizedLandmark? = null
-
-                        // 첫번째 손 판단
-                        if(resultBundle.result.handednesses().get(0).get(0).displayName().equals("Left")){
-                            rightHand = resultBundle.result.landmarks().get(0).get(4)
-                        } else {
-                            leftHand = resultBundle.result.landmarks().get(0).get(4)
-                        }
-
-                        if(it.size > 1){
-                            // 두번째 손 판단
-                            if(resultBundle.result.handednesses().get(1).get(0).displayName().equals("Right")){
-                                leftHand = resultBundle.result.landmarks().get(1).get(4)
-                            } else{
-                                rightHand = resultBundle.result.landmarks().get(1).get(4)
-                            }
-                        }
-
-                        if(!start){
-                            if(leftHand != null)
-                                leftHandEstimation = settingEstimation(leftHand)
-                            if(rightHand != null)
-                                rightHandEstimation = settingEstimation(rightHand)
-
-                            start = true
-                        }else{
-                            if(leftHand != null) {
-                                leftHandEstimation = hit(leftHand, leftHandEstimation)
-                                leftHandEstimation = back(leftHand, leftHandEstimation)
-                            }
-                            if(rightHand != null) {
-                                rightHandEstimation = hit(rightHand, rightHandEstimation)
-                                rightHandEstimation = back(rightHand, rightHandEstimation)
-                            }
-                        }
-
-
-
-
-                    }
-                }
-
-
-                // Force a redraw
-                fragmentCameraBinding.overlayHand.invalidate()
-            }
-        }
-    }
-
-
-    /**
      * 오류 발생시 호출
      * 오류 메시지 표시 -> 필요한 조치
      * */
     override fun onError(error: String, errorCode: Int) {
-        activity?.runOnUiThread {
-            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
-        }
-    }
-    /**
-     * 오류 발생시 호출 hand
-     * 오류 메시지 표시 -> 필요한 조치
-     * */
-    override fun onError(hand: Int, error: String, errorCode: Int) {
         activity?.runOnUiThread {
             Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
         }

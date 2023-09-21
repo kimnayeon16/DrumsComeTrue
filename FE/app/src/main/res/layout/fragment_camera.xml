@@ -40,11 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.ssafy.drumscometrue.freePlay.OverlayViewHand
-        android:id="@+id/overlayHand"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
 <!--    <com.ssafy.drumscometrue.freePlay.OverlayViewGrid-->
 <!--        android:id="@+id/overlayGrid"-->
 <!--        android:layout_width="match_parent"-->
