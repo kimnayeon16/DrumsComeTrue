@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--custom color-->
+    <color name="lightblack">#79191818</color>
+    <color name="podo">#C6B69AE8</color>
 </resources>
