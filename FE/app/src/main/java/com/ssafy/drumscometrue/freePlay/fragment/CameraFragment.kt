@@ -20,6 +20,7 @@ import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Bundle
 import android.util.Log
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,6 @@ import androidx.navigation.Navigation
 import com.ssafy.drumscometrue.freePlay.MainViewModel
 import com.ssafy.drumscometrue.R
 import com.google.mediapipe.tasks.vision.core.RunningMode
-import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarkerResult
 import com.ssafy.drumscometrue.databinding.FragmentCameraBinding
 import com.ssafy.drumscometrue.freePlay.PoseLandmarkerHelper
 import java.util.concurrent.ExecutorService
@@ -267,9 +267,12 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
         // 미리보기 설정
         // 비율, 디스플레이의 회전 방향을 설정
         preview = Preview.Builder()
-            .setTargetAspectRatio(AspectRatio.RATIO_16_9)
+//            .setTargetAspectRatio(AspectRatio.RATIO_16_9)
+            .setTargetAspectRatio(1080 * 2400)
             .setTargetRotation(fragmentCameraBinding.viewFinder.display.rotation)
             .build()
+
+        val customResolution = Size(2560, 1600) // 원하는 해상도로 설정
 
         // 이미지 분석 사용 설정
         // 카메라에서 스트리밍되는 영상에서 이미지 분석을 수행하는 부분
@@ -333,7 +336,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
                 .build()
 
             soundPool = SoundPool.Builder()
-                .setMaxStreams(10) // 최대 동시 재생 스트림 수 (조절 가능)
+                .setMaxStreams(100) // 최대 동시 재생 스트림 수 (조절 가능)
                 .setAudioAttributes(audioAttributes)
                 .build()
 
@@ -413,7 +416,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
         }
 
         if(landmarkList.y() > 0.35) {
-            if(hitEstimation["hiHat"] == false && landmarkList.x() > 0 && landmarkList.x() < 0.22){
+            if(hitEstimation["hiHat"] == false && landmarkList.x() > 0 && landmarkList.x() < 0.3){
                 Log.d("openHat Hit","openHat Hit")
                 // 사운드 재생
                 val soundId = soundMap["openHat"]
@@ -434,7 +437,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
                 // 사운드 재생
                 val soundId = soundMap["mTom"]
                 soundId?.let {
-                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    soundPool.play(it, 0.8f, 0.7f, 1, 0, 1.0f)
                 }
             }
             if(hitEstimation["ride"] == false && landmarkList.x() > 0.8 && landmarkList.x() < 1){
@@ -453,7 +456,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
 
 
         if(landmarkList.y() > 0.5){
-            if(hitEstimation["snare"] == false && landmarkList.x() > 0.2 && landmarkList.x() < 0.4){
+            if(hitEstimation["snare"] == false && landmarkList.x() > 0.1 && landmarkList.x() < 0.5){
                 Log.d("snare Hit","snare Hit")
                 // 사운드 재생
                 val soundId = soundMap["snare"]
@@ -502,7 +505,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
 
     /** hit소리를 낼 준비하는지 판단 */
     private fun back(landmarkList : com.google.mediapipe.tasks.components.containers.NormalizedLandmark, hitEstimation : MutableMap<String, Boolean>) : MutableMap<String, Boolean>{
-        if(landmarkList.y() < 0.2) {
+        if(landmarkList.y() < 0.19) {
             hitEstimation["crash"] = false
             hitEstimation["ride"] = false
             hitEstimation["hiHat"] = false
@@ -511,7 +514,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(landmarkList.y() < 0.35) {
+        if(landmarkList.y() < 0.34) {
             hitEstimation["ride"] = false
             hitEstimation["hiHat"] = false
             hitEstimation["hTom"] = false
@@ -519,7 +522,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(landmarkList.y() < 0.5){
+        if(landmarkList.y() < 0.49){
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
