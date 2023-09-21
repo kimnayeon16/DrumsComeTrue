@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".kpop.KpopPlayActivity">
 
     <TextView
@@ -15,5 +16,17 @@
         android:text=""
         android:textSize="24sp">
     </TextView>
+
+    <TextView
+        android:id="@+id/countTime"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:padding="10dp"
+        android:text=""
+        android:gravity="center"
+        android:textSize="50sp">
+    </TextView>
+
+
 
 </LinearLayout>
