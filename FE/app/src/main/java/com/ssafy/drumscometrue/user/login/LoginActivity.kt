@@ -69,7 +69,9 @@ class LoginActivity : AppCompatActivity() {
                         Log.d("HTTP Status Code", response.code().toString())
                         try {
                             if(response.isSuccessful) {
-                                Toast.makeText(this@LoginActivity, "로그인 성공: ID: ${loginReq.loginId}, PW: ${loginReq.loginPwd}", Toast.LENGTH_SHORT).show()
+                                // 메인 페이지로 이동
+//                                val intent = Intent(this@LoginActivity, MainPageActivity::class.java)
+//                                startActivity(intent)
                             } else {
                                 Toast.makeText(this@LoginActivity, "오류 ", Toast.LENGTH_SHORT).show()
                             }
