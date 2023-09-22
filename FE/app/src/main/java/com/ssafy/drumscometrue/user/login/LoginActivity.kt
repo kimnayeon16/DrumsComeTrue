@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.freePlay.FreePlayActivity
+import com.ssafy.drumscometrue.mainpage.MainPageActivity
 import com.ssafy.drumscometrue.retrofit2.ApiService
 import com.ssafy.drumscometrue.user.JoinActivity
 import com.ssafy.drumscometrue.user.findid.FindIdActivity
@@ -144,8 +145,8 @@ class LoginActivity : AppCompatActivity() {
                             }
 
                             // 메인 페이지로 이동
-//                            val intent = Intent(this@LoginActivity, MainPageActivity::class.java)
-//                            startActivity(intent)
+                            val intent = Intent(this@LoginActivity, MainPageActivity::class.java)
+                            startActivity(intent)
                         } else {
                             // 로그인 실패 다이얼로그 띄우기
                             val dialog = AlertDialog.Builder(this@LoginActivity)
