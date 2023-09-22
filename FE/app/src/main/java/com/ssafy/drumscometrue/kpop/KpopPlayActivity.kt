@@ -1,20 +1,15 @@
 package com.ssafy.drumscometrue.kpop
 
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import com.ssafy.drumscometrue.R
 import org.json.JSONArray
-import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.util.Timer
 import kotlin.concurrent.timer
 
@@ -54,6 +49,10 @@ class KpopPlayActivity : AppCompatActivity() {
             songTime += 10 // songTime을 1/1000초 단위로 증가
             handleDrumData() // 현재 시간에 해당하는 drum 데이터 처리
         }
+
+        val hiHatTextView = findViewById<TextView>(R.id.hiHat)
+        Rhythm.applyTranslationAnimation(hiHatTextView)
+
     }
 
     //곡 연주 시작 전 카운트다운
@@ -101,11 +100,8 @@ class KpopPlayActivity : AppCompatActivity() {
         val currentDrumValues = drumMap[currentTime]
         if (currentDrumValues != null) {
             for (drumValue in currentDrumValues) {
-                // drum 값을 출력하는 방식을 여기에 구현
                 runOnUiThread {
-                    // 이 부분에서 drum 값을 표시하도록 UI 업데이트
                     myRhythm?.text = drumValue
-
                 }
             }
         }
