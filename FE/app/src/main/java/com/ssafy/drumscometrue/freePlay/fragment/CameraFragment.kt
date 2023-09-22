@@ -367,9 +367,9 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
             "snare" to false
         )
 
-        if(landmarkList.y() > 0.2){
+        if(landmarkList.y() > 0.3){
             updates["crash"] = true
-        }else if(landmarkList.y() > 0.35){
+        }else if(landmarkList.y() > 0.4){
             updates["crash"] = true
             updates["ride"] = true
             updates["hiHat"] = true
@@ -390,21 +390,21 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
 
     /** 처음 왼발(Hihat)의 위치 setting */
     private fun settingLeftHihat(leftFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(leftFoot.y() > 0.88)
+        if(leftFoot.y() > 0.97)
             leftHihat = true
     }
 
     /** 처음 오른발(Bass)의 위치 setting */
     private fun settingRightBass(rightFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(rightFoot.y() > 0.88)
+        if(rightFoot.y() > 0.97)
             rightBass = true
     }
 
 
     /** hit판단 */
     private fun hit(landmarkList : com.google.mediapipe.tasks.components.containers.NormalizedLandmark, hitEstimation : MutableMap<String, Boolean>) : MutableMap<String, Boolean>{
-        if(landmarkList.y() > 0.2) {
-            if(hitEstimation["crash"] == false && landmarkList.x() > 0.1 && landmarkList.x() < 0.35){
+        if(landmarkList.y() > 0.25) {
+            if(hitEstimation["crash"] == false && landmarkList.x() < 0.35){
                 Log.d("Crash","Crash Hit")
                 // 사운드 재생
                 val soundId = soundMap["crash"]
@@ -412,35 +412,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                 }
             }
-            hitEstimation["crash"] = true
-        }
-
-        if(landmarkList.y() > 0.35) {
-            if(hitEstimation["hiHat"] == false && landmarkList.x() > 0 && landmarkList.x() < 0.3){
-                Log.d("openHat Hit","openHat Hit")
-                // 사운드 재생
-                val soundId = soundMap["openHat"]
-                soundId?.let {
-                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
-                }
-            }
-            if(hitEstimation["hTom"] == false && landmarkList.x() > 0.3 && landmarkList.x() < 0.47){
-                Log.d("hTom Hit","hTom Hit")
-                // 사운드 재생
-                val soundId = soundMap["hTom"]
-                soundId?.let {
-                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
-                }
-            }
-            if(hitEstimation["mTom"] == false && landmarkList.x() > 0.5 && landmarkList.x() < 0.7){
-                Log.d("mTom Hit","mTom Hit")
-                // 사운드 재생
-                val soundId = soundMap["mTom"]
-                soundId?.let {
-                    soundPool.play(it, 0.8f, 0.7f, 1, 0, 1.0f)
-                }
-            }
-            if(hitEstimation["ride"] == false && landmarkList.x() > 0.8 && landmarkList.x() < 1){
+            if(hitEstimation["ride"] == false && landmarkList.x() > 0.8){
                 Log.d("ride Hit","ride Hit")
                 // 사운드 재생
                 val soundId = soundMap["ride"]
@@ -448,14 +420,55 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                 }
             }
-            hitEstimation["hiHat"] = true
-            hitEstimation["hTom"] = true
-            hitEstimation["mTom"] = true
+            hitEstimation["crash"] = true
             hitEstimation["ride"] = true
         }
 
+        if(landmarkList.y() > 0.32) {
+            if (hitEstimation["hTom"] == false && landmarkList.x() > 0.4 && landmarkList.x() < 0.7) {
+                Log.d("hTom Hit", "hTom Hit")
+                // 사운드 재생
+                val soundId = soundMap["hTom"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                }
+            }
+            if (hitEstimation["mTom"] == false && landmarkList.x() > 0.7 && landmarkList.x() < 0.85) {
+                Log.d("mTom Hit", "mTom Hit")
+                // 사운드 재생
+                val soundId = soundMap["mTom"]
+                soundId?.let {
+                    soundPool.play(it, 0.8f, 0.7f, 1, 0, 1.0f)
+                }
+            }
+            hitEstimation["hTom"] = true
+            hitEstimation["mTom"] = true
+        }
 
-        if(landmarkList.y() > 0.5){
+        if(landmarkList.y() > 0.38) {
+            if(hitEstimation["hiHat"] == false && landmarkList.x() > 0 && landmarkList.x() < 0.3){
+                println(leftHihat)
+                if(leftHihat){
+                    Log.d("closedHat Hit","closedHat Hit")
+                    // 사운드 재생
+                    val soundId = soundMap["closedHat"]
+                    soundId?.let {
+                        soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    }
+                }else{
+                    Log.d("openHat Hit","openHat Hit")
+                    // 사운드 재생
+                    val soundId = soundMap["openHat"]
+                    soundId?.let {
+                        soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    }
+                }
+            }
+            hitEstimation["hiHat"] = true
+        }
+
+
+        if(landmarkList.y() > 0.45){
             if(hitEstimation["snare"] == false && landmarkList.x() > 0.1 && landmarkList.x() < 0.5){
                 Log.d("snare Hit","snare Hit")
                 // 사운드 재생
@@ -464,7 +477,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                 }
             }
-            if(hitEstimation["floorTom"] == false && landmarkList.x() > 0.7 && landmarkList.x() < 0.9){
+            if(hitEstimation["floorTom"] == false && landmarkList.x() > 0.7){
                 Log.d("floorTom Hit","floorTom Hit")
                 // 사운드 재생
                 val soundId = soundMap["floorTom"]
@@ -480,10 +493,11 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
     }
 
     private fun hitLeftHihat(leftFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(leftHihat == false && leftFoot.y() > 0.88 && leftFoot.x() > 0.6 && leftFoot.x() < 0.8){
+        if(leftHihat == false && leftFoot.y() > 0.95 && leftFoot.x() > 0 && leftFoot.x() < 0.3){
 
-            Log.d("[Foot] bass hit!","[Foot] bass hit! ${leftFoot.y()}")
-            val soundId = soundMap["bass"]
+            Log.d("[Foot] pedalHat hit!","[Foot] pedalHat hit! ${leftFoot.y()}")
+            val soundId = soundMap["pedalHat"]
+
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
             }
@@ -491,11 +505,10 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
         }
     }
     private fun hitRightBass(rightFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(rightBass == false && rightFoot.y() > 0.88 && rightFoot.x() > 0.2 && rightFoot.x() < 0.45){
+        if(rightBass == false && rightFoot.y() > 0.95 && rightFoot.x() > 0.6 && rightFoot.x() < 0.8){
 
-            Log.d("[Foot] pedalHat hit!","[Foot] pedalHat hit! ${rightFoot.y()}")
-            val soundId = soundMap["pedalHat"]
-
+            Log.d("[Foot] bass hit!","[Foot] bass hit! ${rightFoot.y()}")
+            val soundId = soundMap["bass"]
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
             }
@@ -505,7 +518,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
 
     /** hit소리를 낼 준비하는지 판단 */
     private fun back(landmarkList : com.google.mediapipe.tasks.components.containers.NormalizedLandmark, hitEstimation : MutableMap<String, Boolean>) : MutableMap<String, Boolean>{
-        if(landmarkList.y() < 0.19) {
+        if(landmarkList.y() < 0.25) {
             hitEstimation["crash"] = false
             hitEstimation["ride"] = false
             hitEstimation["hiHat"] = false
@@ -514,15 +527,19 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(landmarkList.y() < 0.34) {
-            hitEstimation["ride"] = false
+        if(landmarkList.y() < 0.31) {
             hitEstimation["hiHat"] = false
             hitEstimation["hTom"] = false
             hitEstimation["mTom"] = false
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(landmarkList.y() < 0.49){
+        if(landmarkList.y() < 0.36) {
+            hitEstimation["hiHat"] = false
+            hitEstimation["floorTom"] = false
+            hitEstimation["snare"] = false
+        }
+        if(landmarkList.y() < 0.43){
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
@@ -530,12 +547,12 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
         return hitEstimation
     }
     private fun backLeftHihat(leftFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(leftFoot.y() < 0.88){
+        if(leftFoot.y() < 0.93){
             leftHihat = false
         }
     }
     private fun backRightBass(rightFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(rightFoot.y() < 0.88){
+        if(rightFoot.y() < 0.93){
             rightBass = false
         }
     }
@@ -563,10 +580,10 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
                 if(pose.landmarks().size > 0){
                     if(pose.landmarks().get(0).size > 32){
 
-                        var leftHand = pose.landmarks().get(0).get(17)
-                        var rightHand = pose.landmarks().get(0).get(18)
-                        var leftFoot = pose.landmarks().get(0).get(31)
-                        var rightFoot = pose.landmarks().get(0).get(32)
+                        var leftHand = pose.landmarks().get(0).get(19)
+                        var rightHand = pose.landmarks().get(0).get(20)
+                        var leftFoot = pose.landmarks().get(0).get(32)
+                        var rightFoot = pose.landmarks().get(0).get(31)
 
                         if(!start){
                             leftHandEstimation = settingEstimation(leftHand)

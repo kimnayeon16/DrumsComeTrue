@@ -5,29 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.ssafy.drumscometrue.freePlay.OverlayViewGrid
+        android:id="@+id/overlayViewGrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="239dp" />
+
     <View
         android:id="@+id/high_tom"
-        android:layout_width="70dp"
+        android:layout_width="100dp"
         android:layout_height="10dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.363"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.354" />
+        app:layout_constraintVertical_bias="0.317" />
 
     <View
         android:id="@+id/middle_tom"
-        android:layout_width="70dp"
+        android:layout_width="100dp"
         android:layout_height="10dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.604"
+        app:layout_constraintHorizontal_bias="0.871"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.354" />
+        app:layout_constraintVertical_bias="0.317" />
 
     <View
         android:id="@+id/ride"
@@ -39,18 +47,19 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.354" />
+        app:layout_constraintVertical_bias="0.248" />
 
     <View
         android:id="@+id/snare"
-        android:layout_width="80dp"
+        android:layout_width="150dp"
         android:layout_height="10dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.206"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45" />
 
     <View
         android:id="@+id/floor_tom"
@@ -59,9 +68,10 @@
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.882"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45" />
 
     <View
         android:id="@+id/pedal_hihat"
@@ -70,10 +80,10 @@
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.266"
+        app:layout_constraintHorizontal_bias="0.003"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.876" />
+        app:layout_constraintVertical_bias="0.957" />
 
     <View
         android:id="@+id/bass"
@@ -85,78 +95,78 @@
         app:layout_constraintHorizontal_bias="0.743"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.876" />
+        app:layout_constraintVertical_bias="0.958" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="149dp"
+        android:layout_height="85dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.077"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.181"
+        app:layout_constraintVertical_bias="0.221"
         app:srcCompat="@drawable/crash" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="119dp"
+        android:layout_height="78dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.003"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.36"
+        app:layout_constraintVertical_bias="0.366"
         app:srcCompat="@drawable/hihat" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
+        android:layout_width="107dp"
+        android:layout_height="85dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.363"
+        app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.372"
+        app:layout_constraintVertical_bias="0.352"
         app:srcCompat="@drawable/h_tom" />
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
+        android:layout_width="102dp"
+        android:layout_height="95dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.604"
+        app:layout_constraintHorizontal_bias="0.87"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.372"
+        app:layout_constraintVertical_bias="0.349"
         app:srcCompat="@drawable/m_tom" />
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
+        android:layout_width="87dp"
+        android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.386"
+        app:layout_constraintVertical_bias="0.23"
         app:srcCompat="@drawable/ride" />
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:layout_width="164dp"
+        android:layout_height="51dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.19"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.516"
+        app:layout_constraintVertical_bias="0.477"
         app:srcCompat="@drawable/snare" />
 
     <ImageView
@@ -165,10 +175,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.881"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.576"
+        app:layout_constraintVertical_bias="0.52"
         app:srcCompat="@drawable/f_tom" />
 
     <ImageView
