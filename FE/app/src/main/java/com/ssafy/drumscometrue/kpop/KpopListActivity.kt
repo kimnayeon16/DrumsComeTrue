@@ -1,36 +1,37 @@
 package com.ssafy.drumscometrue.kpop
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import androidx.core.content.ContextCompat
+import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.drumscometrue.R
+import com.ssafy.drumscometrue.adapter.kPopAdapter
 
 class KpopListActivity : AppCompatActivity() {
 
-    private var kpopList: ArrayList<KpopList> ?= null
+    var kpopList = arrayListOf<Kpop>(
+        Kpop("곰 세마리", "북극곰", "img_three_bears"),
+        Kpop("나비야", "나비", "img_butterfly"),
+        Kpop("Rooftop(옥탑방)", "N.Flying(엔플라잉)", "img_rooftop"),
+        Kpop("너의 의미", "IU(아이유)", "img_meaningofyou"),
+        Kpop("서울밤", "프롬(Fromm)", "img_seoul_night")
+    )
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kpop_list)
 
-        kpopList = Constants.getKpopSongs()
+        val mRecyclerView = findViewById<RecyclerView>(R.id.recyclerview)
 
-
-
-
-        var btnStart :Button =findViewById(R.id.btn_play)
-
-        btnStart.setOnClickListener{
+        val mAdapter = kPopAdapter(this, kpopList){ kpop ->
             val intent = Intent(this, KpopPlayActivity::class.java)
             startActivity(intent)
             finish()
         }
-
-
-
+        mRecyclerView.adapter = mAdapter
     }
+
 }

@@ -39,7 +39,7 @@
               - Jetpack Navigation라이브러리를 사용하여 화면간의 전환을 관리시 사용
         -->
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_container"
+            android:id="@+id/find_id_ui_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

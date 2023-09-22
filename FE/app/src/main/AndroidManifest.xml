@@ -29,6 +29,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".user.login.LoginActivity"></activity>
         <activity android:name=".user.JoinActivity"></activity>
+        <activity android:name=".user.findid.FindIdActivity"></activity>
+        <activity android:name=".user.findpw.FindPwdActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
