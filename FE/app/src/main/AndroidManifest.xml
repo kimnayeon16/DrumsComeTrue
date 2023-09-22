@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Declare features -->
     <uses-feature android:name="android.hardware.camera" />
@@ -41,6 +41,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".mainpage.UserPageActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".mainpage.LaunchPageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".mainpage.TutorialPageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".mainpage.PracticePageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".mainpage.FreePageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".mainpage.MainPageActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name=".kpop.KpopListActivity"
+            android:exported="false" />
+        <activity android:name=".user.LoginActivity" />
+
     </application>
 
 </manifest>

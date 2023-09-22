@@ -2,6 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+<<<<<<< HEAD
+
+    <!--custom color-->
+    <color name="lightblack">#79191818</color>
+    <color name="podo">#C6B69AE8</color>
+=======
     <color name="mp_color_primary">#007F8B</color>
     <color name="mp_color_primary_variant">#12B5CB</color>
     <color name="mp_color_primary_dark">#00676D</color>
@@ -15,4 +21,5 @@
     <color name="icActive">#FFFFFFFF</color>
     <color name="icFocused">#DDFFFFFF</color>
     <color name="icPressed">#AAFFFFFF</color>
+>>>>>>> 929369749491c826e501f1b70c4db32d2c1b2fd1
 </resources>

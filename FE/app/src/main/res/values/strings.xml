@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">DrumsComeTrue</string>
     <string name="playButton">연주하기</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
