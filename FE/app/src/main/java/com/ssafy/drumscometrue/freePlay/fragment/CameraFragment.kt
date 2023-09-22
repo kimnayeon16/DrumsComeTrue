@@ -468,7 +468,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
         }
 
 
-        if(landmarkList.y() > 0.45){
+        if(landmarkList.y() > 0.48){
             if(hitEstimation["snare"] == false && landmarkList.x() > 0.1 && landmarkList.x() < 0.5){
                 Log.d("snare Hit","snare Hit")
                 // 사운드 재생
@@ -539,7 +539,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(landmarkList.y() < 0.43){
+        if(landmarkList.y() < 0.46){
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
