@@ -199,22 +199,24 @@ class CameraFragment : Fragment() {
                     val rightHand = pose.getPoseLandmark(20)
                     val leftFoot = pose.getPoseLandmark(31)
                     val rightFoot = pose.getPoseLandmark(32)
+                    val width = image.width
+                    val height = image.height
                     if(!start){
-                        settingEstimation(leftHand)
-                        settingEstimation(rightHand)
-                        settingRightBass(rightFoot)
-                        settingLeftHihat(leftFoot)
+                        settingEstimation(leftHand, height, width)
+                        settingEstimation(rightHand, height, width)
+                        settingRightBass(rightFoot, height, width)
+                        settingLeftHihat(leftFoot, height, width)
                         start = true
                     }else{
-                        leftHandEstimation = cameraFragment.hit(leftHand, cameraFragment.leftHandEstimation)
-                        rightHandEstimation = cameraFragment.hit(rightHand, cameraFragment.rightHandEstimation)
-                        leftHandEstimation = cameraFragment.back(leftHand, cameraFragment.leftHandEstimation)
-                        rightHandEstimation = cameraFragment.back(rightHand, cameraFragment.rightHandEstimation)
+                        leftHandEstimation = cameraFragment.hit(leftHand, cameraFragment.leftHandEstimation, height, width)
+                        rightHandEstimation = cameraFragment.hit(rightHand, cameraFragment.rightHandEstimation, height, width)
+                        leftHandEstimation = cameraFragment.back(leftHand, cameraFragment.leftHandEstimation, height, width)
+                        rightHandEstimation = cameraFragment.back(rightHand, cameraFragment.rightHandEstimation, height, width)
 
-                        hitLeftHihat(leftFoot)
-                        hitRightBass(rightFoot)
-                        backLeftHihat(leftFoot)
-                        backRightBass(rightFoot)
+                        hitLeftHihat(leftFoot, height, width)
+                        hitRightBass(rightFoot, height, width)
+                        backLeftHihat(leftFoot, height, width)
+                        backRightBass(rightFoot, height, width)
                     }
 
 
@@ -425,10 +427,10 @@ class CameraFragment : Fragment() {
     }
 
     /** 처음 손의 위치 setting */
-    private fun settingEstimation(landmarkList : PoseLandmark) : MutableMap<String, Boolean>{
+    private fun settingEstimation(landmarkList : PoseLandmark, width : Int, height : Int) : MutableMap<String, Boolean>{
         //px -> dp비율로 변환하기
-        val position_x = landmarkList.position.x / 720
-        val position_y = landmarkList.position.y / 1280
+        val position_x = landmarkList.position.x / width
+        val position_y = landmarkList.position.y / height
 
         val updates = mutableMapOf(
             "crash" to false,
@@ -462,19 +464,19 @@ class CameraFragment : Fragment() {
     }
 
     /** 처음 왼발(Hihat)의 위치 setting */
-    private fun settingLeftHihat(leftFoot : PoseLandmark){
+    private fun settingLeftHihat(leftFoot : PoseLandmark, width : Int, height : Int){
         //px -> dp비율로 변환하기
-        val position_x = leftFoot.position.x.toFloat() / 1280
-        val position_y = leftFoot.position.y.toFloat() / 720
+        val position_x = leftFoot.position.x / width
+        val position_y = leftFoot.position.y / height
         if(position_y > 0.97)
             leftHihat = true
     }
 
     /** 처음 오른발(Bass)의 위치 setting */
-    private fun settingRightBass(rightFoot : PoseLandmark){
+    private fun settingRightBass(rightFoot : PoseLandmark, width : Int, height : Int){
         //px -> dp비율로 변환하기
-        val position_x = rightFoot.position.x.toFloat() / 1280
-        val position_y = rightFoot.position.y.toFloat() / 720
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
 
         if(position_y > 0.97)
             rightBass = true
@@ -482,10 +484,10 @@ class CameraFragment : Fragment() {
 
 
     /** hit판단 */
-    private fun hit(landmarkList : PoseLandmark, hitEstimation : MutableMap<String, Boolean>) : MutableMap<String, Boolean>{
+    private fun hit(landmarkList : PoseLandmark, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
         //px -> 비율로 변환하기
-        val position_x = landmarkList.position.x / 720
-        val position_y = landmarkList.position.y / 1280
+        val position_x = landmarkList.position.x / width
+        val position_y = landmarkList.position.y / height
 
         if(position_y > 0.25) {
             if(hitEstimation["crash"] == false && position_x > 0.65){
@@ -576,9 +578,9 @@ class CameraFragment : Fragment() {
         return hitEstimation
     }
 
-    private fun hitLeftHihat(leftFoot : PoseLandmark){
-        val position_x = leftFoot.position.x / 720
-        val position_y = leftFoot.position.y / 1280
+    private fun hitLeftHihat(leftFoot : PoseLandmark, width : Int, height : Int){
+        val position_x = leftFoot.position.x / width
+        val position_y = leftFoot.position.y / height
 
         if(leftHihat == false && position_y > 0.95 && position_x > 0.7){
 
@@ -591,9 +593,9 @@ class CameraFragment : Fragment() {
             leftHihat = true
         }
     }
-    private fun hitRightBass(rightFoot : PoseLandmark){
-        val position_x = rightFoot.position.x / 720
-        val position_y = rightFoot.position.y / 1280
+    private fun hitRightBass(rightFoot : PoseLandmark, width : Int, height : Int){
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
         if(rightBass == false && position_y > 0.95 && position_x > 0.2 && position_x < 0.5){
 
             Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
@@ -606,10 +608,10 @@ class CameraFragment : Fragment() {
     }
 
     /** hit소리를 낼 준비하는지 판단 */
-    private fun back(landmarkList : PoseLandmark, hitEstimation : MutableMap<String, Boolean>) : MutableMap<String, Boolean>{
+    private fun back(landmarkList : PoseLandmark, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
         //px -> dp비율로 변환하기
-        val position_x = landmarkList.position.x / 720
-        val position_y = landmarkList.position.y / 1280
+        val position_x = landmarkList.position.x / width
+        val position_y = landmarkList.position.y / height
 
         if(position_y < 0.25) {
             hitEstimation["crash"] = false
@@ -639,16 +641,16 @@ class CameraFragment : Fragment() {
 
         return hitEstimation
     }
-    private fun backLeftHihat(leftFoot : PoseLandmark){
-        val position_x = leftFoot.position.x / 720
-        val position_y = leftFoot.position.y / 1280
+    private fun backLeftHihat(leftFoot : PoseLandmark, width : Int, height : Int){
+        val position_x = leftFoot.position.x / width
+        val position_y = leftFoot.position.y / height
         if(position_y < 0.93){
             leftHihat = false
         }
     }
-    private fun backRightBass(rightFoot : PoseLandmark){
-        val position_x = rightFoot.position.x / 720
-        val position_y = rightFoot.position.y / 1280
+    private fun backRightBass(rightFoot : PoseLandmark, width : Int, height : Int){
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
         if(position_y < 0.93){
             rightBass = false
         }
