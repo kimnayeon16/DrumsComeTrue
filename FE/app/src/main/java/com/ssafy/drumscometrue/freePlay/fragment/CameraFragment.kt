@@ -16,15 +16,18 @@
 package com.ssafy.drumscometrue.freePlay.fragment
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Bundle
+import android.os.SystemClock
+import android.util.DisplayMetrics
 import android.util.Log
-import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -34,13 +37,18 @@ import androidx.camera.core.AspectRatio
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import com.ssafy.drumscometrue.freePlay.MainViewModel
+//import com.google.firebase.ml.vision.common.FirebaseVisionImage
+//import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.ssafy.drumscometrue.R
-import com.google.mediapipe.tasks.vision.core.RunningMode
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.pose.Pose
+import com.google.mlkit.vision.pose.PoseDetection
+import com.google.mlkit.vision.pose.PoseDetector
+import com.google.mlkit.vision.pose.PoseLandmark
+import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
 import com.ssafy.drumscometrue.databinding.FragmentCameraBinding
-import com.ssafy.drumscometrue.freePlay.PoseLandmarkerHelper
+import java.io.ByteArrayOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -50,7 +58,7 @@ import java.util.concurrent.TimeUnit
  * 카메라를 사용하여 실시간으로 사용자의 포즈를 감지하고 표시하는 데 사용되는 프래그먼트
  * TensorFlow와 CameraX라이브러리를 사용하여 구현
  */
-class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
+class CameraFragment : Fragment() {
 
     /**
      * 클래스 내부에 정적인 변수와 메서드를 선언하는 데 사용
@@ -61,13 +69,14 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
 
     //
     private var _fragmentCameraBinding: FragmentCameraBinding? = null
+    private lateinit var displayMetrics: DisplayMetrics
 
     private val fragmentCameraBinding
         get() = _fragmentCameraBinding!!
 
-    private lateinit var poseLandmarkerHelper: PoseLandmarkerHelper
+    private val cameraFragment:CameraFragment = this
 
-    private val viewModel: MainViewModel by activityViewModels()
+
     //카메라 미리보기 및 이미지 분석과 관련된 변수들 -> glSurfaceView로 변경해도 될듯
     private var preview: Preview? = null    // 카메라에서 가져온 실시간 미리보기 화면을 표시하는 데 사용
     private var imageAnalyzer: ImageAnalysis? = null    //카메라로부터 가져온 이미지 프레임을 분석하고 처리하는 데 사용
@@ -106,6 +115,121 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
     private var rightBass : Boolean = false
 
 
+    //ML_Kit테스트
+    // 포즈 인식 클라이언트에 적용되는 옵션
+    private val options by lazy {
+        PoseDetectorOptions.Builder()
+            .setDetectorMode(PoseDetectorOptions.STREAM_MODE)
+            .build()
+    }
+    // 위에서 생성한 Options으로 생성한 PoseDetector Client
+    private val poseDetector by lazy {
+        PoseDetection.getClient(options)
+    }
+
+    // CameraX 영상을 분석 후 발견된 Landmark를 담고 있는 Pose객체 넘겨주는 콜백
+    private val onPoseDetected: (pose: Pose) -> Unit = { pose ->
+    }
+
+    // ML Kit Pose Detector
+    private class CameraAnalyzer(
+        private val poseDetector: PoseDetector,
+        private val onPoseDetected: (pose: Pose) -> Unit,
+        private val cameraFragment: CameraFragment
+    ) : ImageAnalysis.Analyzer {
+//        private fun degreesToFirebaseRotation(degrees: Int): Int = when(degrees) {
+//            0 -> FirebaseVisionImageMetadata.ROTATION_0
+//            90 -> FirebaseVisionImageMetadata.ROTATION_90
+//            180 -> FirebaseVisionImageMetadata.ROTATION_180
+//            270 -> FirebaseVisionImageMetadata.ROTATION_270
+//            else -> throw Exception("Rotation must be 0, 90, 180, or 270.")
+//        }
+
+        override fun analyze(imageProxy: ImageProxy) {
+            val mediaImage = imageProxy.image ?: return //이미지 없으면 중단
+
+//            val imageRotation = degreesToFirebaseRotation(imageProxy.imageInfo.rotationDegrees)
+//            // ML_Kit에 전달할 입력 이미지 설정, 회전정보 함께 전달
+//            val image = FirebaseVisionImage.fromMediaImage(mediaImage, imageRotation)
+
+            // Firebase ML Kit Vision API의 FirebaseVisionImage를 InputImage로 변환
+//            val inputImage = InputImage.fromBitmap(
+//                image.bitmap,
+//                imageProxy.imageInfo.rotationDegrees
+//            )
+
+            val inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+
+            // 포즈 감지기를 사용하여 입력 이미지를 처리, 포즈 감지 -> 비동기적 수행
+            poseDetector.process(inputImage)
+                //포즈감지 성공시 감지된 포즈 onPoseDetected콜백함수에 전달
+                .addOnSuccessListener { pose ->
+                    onPoseDetected(pose)
+                    cameraFragment.poseResults(pose,inputImage)
+                }
+                .addOnFailureListener { e ->
+                    //handel error
+                    println("error")
+                }
+                .addOnCompleteListener {
+                    imageProxy.close()
+                    mediaImage.close()
+                }
+        }
+    }
+
+
+    /**
+     * pose의 위치에 맞춰 drum소리 play
+     * */
+    fun poseResults(
+        pose: Pose,
+        image: InputImage
+    ){
+        activity?.runOnUiThread {
+            if (_fragmentCameraBinding != null) {
+                // fragmentCameraBinding.overlay - 화면에 그리기 작업을 처리하는 커스텀 OverlayView
+                fragmentCameraBinding.overlay.setResults(
+                    pose,
+                    imageHeight = image.height,
+                    imageWidth = image.width
+                )
+                if(!pose.allPoseLandmarks.isEmpty()){
+                    val leftHand = pose.getPoseLandmark(19)
+                    val rightHand = pose.getPoseLandmark(20)
+                    val leftFoot = pose.getPoseLandmark(31)
+                    val rightFoot = pose.getPoseLandmark(32)
+                    val width = image.width
+                    val height = image.height
+                    if(!start){
+                        settingEstimation(leftHand, height, width)
+                        settingEstimation(rightHand, height, width)
+                        settingRightBass(rightFoot, height, width)
+                        settingLeftHihat(leftFoot, height, width)
+                        start = true
+                    }else{
+                        leftHandEstimation = cameraFragment.hit(leftHand, cameraFragment.leftHandEstimation, height, width)
+                        rightHandEstimation = cameraFragment.hit(rightHand, cameraFragment.rightHandEstimation, height, width)
+                        leftHandEstimation = cameraFragment.back(leftHand, cameraFragment.leftHandEstimation, height, width)
+                        rightHandEstimation = cameraFragment.back(rightHand, cameraFragment.rightHandEstimation, height, width)
+
+                        hitLeftHihat(leftFoot, height, width)
+                        hitRightBass(rightFoot, height, width)
+                        backLeftHihat(leftFoot, height, width)
+                        backRightBass(rightFoot, height, width)
+                    }
+
+
+                }
+
+                // overlayView를 화면에 다시 그리도록 invalidate메서드 호출
+                // -> 포즈 감지 결과가 화면에 업데이트 및 표시됨
+                fragmentCameraBinding.overlay.invalidate()
+            }
+        }
+    }
+
+
     /**
      * Fragment가 화면에 나타날 때 호출
      * 필요 권한 확인
@@ -119,36 +243,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
                 requireActivity(), R.id.find_id_ui_fragment  //requireActivity : 현재 속한 컨텍스트, R.id.fragment_container: 네비게이션 그래프에서 화면 간 전환을 관리하는 호스트 컨테이너
             ).navigate(R.id.action_camera_to_permissions)
         }
-
-        // PoseLandmarkerHelper 재시작
-        backgroundExecutor.execute {    // 백그라운드 스레드에서 작업 수행
-            if(this::poseLandmarkerHelper.isInitialized) {//초기화 됨?
-                if (poseLandmarkerHelper.isClose()) {//종료됨?
-                    poseLandmarkerHelper.setupPoseLandmarker()
-                }
-            }
-        }
     }
-
-    /**
-     * Fragment가 일시 중지 시 호출
-     * PoseLandmarkerHelper를 종료하고 필요한 상태를 저장
-     * */
-    override fun onPause() {
-        super.onPause()
-        if(this::poseLandmarkerHelper.isInitialized) {  //초기화확인
-            viewModel.setMinPoseDetectionConfidence(poseLandmarkerHelper.minPoseDetectionConfidence)
-            viewModel.setMinPoseTrackingConfidence(poseLandmarkerHelper.minPoseTrackingConfidence)
-            viewModel.setMinPosePresenceConfidence(poseLandmarkerHelper.minPosePresenceConfidence)
-            viewModel.setDelegate(poseLandmarkerHelper.currentDelegate)
-
-            // 백그라운드 스레드에서 실행할 코드 블록을 정의
-            // 안드로이드 앱은 메인 스레드에서 UI를 처리
-            // 시간이 걸리는 작업을 메인에서 하면 UI가 끊어질 수 있어 백그라운드 스레드에서 처리
-            backgroundExecutor.execute { poseLandmarkerHelper.clearPoseLandmarker() }
-        }
-    }
-
 
     /**
      * Fragment의 뷰가 파괴될 때 호출
@@ -167,6 +262,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+        println("onCreate")
         setSound()
     }
 
@@ -179,10 +275,11 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
         container: ViewGroup?,  // fragment가 연결될 부모 뷰 그룹을 나타냄, 일반적으로 Fragment는 Activity의 레이아웃 내에서 특정 위치에 추가됨 이때 container는 해당위치를 가리킴
         savedInstanceState: Bundle? //fragment의 상태 저장 및 복원하는데 사용
     ): View {
+        val context = requireContext()
+        displayMetrics = context.resources.displayMetrics
         //FragmentCameraBinding클래스를 사용하여 뷰와 데이터 바인딩을 생성
         _fragmentCameraBinding =
             FragmentCameraBinding.inflate(inflater, container, false)
-
         // fragment의 실제 뷰
         return fragmentCameraBinding.root
     }
@@ -205,19 +302,6 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
         fragmentCameraBinding.viewFinder.post {
             // Set up the camera and its use cases
             setUpCamera()
-        }
-
-        // Create the PoseLandmarkerHelper that will posele the inference
-        backgroundExecutor.execute {
-            poseLandmarkerHelper = PoseLandmarkerHelper(
-                context = requireContext(),
-                runningMode = RunningMode.LIVE_STREAM,
-                minPoseDetectionConfidence = viewModel.currentMinPoseDetectionConfidence,
-                minPoseTrackingConfidence = viewModel.currentMinPoseTrackingConfidence,
-                minPosePresenceConfidence = viewModel.currentMinPosePresenceConfidence,
-                currentDelegate = viewModel.currentDelegate,
-                poseLandmarkerHelperListener = this
-            )
         }
     }
 
@@ -267,28 +351,22 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
         // 미리보기 설정
         // 비율, 디스플레이의 회전 방향을 설정
         preview = Preview.Builder()
-//            .setTargetAspectRatio(AspectRatio.RATIO_16_9)
-            .setTargetAspectRatio(1080 * 2400)
+            .setTargetAspectRatio(AspectRatio.RATIO_16_9)
             .setTargetRotation(fragmentCameraBinding.viewFinder.display.rotation)
             .build()
-
-        val customResolution = Size(2560, 1600) // 원하는 해상도로 설정
 
         // 이미지 분석 사용 설정
         // 카메라에서 스트리밍되는 영상에서 이미지 분석을 수행하는 부분
         imageAnalyzer = //이미지 분석기 설정
-            ImageAnalysis.Builder().setTargetAspectRatio(AspectRatio.RATIO_16_9)    //분석기가 사용할 이미지의 종횡비 설정
+            ImageAnalysis.Builder()
+                .setTargetAspectRatio(AspectRatio.RATIO_16_9)    //분석기가 사용할 이미지의 종횡비 설정
                 .setTargetRotation(fragmentCameraBinding.viewFinder.display.rotation)   //이미지의 회전 방향 설정
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)   //이미지 처리 속도가 분석보다 빠를경우 최신 이미지만 유지
-                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)  //출력 이미지 형식
                 .build()    // 설정한 내용으로 이미지 분석기 생성
                 // 이미지 분석기의 설정 마무리 : 이미지 객체에 대한 설정작업을 진행하는 클로저 실행
                 .also {
                     it.setAnalyzer(backgroundExecutor) { image ->   // 이미지 분석기에 분석할 작업 설정 -> 이미지 분석기가 카메라에서 받아온 이미지를 처리하는 부분
-                        // 한번에 하면 java.lang.IllegalStateException: Image is already closed이런 오류 나옴
-                        // ImageProxy를 직접 생성하는 것은 안됨
-                        detectPose(image)
-                        image.close()
+                        CameraAnalyzer(poseDetector, onPoseDetected, cameraFragment).analyze(image)
                     }
                 }
 
@@ -309,20 +387,14 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
     }
 
 
-    /**
-     * 이미지 프록시를 사용하여 라이브 스트리밍 중 포즈 감지를 수행함
-     * 이미지에서 포즈를 감지하는 메서드
-     * PoseLandmarkerHelper를 사용하여 포즈 감지
-     * */
-    private fun detectPose(imageProxy: ImageProxy) {
-        //poseLandmarkerHelper 객체가 초기화 되었는지 확인
-        if(this::poseLandmarkerHelper.isInitialized) {
-            poseLandmarkerHelper.detectLiveStream(  //라이브 스트리밍 이미지에서 포즈 감지
-                imageProxy = imageProxy,    // 카메라에서 가져온 이미지 데이터를 포함하는 객체 -> 포즈 감지를 위해 분석
-                isFrontCamera = cameraFacing == CameraSelector.LENS_FACING_FRONT
-            )
-        }
-    }
+
+
+
+
+
+
+
+
 
     /** SoundPool설정 */
     private fun setSound(){
@@ -355,7 +427,10 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
     }
 
     /** 처음 손의 위치 setting */
-    private fun settingEstimation(landmarkList : com.google.mediapipe.tasks.components.containers.NormalizedLandmark) : MutableMap<String, Boolean>{
+    private fun settingEstimation(landmarkList : PoseLandmark, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> dp비율로 변환하기
+        val position_x = landmarkList.position.x / width
+        val position_y = landmarkList.position.y / height
 
         val updates = mutableMapOf(
             "crash" to false,
@@ -367,15 +442,15 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
             "snare" to false
         )
 
-        if(landmarkList.y() > 0.3){
+        if(position_y > 0.3){
             updates["crash"] = true
-        }else if(landmarkList.y() > 0.4){
+        }else if(position_y > 0.4){
             updates["crash"] = true
             updates["ride"] = true
             updates["hiHat"] = true
             updates["hTom"] = true
             updates["mTom"] = true
-        }else if(landmarkList.y() > 0.5){
+        }else if(position_y > 0.5){
             updates["crash"] = true
             updates["ride"] = true
             updates["hiHat"] = true
@@ -389,22 +464,33 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
     }
 
     /** 처음 왼발(Hihat)의 위치 setting */
-    private fun settingLeftHihat(leftFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(leftFoot.y() > 0.97)
+    private fun settingLeftHihat(leftFoot : PoseLandmark, width : Int, height : Int){
+        //px -> dp비율로 변환하기
+        val position_x = leftFoot.position.x / width
+        val position_y = leftFoot.position.y / height
+        if(position_y > 0.97)
             leftHihat = true
     }
 
     /** 처음 오른발(Bass)의 위치 setting */
-    private fun settingRightBass(rightFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(rightFoot.y() > 0.97)
+    private fun settingRightBass(rightFoot : PoseLandmark, width : Int, height : Int){
+        //px -> dp비율로 변환하기
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
+
+        if(position_y > 0.97)
             rightBass = true
     }
 
 
     /** hit판단 */
-    private fun hit(landmarkList : com.google.mediapipe.tasks.components.containers.NormalizedLandmark, hitEstimation : MutableMap<String, Boolean>) : MutableMap<String, Boolean>{
-        if(landmarkList.y() > 0.25) {
-            if(hitEstimation["crash"] == false && landmarkList.x() < 0.35){
+    private fun hit(landmarkList : PoseLandmark, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> 비율로 변환하기
+        val position_x = landmarkList.position.x / width
+        val position_y = landmarkList.position.y / height
+
+        if(position_y > 0.25) {
+            if(hitEstimation["crash"] == false && position_x > 0.65){
                 Log.d("Crash","Crash Hit")
                 // 사운드 재생
                 val soundId = soundMap["crash"]
@@ -412,7 +498,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                 }
             }
-            if(hitEstimation["ride"] == false && landmarkList.x() > 0.8){
+            if(hitEstimation["ride"] == false && position_x < 0.2){
                 Log.d("ride Hit","ride Hit")
                 // 사운드 재생
                 val soundId = soundMap["ride"]
@@ -424,8 +510,8 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
             hitEstimation["ride"] = true
         }
 
-        if(landmarkList.y() > 0.32) {
-            if (hitEstimation["hTom"] == false && landmarkList.x() > 0.4 && landmarkList.x() < 0.7) {
+        if(position_y > 0.32) {
+            if (hitEstimation["hTom"] == false && position_x > 0.3 && position_x < 0.6) {
                 Log.d("hTom Hit", "hTom Hit")
                 // 사운드 재생
                 val soundId = soundMap["hTom"]
@@ -433,7 +519,7 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                 }
             }
-            if (hitEstimation["mTom"] == false && landmarkList.x() > 0.7 && landmarkList.x() < 0.85) {
+            if (hitEstimation["mTom"] == false && position_x > 0.15 && position_x < 0.3) {
                 Log.d("mTom Hit", "mTom Hit")
                 // 사운드 재생
                 val soundId = soundMap["mTom"]
@@ -445,9 +531,9 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
             hitEstimation["mTom"] = true
         }
 
-        if(landmarkList.y() > 0.38) {
-            if(hitEstimation["hiHat"] == false && landmarkList.x() > 0 && landmarkList.x() < 0.3){
-                println(leftHihat)
+        if(position_y > 0.38) {
+            if(hitEstimation["hiHat"] == false && position_x > 0.7){
+//                println(leftHihat)
                 if(leftHihat){
                     Log.d("closedHat Hit","closedHat Hit")
                     // 사운드 재생
@@ -466,18 +552,18 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
             }
             hitEstimation["hiHat"] = true
         }
-
-
-        if(landmarkList.y() > 0.48){
-            if(hitEstimation["snare"] == false && landmarkList.x() > 0.1 && landmarkList.x() < 0.5){
+        if(position_y > 0.48){
+            if(hitEstimation["snare"] == false && position_x > 0.5 && position_x < 0.9){
                 Log.d("snare Hit","snare Hit")
+                println(position_x)
+                println(position_y)
                 // 사운드 재생
                 val soundId = soundMap["snare"]
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                 }
             }
-            if(hitEstimation["floorTom"] == false && landmarkList.x() > 0.7){
+            if(hitEstimation["floorTom"] == false && position_x < 0.3){
                 Log.d("floorTom Hit","floorTom Hit")
                 // 사운드 재생
                 val soundId = soundMap["floorTom"]
@@ -492,10 +578,13 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
         return hitEstimation
     }
 
-    private fun hitLeftHihat(leftFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(leftHihat == false && leftFoot.y() > 0.95 && leftFoot.x() > 0 && leftFoot.x() < 0.3){
+    private fun hitLeftHihat(leftFoot : PoseLandmark, width : Int, height : Int){
+        val position_x = leftFoot.position.x / width
+        val position_y = leftFoot.position.y / height
 
-            Log.d("[Foot] pedalHat hit!","[Foot] pedalHat hit! ${leftFoot.y()}")
+        if(leftHihat == false && position_y > 0.95 && position_x > 0.7){
+
+            Log.d("[Foot] pedalHat hit!","[Foot] pedalHat hit! ${position_y}")
             val soundId = soundMap["pedalHat"]
 
             soundId?.let {
@@ -504,10 +593,12 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
             leftHihat = true
         }
     }
-    private fun hitRightBass(rightFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(rightBass == false && rightFoot.y() > 0.95 && rightFoot.x() > 0.6 && rightFoot.x() < 0.8){
+    private fun hitRightBass(rightFoot : PoseLandmark, width : Int, height : Int){
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
+        if(rightBass == false && position_y > 0.95 && position_x > 0.2 && position_x < 0.5){
 
-            Log.d("[Foot] bass hit!","[Foot] bass hit! ${rightFoot.y()}")
+            Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
             val soundId = soundMap["bass"]
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
@@ -517,8 +608,12 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
     }
 
     /** hit소리를 낼 준비하는지 판단 */
-    private fun back(landmarkList : com.google.mediapipe.tasks.components.containers.NormalizedLandmark, hitEstimation : MutableMap<String, Boolean>) : MutableMap<String, Boolean>{
-        if(landmarkList.y() < 0.25) {
+    private fun back(landmarkList : PoseLandmark, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> dp비율로 변환하기
+        val position_x = landmarkList.position.x / width
+        val position_y = landmarkList.position.y / height
+
+        if(position_y < 0.25) {
             hitEstimation["crash"] = false
             hitEstimation["ride"] = false
             hitEstimation["hiHat"] = false
@@ -527,106 +622,37 @@ class CameraFragment : Fragment(), PoseLandmarkerHelper.LandmarkerListener {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(landmarkList.y() < 0.31) {
+        if(position_y < 0.31) {
             hitEstimation["hiHat"] = false
             hitEstimation["hTom"] = false
             hitEstimation["mTom"] = false
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(landmarkList.y() < 0.36) {
+        if(position_y < 0.36) {
             hitEstimation["hiHat"] = false
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(landmarkList.y() < 0.46){
+        if(position_y < 0.46){
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
 
         return hitEstimation
     }
-    private fun backLeftHihat(leftFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(leftFoot.y() < 0.93){
+    private fun backLeftHihat(leftFoot : PoseLandmark, width : Int, height : Int){
+        val position_x = leftFoot.position.x / width
+        val position_y = leftFoot.position.y / height
+        if(position_y < 0.93){
             leftHihat = false
         }
     }
-    private fun backRightBass(rightFoot : com.google.mediapipe.tasks.components.containers.NormalizedLandmark){
-        if(rightFoot.y() < 0.93){
+    private fun backRightBass(rightFoot : PoseLandmark, width : Int, height : Int){
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
+        if(position_y < 0.93){
             rightBass = false
-        }
-    }
-
-    /**
-     * 포즈 감지 결과를 처리하고 UI를 업데이트
-     * PoseLandmarkerHelper.LandmarkerListener의 onResults함수 재정의
-     * */
-    override fun onResults(
-        resultBundle: PoseLandmarkerHelper.ResultBundle
-    ) {
-        // 포즈 감지 결과를 화면에 표시 -> UI스레드에서 작업을 수행
-        activity?.runOnUiThread {
-            if (_fragmentCameraBinding != null) {
-                // fragmentCameraBinding.overlay - 화면에 그리기 작업을 처리하는 커스텀 OverlayView
-                fragmentCameraBinding.overlay.setResults(
-                    resultBundle.results.first(),   // 포즈 감지 결과 중 첫번째 포즈
-                    // 입력 이미지의 높이, 너비
-                    resultBundle.inputImageHeight,
-                    resultBundle.inputImageWidth,
-                    //현재 실행 중인 모드
-                    RunningMode.LIVE_STREAM
-                )
-                var pose = resultBundle.results.get(0)
-                if(pose.landmarks().size > 0){
-                    if(pose.landmarks().get(0).size > 32){
-
-                        var leftHand = pose.landmarks().get(0).get(19)
-                        var rightHand = pose.landmarks().get(0).get(20)
-                        var leftFoot = pose.landmarks().get(0).get(32)
-                        var rightFoot = pose.landmarks().get(0).get(31)
-
-                        if(!start){
-                            leftHandEstimation = settingEstimation(leftHand)
-                            rightHandEstimation = settingEstimation(rightHand)
-                            settingLeftHihat(leftFoot)
-                            settingRightBass(rightFoot)
-                            start = true
-                        }
-
-
-                        //hit
-                        //foot
-                        hitLeftHihat(leftFoot)
-                        hitRightBass(rightFoot)
-                        //hands
-                        leftHandEstimation = hit(leftHand,leftHandEstimation)
-                        rightHandEstimation = hit(rightHand,rightHandEstimation)
-
-
-                        //back
-                        //foot
-                        backLeftHihat(leftFoot)
-                        backRightBass(rightFoot)
-                        //hands
-                        leftHandEstimation = back(leftHand,leftHandEstimation)
-                        rightHandEstimation = back(rightHand,rightHandEstimation)
-                    }
-                }
-
-                // overlayView를 화면에 다시 그리도록 invalidate메서드 호출
-                // -> 포즈 감지 결과가 화면에 업데이트 및 표시됨
-                fragmentCameraBinding.overlay.invalidate()
-            }
-        }
-    }
-
-    /**
-     * 오류 발생시 호출
-     * 오류 메시지 표시 -> 필요한 조치
-     * */
-    override fun onError(error: String, errorCode: Int) {
-        activity?.runOnUiThread {
-            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
         }
     }
 }
