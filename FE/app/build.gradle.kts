@@ -53,6 +53,10 @@ android {
     apply(from = "download_tasks.gradle")
 
     dependencies {
+
+        // ML Kit Pose Detection
+        implementation("com.google.mlkit:pose-detection:17.0.1-beta4")
+
         //카드뷰, 뷰페이저2 추가
         implementation("androidx.cardview:cardview:1.0.0")
         implementation("androidx.viewpager2:viewpager2:1.0.0")
