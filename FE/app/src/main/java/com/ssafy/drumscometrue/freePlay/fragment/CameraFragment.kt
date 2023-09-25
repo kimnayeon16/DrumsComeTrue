@@ -648,9 +648,14 @@ class CameraFragment : Fragment() {
 
             Log.d("[Foot] pedalHat hit!","[Foot] pedalHat hit! ${position_y}")
             val soundId = soundMap["pedalHat"]
+            val soundIdOpen = soundMap["openHat"]
 
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                //openHat소리 재생중이었으면 소리 끔
+                soundIdOpen?.let{
+                    soundPool.stop(soundIdOpen)
+                }
             }
             leftHihat = true
         }
