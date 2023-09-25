@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drumContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".kpop.KPopBoardFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@color/black"/>
+
+    <TextView
+        android:id="@+id/finishLine"
+        android:layout_width="12dp"
+        android:layout_height="100dp"
+        android:background="#FFFFFF"
+        android:padding="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="35dp"
+        android:text=""
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/songName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="75dp"
+        android:text="곡제목이에요"
+        android:textSize="24sp"
+        android:textColor="#673AB7"/>
+
+    <FrameLayout
+        android:id="@+id/drumBassContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"/>
+
+    <FrameLayout
+        android:id="@+id/drumHiHatContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"/>
+</FrameLayout>
