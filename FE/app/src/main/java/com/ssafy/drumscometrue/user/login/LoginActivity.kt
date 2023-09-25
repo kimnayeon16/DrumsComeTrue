@@ -22,8 +22,6 @@ import com.ssafy.drumscometrue.freePlay.FreePlayActivity
 import com.ssafy.drumscometrue.mainpage.MainPageActivity
 import com.ssafy.drumscometrue.retrofit2.ApiService
 import com.ssafy.drumscometrue.user.JoinActivity
-import com.ssafy.drumscometrue.user.findid.FindIdActivity
-import com.ssafy.drumscometrue.user.findpw.FindPwdActivity
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -103,23 +101,9 @@ class LoginActivity : AppCompatActivity() {
         // 버튼 리스너 설정
         loginBtn.setOnClickListener { handleLoginButtonClick() }
         joinBtn.setOnClickListener { handleJoinButtonClick() }
-        findIdText.setOnClickListener { handleFindIdTextClick() }
-        findPwdText.setOnClickListener { handleFindPwdTextClick() }
 
         val drumTestBtn = findViewById<Button>(R.id.drum_test)
         drumTestBtn.setOnClickListener { handleDrumTestButtonClick() }
-    }
-
-    // 비밀번호 찾기
-    private fun handleFindPwdTextClick() {
-        val intent = Intent(this, FindPwdActivity::class.java)
-        startActivity(intent)
-    }
-
-    // 아이디 찾기
-    private fun handleFindIdTextClick() {
-        val intent = Intent(this, FindIdActivity::class.java)
-        startActivity(intent)
     }
 
     // 로그인
