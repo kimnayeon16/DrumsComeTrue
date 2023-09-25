@@ -82,7 +82,7 @@ class KPopBoardFragment : Fragment() {
     }
 
     private fun updateDrumFragment(drumValuesArray: JSONArray) {
-        if (drumValuesArray.toString() == "[1]") {
+        if (drumValuesArray.toString() == "[3]") {
             val drumHiHatFragment = DrumHiHatFragment()
             val transaction = childFragmentManager.beginTransaction()
             transaction.setCustomAnimations(
@@ -92,7 +92,7 @@ class KPopBoardFragment : Fragment() {
             transaction.replace(R.id.drumContainer, drumHiHatFragment)
             transaction.commit()
 
-        } else if (drumValuesArray.toString() == "[1.1]") {
+        } else if (drumValuesArray.toString() == "[3.1]") {
             val drumHiHatFragment1 = DrumHiHatFragment1()
             val transaction = childFragmentManager.beginTransaction()
             transaction.setCustomAnimations(
@@ -102,7 +102,7 @@ class KPopBoardFragment : Fragment() {
             transaction.replace(R.id.drumContainer, drumHiHatFragment1)
             transaction.commit()
 
-        }else if (drumValuesArray.toString() == "[1.2]") {
+        }else if (drumValuesArray.toString() == "[3.2]") {
             val drumHiHatFragment2 = DrumHiHatFragment2()
             val transaction = childFragmentManager.beginTransaction()
             transaction.setCustomAnimations(
@@ -112,7 +112,7 @@ class KPopBoardFragment : Fragment() {
             transaction.replace(R.id.drumContainer, drumHiHatFragment2)
             transaction.commit()
 
-        }else if (drumValuesArray.toString() == "[1,6]") {
+        }else if (drumValuesArray.toString() == "[3,8]") {
             val transaction = childFragmentManager.beginTransaction()
             transaction.setCustomAnimations(
                 R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
@@ -121,8 +121,8 @@ class KPopBoardFragment : Fragment() {
             val drumHiHatFragment = DrumHiHatFragment()
             transaction.add(R.id.drumContainer, drumHiHatFragment)
 
-            val drumBassFragment = DrumBassFragment()
-            transaction.add(R.id.drumContainer, drumBassFragment)
+            val DrumSnareFragment = DrumSnareFragment()
+            transaction.add(R.id.drumContainer, DrumSnareFragment)
 
             transaction.commit()
         }
