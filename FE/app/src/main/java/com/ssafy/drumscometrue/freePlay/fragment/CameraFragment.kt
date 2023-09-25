@@ -22,12 +22,14 @@ import android.graphics.Matrix
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Bundle
+import android.os.Handler
 import android.os.SystemClock
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -36,6 +38,7 @@ import androidx.camera.core.Camera
 import androidx.camera.core.AspectRatio
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.minus
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 //import com.google.firebase.ml.vision.common.FirebaseVisionImage
@@ -48,10 +51,13 @@ import com.google.mlkit.vision.pose.PoseDetector
 import com.google.mlkit.vision.pose.PoseLandmark
 import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
 import com.ssafy.drumscometrue.databinding.FragmentCameraBinding
+import com.ssafy.drumscometrue.freePlay.OverlayView
+import kotlinx.coroutines.delay
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import kotlin.math.max
 
 
 /**
@@ -89,10 +95,14 @@ class CameraFragment : Fragment() {
     /** Blocking ML operations are performed using this executor */
     private lateinit var backgroundExecutor: ExecutorService
 
+
     private lateinit var soundPool: SoundPool
     private val soundMap = mutableMapOf<String, Int>()
 
     private var start = false
+    private var setFoot = false
+    var setLeftKnee : Float = 1F
+    var setRightKnee : Float = 1F
     private var leftHandEstimation = mutableMapOf<String, Boolean>(
         "crash" to false,
         "ride" to false,
@@ -137,13 +147,6 @@ class CameraFragment : Fragment() {
         private val onPoseDetected: (pose: Pose) -> Unit,
         private val cameraFragment: CameraFragment
     ) : ImageAnalysis.Analyzer {
-//        private fun degreesToFirebaseRotation(degrees: Int): Int = when(degrees) {
-//            0 -> FirebaseVisionImageMetadata.ROTATION_0
-//            90 -> FirebaseVisionImageMetadata.ROTATION_90
-//            180 -> FirebaseVisionImageMetadata.ROTATION_180
-//            270 -> FirebaseVisionImageMetadata.ROTATION_270
-//            else -> throw Exception("Rotation must be 0, 90, 180, or 270.")
-//        }
 
         override fun analyze(imageProxy: ImageProxy) {
             val mediaImage = imageProxy.image ?: return //이미지 없으면 중단
@@ -197,31 +200,41 @@ class CameraFragment : Fragment() {
                 if(!pose.allPoseLandmarks.isEmpty()){
                     val leftHand = pose.getPoseLandmark(19)
                     val rightHand = pose.getPoseLandmark(20)
+                    val leftKnee = pose.getPoseLandmark(25)
+                    val rightKnee = pose.getPoseLandmark(26)
                     val leftFoot = pose.getPoseLandmark(31)
                     val rightFoot = pose.getPoseLandmark(32)
                     val width = image.width
                     val height = image.height
+
                     if(!start){
-                        settingEstimation(leftHand, height, width)
-                        settingEstimation(rightHand, height, width)
-                        settingRightBass(rightFoot, height, width)
-                        settingLeftHihat(leftFoot, height, width)
-                        start = true
+                        val handler = Handler()
+
+                        handler.postDelayed({
+                            // 3초 후에 실행할 코드를 여기에 작성합니다.
+                            settingEstimation(leftHand, height, width)
+                            settingEstimation(rightHand, height, width)
+                            setLeftKnee = leftKnee.position.y
+                            setRightKnee  = rightKnee.position.y
+                            println("초기셋팅"+setRightKnee/width)
+                            start = true
+                        }, 2000)
                     }else{
                         leftHandEstimation = cameraFragment.hit(leftHand, cameraFragment.leftHandEstimation, height, width)
                         rightHandEstimation = cameraFragment.hit(rightHand, cameraFragment.rightHandEstimation, height, width)
                         leftHandEstimation = cameraFragment.back(leftHand, cameraFragment.leftHandEstimation, height, width)
                         rightHandEstimation = cameraFragment.back(rightHand, cameraFragment.rightHandEstimation, height, width)
 
-                        hitLeftHihat(leftFoot, height, width)
-                        hitRightBass(rightFoot, height, width)
-                        backLeftHihat(leftFoot, height, width)
-                        backRightBass(rightFoot, height, width)
+//                        hitLeftHihat(leftFoot, height, width)
+//                        hitRightBass(rightFoot, height, width)
+//                        backLeftHihat(leftFoot, height, width)
+//                        backRightBass(rightFoot, height, width)
+                        hitLeftHihat2(leftKnee,setLeftKnee, height, width)
+                        hitRightBass2(rightKnee,setRightKnee, height, width)
+                        backLeftHihat2(leftKnee,setLeftKnee, height, width)
+                        backRightBass2(rightKnee,setRightKnee,  height, width)
                     }
-
-
                 }
-
                 // overlayView를 화면에 다시 그리도록 invalidate메서드 호출
                 // -> 포즈 감지 결과가 화면에 업데이트 및 표시됨
                 fragmentCameraBinding.overlay.invalidate()
@@ -413,7 +426,7 @@ class CameraFragment : Fragment() {
                 .build()
 
             // 사운드 파일 미리 로드
-            soundMap["bass"] = soundPool.load(context, R.raw.bass, 1)
+            soundMap["bass"] = soundPool.load(context, R.raw.bass2, 1)
             soundMap["snare"] = soundPool.load(context, R.raw.snare, 1)
             soundMap["openHat"] = soundPool.load(context, R.raw.open_hat, 1)
             soundMap["closedHat"] = soundPool.load(context, R.raw.closed_hat, 1)
@@ -481,6 +494,26 @@ class CameraFragment : Fragment() {
         if(position_y > 0.97)
             rightBass = true
     }
+
+    /** 처음 왼발(Hihat)의 위치 setting */
+    private fun settingLeftHihat2(leftFoot : PoseLandmark, width : Int, height : Int){
+        //px -> dp비율로 변환하기
+        val position_x = leftFoot.position.x / width
+        val position_y = leftFoot.position.y / height
+        if(position_y > 0.97)
+            leftHihat = true
+    }
+
+    /** 처음 오른발(Bass)의 위치 setting */
+    private fun settingRightBass2(rightFoot : PoseLandmark, width : Int, height : Int){
+        //px -> dp비율로 변환하기
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
+
+        if(position_y > 0.97)
+            rightBass = true
+    }
+
 
 
     /** hit판단 */
@@ -607,6 +640,36 @@ class CameraFragment : Fragment() {
         }
     }
 
+    private fun hitLeftHihat2(leftFoot : PoseLandmark, setLeftKnee:Float, width : Int, height : Int){
+        val position_x = leftFoot.position.x / width
+        val position_y = leftFoot.position.y / height
+
+        if(leftHihat == false && position_y < setLeftKnee / height - 0.03){
+
+            Log.d("[Foot] pedalHat hit!","[Foot] pedalHat hit! ${position_y}")
+            val soundId = soundMap["pedalHat"]
+
+            soundId?.let {
+                soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+            }
+            leftHihat = true
+        }
+    }
+    private fun hitRightBass2(rightFoot : PoseLandmark, setRightKnee:Float, width : Int, height : Int){
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
+        if(rightBass == false && position_y < setRightKnee/height-0.03){
+
+            Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
+            val soundId = soundMap["bass"]
+            soundId?.let {
+                soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+            }
+            rightBass = true
+        }
+    }
+
+
     /** hit소리를 낼 준비하는지 판단 */
     private fun back(landmarkList : PoseLandmark, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
         //px -> dp비율로 변환하기
@@ -655,4 +718,20 @@ class CameraFragment : Fragment() {
             rightBass = false
         }
     }
+
+    private fun backLeftHihat2(leftFoot : PoseLandmark, setLeftKnee:Float, width : Int, height : Int){
+        val position_x = leftFoot.position.x / width
+        val position_y = leftFoot.position.y / height
+        if(position_y > setLeftKnee / height-0.01){
+            leftHihat = false
+        }
+    }
+    private fun backRightBass2(rightFoot : PoseLandmark, setRightKnee:Float, width : Int, height : Int){
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
+        if(position_y > setRightKnee / height-0.01){
+            rightBass = false
+        }
+    }
+
 }
