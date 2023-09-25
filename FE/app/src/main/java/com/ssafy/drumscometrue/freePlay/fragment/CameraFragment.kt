@@ -18,6 +18,7 @@ package com.ssafy.drumscometrue.freePlay.fragment
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Matrix
 import android.media.AudioAttributes
 import android.media.SoundPool
@@ -29,6 +30,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
@@ -124,6 +128,15 @@ class CameraFragment : Fragment() {
     private var leftHihat : Boolean = false
     private var rightBass : Boolean = false
 
+    private lateinit var snareImg : ImageView
+    private lateinit var bassImg : ImageView
+    private lateinit var hihatImg : ImageView
+    private lateinit var fTomImg : ImageView
+    private lateinit var hTomImg : ImageView
+    private lateinit var mTomImg : ImageView
+    private lateinit var crashImg : ImageView
+    private lateinit var rideImg : ImageView
+
 
     //ML_Kit테스트
     // 포즈 인식 클라이언트에 적용되는 옵션
@@ -192,6 +205,7 @@ class CameraFragment : Fragment() {
         activity?.runOnUiThread {
             if (_fragmentCameraBinding != null) {
                 // fragmentCameraBinding.overlay - 화면에 그리기 작업을 처리하는 커스텀 OverlayView
+                setImg()
                 fragmentCameraBinding.overlay.setResults(
                     pose,
                     imageHeight = image.height,
@@ -399,15 +413,16 @@ class CameraFragment : Fragment() {
         }
     }
 
-
-
-
-
-
-
-
-
-
+    private fun setImg() {
+        snareImg = fragmentCameraBinding.layoutOverlay.snareImg
+        bassImg = fragmentCameraBinding.layoutOverlay.bassImg
+        hihatImg = fragmentCameraBinding.layoutOverlay.hihatImg
+        fTomImg = fragmentCameraBinding.layoutOverlay.fTomImg
+        hTomImg = fragmentCameraBinding.layoutOverlay.hTomImg
+        mTomImg = fragmentCameraBinding.layoutOverlay.mTomImg
+        crashImg = fragmentCameraBinding.layoutOverlay.crashImg
+        rideImg = fragmentCameraBinding.layoutOverlay.rideImg
+    }
 
     /** SoundPool설정 */
     private fun setSound(){
@@ -529,6 +544,7 @@ class CameraFragment : Fragment() {
                 val soundId = soundMap["crash"]
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(crashImg)
                 }
             }
             if(hitEstimation["ride"] == false && position_x < 0.2){
@@ -537,6 +553,7 @@ class CameraFragment : Fragment() {
                 val soundId = soundMap["ride"]
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(rideImg)
                 }
             }
             hitEstimation["crash"] = true
@@ -550,6 +567,7 @@ class CameraFragment : Fragment() {
                 val soundId = soundMap["hTom"]
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(hTomImg)
                 }
             }
             if (hitEstimation["mTom"] == false && position_x > 0.15 && position_x < 0.3) {
@@ -558,6 +576,7 @@ class CameraFragment : Fragment() {
                 val soundId = soundMap["mTom"]
                 soundId?.let {
                     soundPool.play(it, 0.8f, 0.7f, 1, 0, 1.0f)
+                    hitAnimation(mTomImg)
                 }
             }
             hitEstimation["hTom"] = true
@@ -573,6 +592,7 @@ class CameraFragment : Fragment() {
                     val soundId = soundMap["closedHat"]
                     soundId?.let {
                         soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                        hitAnimation(hihatImg)
                     }
                 }else{
                     Log.d("openHat Hit","openHat Hit")
@@ -580,6 +600,7 @@ class CameraFragment : Fragment() {
                     val soundId = soundMap["openHat"]
                     soundId?.let {
                         soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                        hitAnimation(hihatImg)
                     }
                 }
             }
@@ -594,6 +615,7 @@ class CameraFragment : Fragment() {
                 val soundId = soundMap["snare"]
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(snareImg)
                 }
             }
             if(hitEstimation["floorTom"] == false && position_x < 0.3){
@@ -602,6 +624,7 @@ class CameraFragment : Fragment() {
                 val soundId = soundMap["floorTom"]
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(fTomImg)
                 }
             }
             hitEstimation["snare"] = true
@@ -622,6 +645,7 @@ class CameraFragment : Fragment() {
 
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                hitAnimation(hihatImg)
             }
             leftHihat = true
         }
@@ -635,6 +659,7 @@ class CameraFragment : Fragment() {
             val soundId = soundMap["bass"]
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                hitAnimation(bassImg)
             }
             rightBass = true
         }
@@ -651,6 +676,7 @@ class CameraFragment : Fragment() {
 
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                hitAnimation(hihatImg)
             }
             leftHihat = true
         }
@@ -664,6 +690,7 @@ class CameraFragment : Fragment() {
             val soundId = soundMap["bass"]
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                hitAnimation(bassImg)
             }
             rightBass = true
         }
@@ -733,5 +760,35 @@ class CameraFragment : Fragment() {
             rightBass = false
         }
     }
+
+
+    private fun hitAnimation(imageView: ImageView) {
+        // ImageView의 색상을 검은색으로 설정
+        imageView.setColorFilter(Color.BLACK)
+
+        // 상하로 흔들리는 애니메이션
+        val shakeAnimation = AnimationUtils.loadAnimation(context, R.anim.hit_animation)
+
+        // 크기가 변하는 애니메이션
+        val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
+
+        // 두 애니메이션을 합쳐서 동시에 실행
+        val set = AnimationSet(true)
+        set.addAnimation(shakeAnimation)
+        set.addAnimation(scaleAnimation)
+        set.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                // 애니메이션이 끝나면 색상 필터 제거
+                imageView.clearColorFilter()
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+
+        imageView.startAnimation(set)
+    }
+
 
 }
