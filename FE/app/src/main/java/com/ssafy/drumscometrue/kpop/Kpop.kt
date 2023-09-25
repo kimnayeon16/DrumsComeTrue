@@ -4,5 +4,5 @@ data class Kpop(
     val song: String,
     val singer: String,
     val image: String,
+    val score: String
 )
-
