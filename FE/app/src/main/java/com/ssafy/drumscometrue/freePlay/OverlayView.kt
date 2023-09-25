@@ -51,7 +51,9 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
         results = pose
         this.imageHeight = imageHeight
         this.imageWidth = imageWidth
-//        scaleFactor = max(width * 1f / imageWidth, height * 1f / imageHeight)
+
+//        println("viewScale1: "+ width)
+//        println("viewScale2: "+ height)
         scaleFactor = max(width * 1f / imageHeight, height * 1f / imageWidth)
         invalidate() // 뷰를 다시 그리도록 요청
     }
