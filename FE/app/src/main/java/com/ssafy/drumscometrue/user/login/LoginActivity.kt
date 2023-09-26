@@ -39,8 +39,6 @@ class LoginActivity : AppCompatActivity() {
     // Text
     private lateinit var loginIdText: EditText
     private lateinit var loginPwdText: EditText
-    private lateinit var findIdText: TextView
-    private lateinit var findPwdText: TextView
     private lateinit var joinText: TextView
     private lateinit var joinBtn: TextView
 
@@ -74,8 +72,6 @@ class LoginActivity : AppCompatActivity() {
 
         loginIdText = findViewById(R.id.login_id)
         loginPwdText = findViewById(R.id.login_pwd)
-        findIdText = findViewById(R.id.find_user_id)
-        findPwdText = findViewById(R.id.find_user_pwd)
         joinText = findViewById(R.id.join_user)
         joinBtn = findViewById(R.id.join_user)
 
