@@ -39,7 +39,6 @@ public class UserService {
 			.userId(signupRequest.getUserId())
 			.userPw(passwordEncoder.encode(signupRequest.getUserPw()))
 			.userName(signupRequest.getUserName())
-			.phoneNumber(signupRequest.getPhoneNumber())
 			.role(Role.USER)
 			.build();
 		userRepository.save(user);

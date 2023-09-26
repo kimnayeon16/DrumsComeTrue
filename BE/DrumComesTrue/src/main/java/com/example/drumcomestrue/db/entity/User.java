@@ -37,9 +37,6 @@ public class User {
 	@Column
 	private String userPw;
 
-	@Column
-	private String phoneNumber;
-
 	private String refreshToken;
 
 	private String socialId;
