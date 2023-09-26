@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.drumcomestrue.common.error.NotFoundException;
+import com.example.drumcomestrue.common.exception.ApplicationError;
+import com.example.drumcomestrue.db.entity.User;
 import com.example.drumcomestrue.db.repository.UserRepository;
 
 import lombok.Getter;
@@ -177,5 +180,12 @@ public class JwtService {
 			log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
 			return false;
 		}
+	}
+
+	public void sendUserId(HttpServletRequest request, HttpServletResponse response, String userId) {
+		User user = userRepository.findByUserId(userId).
+			orElseThrow(()->  new NotFoundException(ApplicationError.MEMBER_NOT_FOUND));
+		response.setHeader("userPk", String.valueOf(user.getUserPk()));
+
 	}
 }
