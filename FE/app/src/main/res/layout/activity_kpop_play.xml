@@ -8,11 +8,30 @@
     android:orientation="vertical"
     tools:context=".kpop.KpopPlayActivity">
 
+
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/camera"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        />-->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/find_id_ui_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:keepScreenOn="true"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph"
+        tools:context=".freePlay.FreePlayActivity" />
+
     <FrameLayout
         android:id="@+id/board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+
 
     <FrameLayout
         android:id="@+id/count"

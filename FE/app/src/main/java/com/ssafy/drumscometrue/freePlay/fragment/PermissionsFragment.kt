@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.ssafy.drumscometrue.R
 
+// 필요한 권한(카메라)권한을 정의하는 문자열 배열
 private val PERMISSIONS_REQUIRED = arrayOf(android.Manifest.permission.CAMERA)
 
 class PermissionsFragment : Fragment() {
@@ -38,6 +39,7 @@ class PermissionsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         when (PackageManager.PERMISSION_GRANTED) {
+            // Android앱에서 특정 권한의 현재 부여 상태를 확인하기 위한 메서드
             ContextCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.CAMERA
