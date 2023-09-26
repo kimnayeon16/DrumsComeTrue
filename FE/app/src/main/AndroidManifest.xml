@@ -25,11 +25,6 @@
         <activity
             android:name=".kpop.KpopListActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity
@@ -38,8 +33,6 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".user.login.LoginActivity"></activity>
         <activity android:name=".user.JoinActivity"></activity>
-<!--        <activity android:name=".user.findid.FindIdActivity"></activity>-->
-<!--        <activity android:name=".user.findpw.FindPwdActivity"></activity>-->
         <activity
             android:name=".kpop.KpopPlayActivity"
             android:exported="false" />
@@ -47,11 +40,10 @@
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".mainpage.UserPageActivity"
