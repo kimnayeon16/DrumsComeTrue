@@ -91,12 +91,12 @@ class MainPageActivity : AppCompatActivity() {
                 }
 
                 1 -> {
-                    val intent = Intent(this, PracticeActivity::class.java)
+                    val intent = Intent(this, KpopListActivity::class.java)
                     startActivity(intent)
                 }
 
                 2 -> {
-                    val intent = Intent(this, KpopListActivity::class.java)
+                    val intent = Intent(this, PracticeActivity::class.java)
                     startActivity(intent)
                 }
 
