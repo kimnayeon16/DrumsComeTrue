@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".practice.PracticeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        android:orientation="vertical"
+        android:background="@drawable/main_bg">
+
+        <LinearLayout
+            android:id="@+id/practiceMetronome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_bg">
+            <ImageView
+                android:layout_margin="10dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/practice_card_item_metronome" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:textSize="30sp"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="메트로놈 사용법"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/practiceCamera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_bg">
+            <ImageView
+                android:layout_margin="10dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/practice_card_item_camera" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:textSize="30sp"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="카메라 세팅"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/practiceDrum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_bg">
+            <ImageView
+                android:layout_margin="10dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/practice_card_item_drum" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:textSize="30sp"
+                android:gravity="center"
+                android:text="드럼 자리연습"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
