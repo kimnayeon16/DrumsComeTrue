@@ -1,11 +1,12 @@
 package com.ssafy.drumscometrue.kpop
 
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.ssafy.drumscometrue.R
+import com.ssafy.drumscometrue.freePlay.fragment.CameraFragment
 import java.util.Timer
 import kotlin.concurrent.timer
 
@@ -33,24 +34,40 @@ class KpopPlayActivity : AppCompatActivity() {
         //KpopListActivity에서 받은 값
         val song = intent.getStringExtra("song")
         val score = intent.getStringExtra("score")
+        val prelude = intent.getLongExtra("prelude", 0)
+        val interval = intent.getLongExtra("interval", 0)
+        System.out.println("ppppppprrrrrrrrrrrreeeeeeeeeeeeeelllllllllllluuuuuuuuuudddddddddddeeeeeeee $prelude")
+        System.out.println("iiiiiiiiinnnnnnnnnntttttttttteeeeeerrrrrrrrvvvvvvvvvvvvaaaaaaalllllll $interval")
         //곡제목 변수에 activity에서 받은 값 넣기
         songName = song
 
+
+        val cameraFragment = CameraFragment()
         //kPopBoardFragment 생성
         val kPopBoardFragment = KPopBoardFragment()
         //KpopBoardFragment로 song, score 전달하기
         val args = Bundle()
         args.putString("song", song)
         args.putString("score", score)
+        args.putLong("prelude", prelude)
+        args.putLong("interval", interval)
         kPopBoardFragment.arguments = args
         //kPopCountFragment 생성
         val kPopCountFragment = KPopCountFragment()
         //Fragment 트랜잭션
+//        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.camera, cameraFragment)
+//        transaction.replace(R.id.board, kPopBoardFragment)
+//        transaction.replace(R.id.count, kPopCountFragment)
+//        transaction.commit()
+
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.board, kPopBoardFragment)
-        transaction.replace(R.id.count, kPopCountFragment)
-        //트랜잭션을 완료하고 화면에 변경된 fragment 표시
+        transaction.add(R.id.board, kPopBoardFragment)
+        transaction.add(R.id.find_id_ui_fragment, cameraFragment)
+        transaction.add(R.id.count, kPopCountFragment)
         transaction.commit()
+        //트랜잭션을 완료하고 화면에 변경된 fragment 표시
+
 
         //frameLayout 초기화
         frameLayout = findViewById(R.id.frameLayout)
@@ -74,8 +91,8 @@ class KpopPlayActivity : AppCompatActivity() {
             "곰 세마리" -> R.raw.threebears
             "나비야" -> R.raw.butterfly
             "Rooftop(옥탑방)" -> R.raw.rooftop
-            "너의 의미" -> R.raw.threebears
-            "서울밤" -> R.raw.threebears
+            "거미가 줄을 타고 올라갑니다" -> R.raw.spider
+            "작은별" -> R.raw.star
             // 다른 곡들에 대한 리소스 ID도 추가해주세요.
             else -> R.raw.rooftop // 기본값으로 설정할 리소스 ID
         }
@@ -106,5 +123,11 @@ class KpopPlayActivity : AppCompatActivity() {
         super.onStop()
         mediaPlayer?.release()
         mediaPlayer = null
+    }
+
+    override fun onBackPressed() {
+        // 이전 액티비티로 돌아가기 위한 코드 작성
+        mediaPlayer?.release()
+        super.onBackPressed()
     }
 }

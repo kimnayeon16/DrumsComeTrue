@@ -45,6 +45,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <FrameLayout
+        android:id="@+id/board"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        />
+
     <include
         android:id="@+id/layout_overlay"
         layout="@layout/layout_overlay"
@@ -57,5 +63,12 @@
         layout="@layout/layout_drum_pose"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
