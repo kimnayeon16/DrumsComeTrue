@@ -58,6 +58,7 @@ public class SecurityConfig {
 			.mvcMatchers("/").permitAll()
 			.mvcMatchers(HttpMethod.POST, "/api/v1/user/signup").permitAll()
 			.mvcMatchers(HttpMethod.POST, "/user/login").permitAll()
+			.mvcMatchers(HttpMethod.GET, "/api/v1/user/login/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.oauth2Login()
