@@ -60,21 +60,6 @@ public class UserController {
 	public ResponseEntity<FindPwResponse> findPw(@PathVariable("verifyNumber") String verifyNumber){
 		return ResponseEntity.ok().body(userService.findPw(verifyNumber));
 	}
-
-	// @PostMapping
-	// @RequestMapping("/logout")
-	// public ResponseEntity<Void> logout(@RequestBody SignupRequest signupRequest){
-	// 	userService.signup(signupRequest);
-	// 	return ResponseEntity.ok().build();
-	// }
-
-	// @PostMapping
-	// @RequestMapping("/withdraw")
-	// public ResponseEntity<Void> withdraw(@RequestBody SignupRequest signupRequest){
-	// 	userService.signup(signupRequest);
-	// 	return ResponseEntity.ok().build();
-	// }
-
 }
 
 
