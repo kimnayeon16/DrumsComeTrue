@@ -68,12 +68,6 @@ class MainPageActivity : AppCompatActivity() {
                 "튜토리얼",
                 "튜토리얼을 통해 튜토리얼을 하세요",
                 3
-            ),
-            PageData(
-                R.drawable.page_img_launch,
-                "런치패드",
-                "런치패드로 런치패드를 하세요",
-                4
             )
         )
 
@@ -106,10 +100,6 @@ class MainPageActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
 
-                3 -> {
-                    val intent = Intent(this, LaunchpadActivity::class.java)
-                    startActivity(intent)
-                }
                 // 추가적인카드 항목이 있다면 여기에 계속 추가할 수 있습니다.
             }
         }
