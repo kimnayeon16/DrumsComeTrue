@@ -1,0 +1,9 @@
+[source,options="nowrap"]
+----
+{
+  "userId" : "아이디",
+  "userName" : "이름",
+  "userPw" : "비밀번호",
+  "phoneNumber" : "010-9999-9999"
+}
+----
