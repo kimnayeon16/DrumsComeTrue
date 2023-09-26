@@ -10,18 +10,18 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 // ext : build.gradle 에서 사용하는 전역변수를 설정하겠다는 의미
-ext {
-    // build/generated-snippets 경로를 가지는 파일 객체를 생성하여 snippetsDir 변수에 할당
-    snippetsDir = file('build/generated-snippets')
-}
-
-bootJar {
-    dependsOn asciidoctor
-    copy {
-        from "${asciidoctor.outputDir}"
-        into 'BOOT-INF/classes/static/docs'
-    }
-}
+//ext {
+//    // build/generated-snippets 경로를 가지는 파일 객체를 생성하여 snippetsDir 변수에 할당
+//    snippetsDir = file('build/generated-snippets')
+//}
+//
+//bootJar {
+//    dependsOn asciidoctor
+//    copy {
+//        from "${asciidoctor.outputDir}"
+//        into 'BOOT-INF/classes/static/docs'
+//    }
+//}
 
 repositories {
     mavenCentral()
@@ -73,27 +73,27 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
-test {
-    useJUnitPlatform()
-    outputs.dir snippetsDir
-}
+//test {
+//    useJUnitPlatform()
+//    outputs.dir snippetsDir
+//}
+//
+//asciidoctor {
+//    inputs.dir snippetsDir
+//    inputs.file file('src/docs/asciidoc/index.adoc')
+//    dependsOn test
+//}
+//
+//asciidoctor.doFirst {
+//    delete file('src/main/resources/static/docs')
+//}
+//
+//task copyDocument(type: Copy) {
+//    dependsOn asciidoctor
+//    from file("build/docs/asciidoc")
+//    into file("src/main/resources/static/docs")
+//}
 
-asciidoctor {
-    inputs.dir snippetsDir
-    inputs.file file('src/docs/asciidoc/index.adoc')
-    dependsOn test
-}
-
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
-}
-
-task copyDocument(type: Copy) {
-    dependsOn asciidoctor
-    from file("build/docs/asciidoc")
-    into file("src/main/resources/static/docs")
-}
-
-build {
-    dependsOn copyDocument
-}
+//build {
+//    dependsOn copyDocument
+//}
