@@ -55,6 +55,13 @@
         android:id="@+id/layout_overlay"
         layout="@layout/layout_overlay"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <include
+        android:id="@+id/layout_drum_pose"
+        layout="@layout/layout_drum_pose"
+        android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <FrameLayout
