@@ -15,6 +15,7 @@ import com.example.drumcomestrue.api.response.user.FindIdResponse;
 import com.example.drumcomestrue.api.response.user.FindPwResponse;
 import com.example.drumcomestrue.api.response.user.FindResponse;
 import com.example.drumcomestrue.api.response.user.LoginResponse;
+import com.example.drumcomestrue.api.response.user.ViewResponse;
 import com.example.drumcomestrue.api.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,11 @@ public class UserController {
 	@GetMapping("/findPw/{verifyNumber}")
 	public ResponseEntity<FindPwResponse> findPw(@PathVariable("verifyNumber") String verifyNumber){
 		return ResponseEntity.ok().body(userService.findPw(verifyNumber));
+	}
+
+	@GetMapping("/myPage/{userPk}")
+	public ResponseEntity<ViewResponse> viewPage(@PathVariable String userPk){
+		return ResponseEntity.ok().body(userService.viewPage(userPk));
 	}
 }
 

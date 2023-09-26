@@ -9,6 +9,7 @@ import com.example.drumcomestrue.api.response.user.FindIdResponse;
 import com.example.drumcomestrue.api.response.user.FindPwResponse;
 import com.example.drumcomestrue.api.response.user.FindResponse;
 import com.example.drumcomestrue.api.response.user.LoginResponse;
+import com.example.drumcomestrue.api.response.user.ViewResponse;
 import com.example.drumcomestrue.common.error.BadRequestException;
 import com.example.drumcomestrue.common.error.DuplicateException;
 import com.example.drumcomestrue.common.error.NotFoundException;
@@ -79,5 +80,15 @@ public class UserService {
 		if(!passwordEncoder.matches(loginRequest.getUserPw(), user.getUserPw())){
 			throw new NotFoundException(ApplicationError.USERPW_NOT_MATCH);
 		}
+	}
+
+	public ViewResponse viewPage(String userPk) {
+		long userValue = Long.parseLong(userPk);
+		User user = userRepository.findByUserPk(userValue).orElseThrow(()-> new NotFoundException(ApplicationError.MEMBER_NOT_FOUND));
+		ViewResponse viewResponse = ViewResponse.builder()
+			.userId(user.getUserId())
+			.userName(user.getUserName())
+			.build();
+		return viewResponse;
 	}
 }
