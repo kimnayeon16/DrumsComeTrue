@@ -12,11 +12,11 @@ import com.ssafy.drumscometrue.adapter.kPopAdapter
 class KpopListActivity : AppCompatActivity() {
 
     var kpopList = arrayListOf<Kpop>(
-        Kpop("곰 세마리", "북극곰", "img_three_bears", "ThreeBears", 10000, 480),
-        Kpop("나비야", "나비", "img_butterfly", "Butterfly", 11700, 484),
+        Kpop("곰 세마리", "북극곰", "img_three_bears", "ThreeBears", 10800, 470),
+        Kpop("나비야", "나비", "img_butterfly", "Butterfly", 12800, 473),
         Kpop("Rooftop(옥탑방)", "N.Flying(엔플라잉)", "img_rooftop", "ThreeBears", 10000, 480),
-        Kpop("거미가 줄을 타고 올라갑니다", "거미", "img_spider", "Spider", 15500, 405),
-        Kpop("작은별", "작은별", "img_seoul_night", "Star", 9500, 690)
+        Kpop("거미가 줄을 타고 올라갑니다", "거미", "img_spider", "Spider", 16400, 405),
+        Kpop("작은별", "작은별", "img_seoul_night", "Star", 10200, 690)
     )
 
 
@@ -38,8 +38,9 @@ class KpopListActivity : AppCompatActivity() {
             intent.putExtra("prelude", kpop.prelude)
             intent.putExtra("interval", kpop.interval)
             startActivity(intent)
-            finish()
+//            finish()
         }
         mRecyclerView.adapter = mAdapter
+
     }
 }

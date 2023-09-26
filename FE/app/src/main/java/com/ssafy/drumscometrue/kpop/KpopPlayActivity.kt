@@ -1,11 +1,12 @@
 package com.ssafy.drumscometrue.kpop
 
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.ssafy.drumscometrue.R
+import com.ssafy.drumscometrue.freePlay.fragment.CameraFragment
 import java.util.Timer
 import kotlin.concurrent.timer
 
@@ -40,6 +41,8 @@ class KpopPlayActivity : AppCompatActivity() {
         //곡제목 변수에 activity에서 받은 값 넣기
         songName = song
 
+
+        val cameraFragment = CameraFragment()
         //kPopBoardFragment 생성
         val kPopBoardFragment = KPopBoardFragment()
         //KpopBoardFragment로 song, score 전달하기
@@ -52,11 +55,19 @@ class KpopPlayActivity : AppCompatActivity() {
         //kPopCountFragment 생성
         val kPopCountFragment = KPopCountFragment()
         //Fragment 트랜잭션
+//        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.camera, cameraFragment)
+//        transaction.replace(R.id.board, kPopBoardFragment)
+//        transaction.replace(R.id.count, kPopCountFragment)
+//        transaction.commit()
+
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.board, kPopBoardFragment)
-        transaction.replace(R.id.count, kPopCountFragment)
-        //트랜잭션을 완료하고 화면에 변경된 fragment 표시
+        transaction.add(R.id.board, kPopBoardFragment)
+        transaction.add(R.id.find_id_ui_fragment, cameraFragment)
+        transaction.add(R.id.count, kPopCountFragment)
         transaction.commit()
+        //트랜잭션을 완료하고 화면에 변경된 fragment 표시
+
 
         //frameLayout 초기화
         frameLayout = findViewById(R.id.frameLayout)
@@ -112,5 +123,11 @@ class KpopPlayActivity : AppCompatActivity() {
         super.onStop()
         mediaPlayer?.release()
         mediaPlayer = null
+    }
+
+    override fun onBackPressed() {
+        // 이전 액티비티로 돌아가기 위한 코드 작성
+        mediaPlayer?.release()
+        super.onBackPressed()
     }
 }
