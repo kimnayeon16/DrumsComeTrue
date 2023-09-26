@@ -118,10 +118,24 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("HTTP Status Code", response.code().toString())
                     try {
                         if (response.isSuccessful) {
+                            // 응답 헤더에서 원하는 값을 가져옵니다.
+                            val accessT = response.headers()["Authorization"]
+                            val refreshT = response.headers()["Authorization-refresh"]
+                            val userPk = response.headers()["userPk"]
+
                             // 값을 기기에 저장
                             userInfo.edit {
                                 putString("userId", loginReq.loginId)
-                                putString("userPw", loginReq.loginPwd)
+                                // 저장하고자 하는 헤더 값을 확인한 후 저장합니다.
+                                if (accessT != null) {
+                                    putString("accessT", accessT)
+                                }
+                                if (refreshT != null) {
+                                    putString("refreshT", refreshT)
+                                }
+                                if (userPk != null) {
+                                    putString("userPk", userPk)
+                                }
                             }
 
                             // 메인 페이지로 이동
@@ -144,7 +158,6 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.d("Resp onFailure?", "실행됨")
-                    Toast.makeText(this@LoginActivity, "오류: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
     }
