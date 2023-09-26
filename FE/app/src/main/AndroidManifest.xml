@@ -2,7 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Declare features -->
+    <uses-feature android:name="android.hardware.camera" />
+
+    <!-- Declare permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +23,14 @@
         <activity
             android:name=".kpop.KpopListActivity"
             android:exported="false" />
-        <activity android:name=".user.LoginActivity"></activity>
+        <activity
+            android:name=".freePlay.FreePlayActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".user.login.LoginActivity"></activity>
+        <activity android:name=".user.JoinActivity"></activity>
+        <activity android:name=".user.findid.FindIdActivity"></activity>
+        <activity android:name=".user.findpw.FindPwdActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -28,6 +41,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".mainpage.UserPageActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".mainpage.LaunchPageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".mainpage.TutorialPageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".mainpage.PracticePageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".mainpage.FreePageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".mainpage.MainPageActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name=".kpop.KpopListActivity"
+            android:exported="false" />
+        <activity android:name=".user.LoginActivity" />
+
     </application>
 
 </manifest>

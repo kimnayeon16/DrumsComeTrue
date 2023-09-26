@@ -1,18 +1,14 @@
 package com.ssafy.drumscometrue.retrofit2
 
-import com.ssafy.drumscometrue.user.LoginReq
-import com.ssafy.drumscometrue.user.LoginRes
+import com.ssafy.drumscometrue.user.login.LoginReq
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface ApiService {
-    companion object {
-        const val endPoint = "/api/v1/user"
-    }
-
-    @POST("${endPoint}/login")
-    fun login(
-        @Body req: LoginReq
-    ): Call<LoginRes>
+    @Headers("Content-Type: application/json")
+    @POST("/api/v1/user/login")
+    fun login(@Body req: LoginReq): Call<ResponseBody>
 }

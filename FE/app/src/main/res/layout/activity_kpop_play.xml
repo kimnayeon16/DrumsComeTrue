@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".kpop.KpopPlayActivity">
+
+    <FrameLayout
+        android:id="@+id/board"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <FrameLayout
+        android:id="@+id/count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        />
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/hiHat"-->
+    <!--        android:layout_width="20dp"-->
+    <!--        android:layout_height="20dp"-->
+    <!--        android:background="#F44336"-->
+    <!--        android:layout_marginTop="15dp"-->
+    <!--        android:layout_marginStart="30dp" />-->
+    <!--
+        <TextView
+            android:id="@+id/countTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:gravity="center"
+            android:text="3"
+            android:textStyle="bold"
+            android:textSize="70sp"
+            android:background="@drawable/count_background"/> -->
+
+</FrameLayout>

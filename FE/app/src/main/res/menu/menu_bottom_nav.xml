@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/toDrum"
+        android:title="PLAY"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_nav_drum"/>
+    <item
+        android:id="@+id/toHome"
+        android:title="HOME"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_nav_main"/>
+
+    <item
+        android:id="@+id/toUser"
+        android:title="USER"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_person"/>
+
+</menu>

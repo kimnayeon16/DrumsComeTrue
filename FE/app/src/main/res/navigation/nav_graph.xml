@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ~ Copyright 2023 The TensorFlow Authors. All Rights Reserved.
+    ~
+    ~ Licensed under the Apache License, Version 2.0 (the "License");
+    ~ you may not use this file except in compliance with the License.
+    ~ You may obtain a copy of the License at
+    ~
+    ~       http://www.apache.org/licenses/LICENSE-2.0
+    ~
+    ~ Unless required by applicable law or agreed to in writing, software
+    ~ distributed under the License is distributed on an "AS IS" BASIS,
+    ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    ~ See the License for the specific language governing permissions and
+    ~ limitations under the License.
+-->
+<!--
+    Android 앱의 네비게이션 그래프를 정의
+    Jetpack Navigation라이브러리를 사용하여 화면 간 전환과 탐색을 관리하는 데 사용
+-->
+
+
+
+<!--
+    1. Navigation요소
+    - 네비게이션 그래프의 루트 요소
+    - xmln: android,app : XML네임스페이스 정의 -> 앱의 네임스페이스에 대한 링크 제공
+    - app:startDestination="@id/permissions_fragment : 앱 시작 시 표시할 화면의 ID
+
+-->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/permissions_fragment">
+
+    <!--
+        2. fragment요소
+        - 화면을 정의
+        - id : 각 화면의 고유한 ID지정
+        - name : 해당 화면의 Java클래스 이름
+        - label : 화면에 대한 라벨
+    -->
+    <fragment
+        android:id="@+id/permissions_fragment"
+        android:name="com.ssafy.drumscometrue.freePlay.fragment.PermissionsFragment"
+        android:label="PermissionsFragment">
+        <!--
+            3. action요소
+            - 화면간의 전환 동작을 정의
+            - 어떤 화면에서 다른 화면으로 전환시 무슨 동작을 수행할 지 정의
+            - id : 동작의 고유 ID
+            - destination : 동작이 전환할 대상 화면
+            - popUpTo : 이동 후 스택에서 제거할 대상 화면
+            - app:popUpToInclusive : popUpTo에서 지정한 대상 화면도 포함하여 제거할지 여부
+        -->
+        <action
+            android:id="@+id/action_permissions_to_camera"
+            app:destination="@id/camera_fragment"
+            app:popUpTo="@id/permissions_fragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/camera_fragment"
+        android:name="com.ssafy.drumscometrue.freePlay.fragment.CameraFragment"
+        android:label="CameraFragment">
+
+        <action
+            android:id="@+id/action_camera_to_permissions"
+            app:destination="@id/permissions_fragment"
+            app:popUpTo="@id/camera_fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>
