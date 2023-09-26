@@ -33,6 +33,10 @@ class KpopPlayActivity : AppCompatActivity() {
         //KpopListActivity에서 받은 값
         val song = intent.getStringExtra("song")
         val score = intent.getStringExtra("score")
+        val prelude = intent.getLongExtra("prelude", 0)
+        val interval = intent.getLongExtra("interval", 0)
+        System.out.println("ppppppprrrrrrrrrrrreeeeeeeeeeeeeelllllllllllluuuuuuuuuudddddddddddeeeeeeee $prelude")
+        System.out.println("iiiiiiiiinnnnnnnnnntttttttttteeeeeerrrrrrrrvvvvvvvvvvvvaaaaaaalllllll $interval")
         //곡제목 변수에 activity에서 받은 값 넣기
         songName = song
 
@@ -42,6 +46,8 @@ class KpopPlayActivity : AppCompatActivity() {
         val args = Bundle()
         args.putString("song", song)
         args.putString("score", score)
+        args.putLong("prelude", prelude)
+        args.putLong("interval", interval)
         kPopBoardFragment.arguments = args
         //kPopCountFragment 생성
         val kPopCountFragment = KPopCountFragment()
@@ -74,8 +80,8 @@ class KpopPlayActivity : AppCompatActivity() {
             "곰 세마리" -> R.raw.threebears
             "나비야" -> R.raw.butterfly
             "Rooftop(옥탑방)" -> R.raw.rooftop
-            "너의 의미" -> R.raw.threebears
-            "서울밤" -> R.raw.threebears
+            "거미가 줄을 타고 올라갑니다" -> R.raw.spider
+            "작은별" -> R.raw.star
             // 다른 곡들에 대한 리소스 ID도 추가해주세요.
             else -> R.raw.rooftop // 기본값으로 설정할 리소스 ID
         }

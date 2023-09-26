@@ -21,6 +21,8 @@ class KPopBoardFragment : Fragment() {
     private val handler = Handler()
     private var currentIndex = 0 // JSON 배열의 인덱스
     private val scoreList = mutableListOf<Pair<Double, JSONArray>>()
+    private var prelude : Long = 0
+    private var interval : Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +32,10 @@ class KPopBoardFragment : Fragment() {
 
         val score = arguments?.getString("score")
         val song = arguments?.getString("song")
+        prelude = arguments?.getLong("prelude") ?: 0L
+        interval = arguments?.getLong("interval") ?: 0L
+//        System.out.println("ppppppprrrrrrrrrrrreeeeeeeeeeeeeelllllllllllluuuuuuuuuudddddddddddeeeeeeee $prelude")
+//        System.out.println("iiiiiiiiinnnnnnnnnntttttttttteeeeeerrrrrrrrvvvvvvvvvvvvaaaaaaalllllll $interval")
         val songTextView = rootView?.findViewById<TextView>(R.id.songName)
 
         if(song != null){
@@ -57,7 +63,7 @@ class KPopBoardFragment : Fragment() {
             if (scoreList.isNotEmpty()) {
                 handler.postDelayed({
                     scheduleNextFragment()
-                }, 10000)
+                }, prelude)
             }
         }
         return rootView
@@ -77,11 +83,12 @@ class KPopBoardFragment : Fragment() {
                 updateDrumFragment(drumValuesArray)
                 currentIndex++
                 scheduleNextFragment()
-            }, 480)
+            }, interval)
         }
     }
 
     private fun updateDrumFragment(drumValuesArray: JSONArray) {
+        //곰세마리, 나비야, 거미
         if (drumValuesArray.toString() == "[3]") {
             val drumHiHatFragment = DrumHiHatFragment()
             val transaction = childFragmentManager.beginTransaction()
@@ -91,7 +98,7 @@ class KPopBoardFragment : Fragment() {
             )
             transaction.replace(R.id.drumContainer, drumHiHatFragment)
             transaction.commit()
-
+            //곰세마리, 나비야, 거미
         } else if (drumValuesArray.toString() == "[3.1]") {
             val drumHiHatFragment1 = DrumHiHatFragment1()
             val transaction = childFragmentManager.beginTransaction()
@@ -101,7 +108,7 @@ class KPopBoardFragment : Fragment() {
             )
             transaction.replace(R.id.drumContainer, drumHiHatFragment1)
             transaction.commit()
-
+            //곰세마리
         }else if (drumValuesArray.toString() == "[3.2]") {
             val drumHiHatFragment2 = DrumHiHatFragment2()
             val transaction = childFragmentManager.beginTransaction()
@@ -111,7 +118,7 @@ class KPopBoardFragment : Fragment() {
             )
             transaction.replace(R.id.drumContainer, drumHiHatFragment2)
             transaction.commit()
-
+            //곰세마리, 나비야, 거미
         }else if (drumValuesArray.toString() == "[3,8]") {
             val transaction = childFragmentManager.beginTransaction()
             transaction.setCustomAnimations(
@@ -121,8 +128,36 @@ class KPopBoardFragment : Fragment() {
             val drumHiHatFragment = DrumHiHatFragment()
             transaction.add(R.id.drumContainer, drumHiHatFragment)
 
-            val DrumSnareFragment = DrumSnareFragment()
-            transaction.add(R.id.drumContainer, DrumSnareFragment)
+            val drumSnareFragment = DrumSnareFragment()
+            transaction.add(R.id.drumContainer, drumSnareFragment)
+
+            transaction.commit()
+            //나비야, 거미
+        }else if (drumValuesArray.toString() == "[3,10]") {
+            val transaction = childFragmentManager.beginTransaction()
+            transaction.setCustomAnimations(
+                R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
+                0 // 왼쪽으로 나가는 애니메이션
+            )
+            val drumHiHatFragment = DrumHiHatFragment()
+            transaction.add(R.id.drumContainer, drumHiHatFragment)
+
+            val drumBassFragment = DrumBassFragment()
+            transaction.add(R.id.drumContainer, drumBassFragment)
+
+            transaction.commit()
+            //거미
+        }else if (drumValuesArray.toString() == "[1,10]") {
+            val transaction = childFragmentManager.beginTransaction()
+            transaction.setCustomAnimations(
+                R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
+                0 // 왼쪽으로 나가는 애니메이션
+            )
+            val drumCrashFragment = DrumCrashFragment()
+            transaction.add(R.id.drumContainer, drumCrashFragment)
+
+            val drumBassFragment = DrumBassFragment()
+            transaction.add(R.id.drumContainer, drumBassFragment)
 
             transaction.commit()
         }
