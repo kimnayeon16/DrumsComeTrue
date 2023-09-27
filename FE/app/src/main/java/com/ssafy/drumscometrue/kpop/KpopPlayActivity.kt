@@ -65,7 +65,11 @@ class KpopPlayActivity : AppCompatActivity() {
         transaction.add(R.id.board, kPopBoardFragment)
         transaction.add(R.id.find_id_ui_fragment, cameraFragment)
         transaction.add(R.id.count, kPopCountFragment)
-        transaction.commit()
+
+        if (!cameraFragment.isAdded && !kPopBoardFragment.isAdded && !kPopCountFragment.isAdded) {
+            transaction.commit()
+        }
+//        transaction.commit()
         //트랜잭션을 완료하고 화면에 변경된 fragment 표시
 
 
@@ -128,6 +132,25 @@ class KpopPlayActivity : AppCompatActivity() {
     override fun onBackPressed() {
         // 이전 액티비티로 돌아가기 위한 코드 작성
         mediaPlayer?.release()
+        val boardFragment = supportFragmentManager.findFragmentById(R.id.board)
+        val cameraFragment = supportFragmentManager.findFragmentById(R.id.find_id_ui_fragment)
+        val countFragment = supportFragmentManager.findFragmentById(R.id.count)
+
+        if (boardFragment != null && cameraFragment != null && countFragment != null) {
+            val transaction = supportFragmentManager.beginTransaction()
+            if (boardFragment.isAdded) {
+                transaction.remove(boardFragment)
+            }
+            if (cameraFragment.isAdded) {
+                transaction.remove(cameraFragment)
+            }
+            if (countFragment.isAdded) {
+                transaction.remove(countFragment)
+            }
+
+            transaction.commit()
+        }
+
         super.onBackPressed()
     }
 }
