@@ -1,14 +1,27 @@
 package com.ssafy.drumscometrue.kpop
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.freePlay.fragment.CameraFragment
 import java.util.Timer
 import kotlin.concurrent.timer
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import java.util.TimerTask
+import kotlin.concurrent.scheduleAtFixedRate
+
 
 class KpopPlayActivity : AppCompatActivity() {
     //해당 activity의 FrameLayout id
@@ -69,9 +82,6 @@ class KpopPlayActivity : AppCompatActivity() {
         if (!cameraFragment.isAdded && !kPopBoardFragment.isAdded && !kPopCountFragment.isAdded) {
             transaction.commit()
         }
-//        transaction.commit()
-        //트랜잭션을 완료하고 화면에 변경된 fragment 표시
-
 
         //frameLayout 초기화
         frameLayout = findViewById(R.id.frameLayout)
@@ -79,12 +89,49 @@ class KpopPlayActivity : AppCompatActivity() {
         //시작 카운트 및 음악 실행
         startCountdown()
 
-//        timerSong = timer(period = 10) {
-//            songTime += 10 // songTime을 1/1000초 단위로 증가
-//        }
+        val songLengthMillis = 40000L // 노래의 길이(밀리초)
+        val modalDelayMillis = 6000L // 모달창이 표시된 후 자동 이동까지의 딜레이(밀리초)
 
-//        val hiHatTextView = findViewById<TextView>(R.id.hiHat)
-//        Rhythm.applyTranslationAnimation(hiHatTextView)
+        Handler().postDelayed({
+            // 모달창 띄우기
+            var finishSign: LinearLayout = findViewById(R.id.finishSign)
+            var finishSong: TextView = findViewById(R.id.finishSong)
+            var progressBar : ProgressBar = findViewById(R.id.progressBar)
+            finishSign.visibility = View.VISIBLE
+            finishSong.text = "$song"
+            //로딩 페이지 - progressBar 타이머 업데이트
+            val progressBarUpdateTimer = Timer()
+            val progressBarUpdateInterval = 1000L
+
+            val animator = ValueAnimator.ofInt(0, 100)
+            animator.duration = 5000 // 5초 동안 애니메이션 실행
+            animator.addUpdateListener { animation ->
+                val progress = animation.animatedValue as Int
+                progressBar.progress = progress
+            }
+
+            animator.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    // 애니메이션 종료 후 다른 액티비티로 이동하는 코드 추가
+                    val intent = Intent(this@KpopPlayActivity, KpopListActivity::class.java)
+                    startActivity(intent)
+                    finish() // 현재 액티비티 종료 (선택사항)
+                }
+            })
+
+            animator.start()
+        }, songLengthMillis)
+
+
+//            // 모달창이 표시된 후 4초 뒤에 KpopListActivity로 이동하는 코드
+//            Handler().postDelayed({
+//                progr += 20
+//                progressBar.progress = progr
+//                val intent = Intent(this, KpopListActivity::class.java)
+//                startActivity(intent)
+//                finish() // 현재 액티비티 종료 (선택사항)
+//            }, modalDelayMillis)
+//        }, songLengthMillis)
 
     }
 
