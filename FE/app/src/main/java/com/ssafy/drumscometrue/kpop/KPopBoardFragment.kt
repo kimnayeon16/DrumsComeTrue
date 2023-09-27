@@ -123,37 +123,34 @@ class KPopBoardFragment : Fragment() {
                 val drumHiHatFragment = DrumHiHatFragment()
                 val drumSnareFragment = DrumSnareFragment()
 
-                transaction.add(R.id.drumContainer, drumHiHatFragment)
-                transaction.add(R.id.drumContainer, drumSnareFragment)
-
                 transaction.setCustomAnimations(
                     R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
                     0 // 왼쪽으로 나가는 애니메이션
                 )
+                transaction.add(R.id.drumContainer, drumHiHatFragment)
+                transaction.add(R.id.drumContainer, drumSnareFragment)
                 //나비야, 거미
             }else if (drumValuesArray.toString() == "[3,10]") {
                 val drumHiHatFragment = DrumHiHatFragment()
                 val drumBassFragment = DrumBassFragment()
 
-                transaction.add(R.id.drumContainer, drumHiHatFragment)
-                transaction.add(R.id.drumContainer, drumBassFragment)
-
                 transaction.setCustomAnimations(
                     R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
                     0 // 왼쪽으로 나가는 애니메이션
                 )
+                transaction.add(R.id.drumContainer, drumHiHatFragment)
+                transaction.add(R.id.drumContainer, drumBassFragment)
                 //거미
             }else if (drumValuesArray.toString() == "[1,10]") {
                 val drumCrashFragment = DrumCrashFragment()
                 val drumBassFragment = DrumBassFragment()
 
-                transaction.add(R.id.drumContainer, drumCrashFragment)
-                transaction.add(R.id.drumContainer, drumBassFragment)
-
                 transaction.setCustomAnimations(
                     R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
                     0 // 왼쪽으로 나가는 애니메이션
                 )
+                transaction.add(R.id.drumContainer, drumCrashFragment)
+                transaction.add(R.id.drumContainer, drumBassFragment)
             }
             transaction.commit()
         }
