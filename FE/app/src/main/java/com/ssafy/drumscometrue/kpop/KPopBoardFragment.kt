@@ -29,14 +29,13 @@ class KPopBoardFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val rootView = inflater.inflate(R.layout.fragment_kpop_board, container, false)
 
         val score = arguments?.getString("score")
         val song = arguments?.getString("song")
         prelude = arguments?.getLong("prelude") ?: 0L
         interval = arguments?.getLong("interval") ?: 0L
-//        System.out.println("ppppppprrrrrrrrrrrreeeeeeeeeeeeeelllllllllllluuuuuuuuuudddddddddddeeeeeeee $prelude")
-//        System.out.println("iiiiiiiiinnnnnnnnnntttttttttteeeeeerrrrrrrrvvvvvvvvvvvvaaaaaaalllllll $interval")
         val songTextView = rootView?.findViewById<TextView>(R.id.songName)
 
         if(song != null){
@@ -67,8 +66,8 @@ class KPopBoardFragment : Fragment() {
                 }, prelude)
             }
         }
-
         return rootView
+
     }
 
 

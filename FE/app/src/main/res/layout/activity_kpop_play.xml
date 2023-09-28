@@ -19,6 +19,16 @@
         app:navGraph="@navigation/nav_graph"
         tools:context=".freePlay.FreePlayActivity" />
 
+    <ProgressBar
+        android:id="@+id/progressSong"
+        style="@style/KpopProgressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_weight="4"
+        android:max="100"
+        tools:progress="60"
+        />
+
     <FrameLayout
         android:id="@+id/board"
         android:layout_width="match_parent"

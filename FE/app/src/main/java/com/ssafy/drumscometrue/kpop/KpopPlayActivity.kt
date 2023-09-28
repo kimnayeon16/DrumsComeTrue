@@ -19,6 +19,8 @@ import kotlin.concurrent.timer
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import com.ssafy.drumscometrue.databinding.ActivityKpopPlayBinding
+import com.ssafy.drumscometrue.databinding.ActivityMainBinding
 import java.util.TimerTask
 import kotlin.concurrent.scheduleAtFixedRate
 
@@ -38,19 +40,26 @@ class KpopPlayActivity : AppCompatActivity() {
 
     //곡제목
     private var songName: String ? = null
+    private lateinit var binding: ActivityKpopPlayBinding
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_kpop_play)
+//        setContentView(R.layout.activity_kpop_play)
+
+        binding = ActivityKpopPlayBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            startDownload()
+        }, 5000)
 
         //KpopListActivity에서 받은 값
         val song = intent.getStringExtra("song")
         val score = intent.getStringExtra("score")
         val prelude = intent.getLongExtra("prelude", 0)
         val interval = intent.getLongExtra("interval", 0)
-        System.out.println("ppppppprrrrrrrrrrrreeeeeeeeeeeeeelllllllllllluuuuuuuuuudddddddddddeeeeeeee $prelude")
-        System.out.println("iiiiiiiiinnnnnnnnnntttttttttteeeeeerrrrrrrrvvvvvvvvvvvvaaaaaaalllllll $interval")
         //곡제목 변수에 activity에서 받은 값 넣기
         songName = song
 
@@ -67,12 +76,6 @@ class KpopPlayActivity : AppCompatActivity() {
         kPopBoardFragment.arguments = args
         //kPopCountFragment 생성
         val kPopCountFragment = KPopCountFragment()
-        //Fragment 트랜잭션
-//        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.camera, cameraFragment)
-//        transaction.replace(R.id.board, kPopBoardFragment)
-//        transaction.replace(R.id.count, kPopCountFragment)
-//        transaction.commit()
 
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.board, kPopBoardFragment)
@@ -118,21 +121,53 @@ class KpopPlayActivity : AppCompatActivity() {
                     finish() // 현재 액티비티 종료 (선택사항)
                 }
             })
-
             animator.start()
         }, songLengthMillis)
+    }
 
+    private fun startDownload() {
+        val durationInSeconds = 40 // 다운로드를 원하는 시간 (초)
+        val totalProgressSteps = 100 // 전체 프로그레스 단계
+        val updateInterval = (durationInSeconds * 1000) / totalProgressSteps // 업데이트 간격 (밀리초)
+        val increment = 1
+        val handler = Handler(Looper.getMainLooper())
 
-//            // 모달창이 표시된 후 4초 뒤에 KpopListActivity로 이동하는 코드
-//            Handler().postDelayed({
-//                progr += 20
-//                progressBar.progress = progr
-//                val intent = Intent(this, KpopListActivity::class.java)
-//                startActivity(intent)
-//                finish() // 현재 액티비티 종료 (선택사항)
-//            }, modalDelayMillis)
-//        }, songLengthMillis)
+        var progress = 0
 
+        val progressAnimator = ValueAnimator.ofInt(0, 100)
+        progressAnimator.duration = durationInSeconds * 1000L // 총 애니메이션 시간 (밀리초)
+
+        progressAnimator.addUpdateListener { animation ->
+            val progress = animation.animatedValue as Int
+            binding.progressSong.progress = progress
+        }
+
+        progressAnimator.start()
+
+//        fun updateProgress() {
+//            progress += increment
+//            binding.progressSong.progress = (progress * 100 / totalProgressSteps)
+//
+//            if (progress < 100) {
+//                handler.postDelayed({ updateProgress() }, updateInterval.toLong())
+//            }
+//        }
+//
+//        updateProgress()
+
+//        Thread(Runnable {
+//            while (progress < 100) {
+//                progress += 1
+//
+//                // UI 업데이트
+//                runOnUiThread {
+////                    binding.progressSong.progress = progress
+//                    binding.progressSong.progress = (progress * 100 / totalProgressSteps)
+//                }
+////                Thread.sleep(50)
+//                Thread.sleep(updateInterval.toLong())
+//            }
+//        }).start()
     }
 
     //곡 연주 시작 전 카운트다운
