@@ -55,5 +55,11 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray" />
 
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/persistent_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
