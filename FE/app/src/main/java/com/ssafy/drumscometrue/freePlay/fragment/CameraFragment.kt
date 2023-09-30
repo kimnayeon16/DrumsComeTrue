@@ -227,7 +227,7 @@ class CameraFragment : Fragment() {
                     val leftElbow = pose.getPoseLandmark(13)
                     val leftWrist = pose.getPoseLandmark(15)
                     val leftIndex = pose.getPoseLandmark(19)
-
+                    println(rightHand.position.x / image.height * image.height)
 //                    val leftDistance = calculateDistance(leftElbow.position.x, leftElbow.position.y, leftWrist.position.x, leftWrist.position.y) / 2
 //                    val rightDistance = calculateDistance(rightElbow.position.x, rightElbow.position.y, rightWrist.position.x, rightWrist.position.y) / 2
 
@@ -275,7 +275,7 @@ class CameraFragment : Fragment() {
                         backLeftHihat(leftFoot, height, width)
                         backRightBass(rightFoot, height, width)
 
-                        println(rightHand.position.x / image.height)
+//                        println(rightHand.position.x / image.height)
 
                     }
                 }
@@ -395,7 +395,6 @@ class CameraFragment : Fragment() {
      * */
     @SuppressLint("UnsafeOptInUsageError")
     private fun bindCameraUseCases() {
-
         // CameraProvider
         val cameraProvider = cameraProvider
             ?: throw IllegalStateException("Camera initialization failed.")

@@ -51,14 +51,14 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
         results = pose
         this.imageHeight = imageHeight
         this.imageWidth = imageWidth
-        scaleFactor = max(width * 1f / imageHeight, height * 1f / imageWidth)
+//        scaleFactor = max(width * 1f / imageHeight, height * 1f / imageWidth)
 
-        println(width)
-        println(height)
-        println(imageWidth)
-        println(imageHeight)
-        println(scaleFactor)
-        println("======================")
+//        println(width)
+//        println(height)
+//        println(imageWidth)
+//        println(imageHeight)
+//        println(scaleFactor)
+//        println("======================")
         invalidate() // 뷰를 다시 그리도록 요청
     }
 
@@ -80,12 +80,17 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
             // 뷰를 가로 방향으로 뒤집기
             canvas.scale(-1f, 1f, width / 2f, height / 2f)
 
+//            println("draw:--------"+ pose.getPoseLandmark(20).position.x / imageHeight * width)
+//            println(pose.getPoseLandmark(20).position.x * scaleFactor)
+
+
             for (landmark in pose.allPoseLandmarks) {
                 canvas.drawPoint(
-                    landmark.position.x * scaleFactor , // 좌표를 scaleFactor로 조정
-                    landmark.position.y * scaleFactor, // 좌표를 scaleFactor로 조정
+                    landmark.position.x /imageHeight * width , // 좌표를 scaleFactor로 조정
+                    landmark.position.y /imageWidth * height, // 좌표를 scaleFactor로 조정
                     pointPaint
                 )
+
                 val nose = pose.getPoseLandmark(PoseLandmark.NOSE)
                 val lefyEyeInner = pose.getPoseLandmark(PoseLandmark.LEFT_EYE_INNER)
                 val lefyEye = pose.getPoseLandmark(PoseLandmark.LEFT_EYE)
@@ -178,10 +183,10 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
         val avgZInImagePixel = (start.z + end.z) / 2
 
         canvas.drawLine(
-            start.x * scaleFactor,
-            start.y * scaleFactor,
-            end.x * scaleFactor,
-            end.y * scaleFactor,
+            start.x /imageHeight * width,
+            start.y /imageWidth * height,
+            end.x /imageHeight * width,
+            end.y /imageWidth * height,
             paint
         )
 
