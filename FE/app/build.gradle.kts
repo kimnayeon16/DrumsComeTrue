@@ -97,5 +97,8 @@ android {
         implementation("com.airbnb.android:lottie:5.0.2")
         implementation("com.kakao.sdk:v2-user:2.3.0") // 카카오 로그인
 
+        implementation("com.google.android.material:material:1.9.0")
+
+
     }
 }
