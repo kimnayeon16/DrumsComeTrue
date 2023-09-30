@@ -63,6 +63,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import kotlin.math.max
+import kotlin.math.sqrt
 
 
 /**
@@ -220,12 +221,18 @@ class CameraFragment : Fragment() {
                     val leftFoot = pose.getPoseLandmark(31)
                     val rightFoot = pose.getPoseLandmark(32)
 
-//                    val leftElbow = pose.getPoseLandmark(14)
-//                    val leftWrist = pose.getPoseLandmark(16)
-//                    val leftIndex = pose.getPoseLandmark(20)
-//                    val rightElbow = pose.getPoseLandmark(13)
-//                    val rightWrist = pose.getPoseLandmark(15)
-//                    val rightIndex = pose.getPoseLandmark(19)
+                    val rightElbow = pose.getPoseLandmark(14)
+                    val rightWrist = pose.getPoseLandmark(16)
+                    val rightIndex = pose.getPoseLandmark(20)
+                    val leftElbow = pose.getPoseLandmark(13)
+                    val leftWrist = pose.getPoseLandmark(15)
+                    val leftIndex = pose.getPoseLandmark(19)
+
+//                    val leftDistance = calculateDistance(leftElbow.position.x, leftElbow.position.y, leftWrist.position.x, leftWrist.position.y) / 2
+//                    val rightDistance = calculateDistance(rightElbow.position.x, rightElbow.position.y, rightWrist.position.x, rightWrist.position.y) / 2
+
+
+
                     // 각도를 위한 Point
 //                    val leftElbowPoint = Point(leftElbow.position.x.toDouble(), leftElbow.position.y.toDouble())
 //                    val leftWristPoint = Point(leftWrist.position.x.toDouble(), leftWrist.position.y.toDouble())
@@ -241,6 +248,7 @@ class CameraFragment : Fragment() {
 
                     val width = image.width
                     val height = image.height
+
 
                     if(!start){
                         val handler = Handler()
@@ -266,10 +274,9 @@ class CameraFragment : Fragment() {
                         hitRightBass(rightFoot, height, width)
                         backLeftHihat(leftFoot, height, width)
                         backRightBass(rightFoot, height, width)
-//                        hitLeftHihat2(leftKnee,setLeftKnee, height, width)
-//                        hitRightBass2(rightKnee,setRightKnee, height, width)
-//                        backLeftHihat2(leftKnee,setLeftKnee, height, width)
-//                        backRightBass2(rightKnee,setRightKnee,  height, width)
+
+                        println(rightHand.position.x / image.height)
+
                     }
                 }
                 // overlayView를 화면에 다시 그리도록 invalidate메서드 호출
@@ -560,7 +567,7 @@ class CameraFragment : Fragment() {
         val position_x = landmarkList.position.x / width
         val position_y = landmarkList.position.y / height
 
-        if(position_y > 0.35) {
+        if(position_y > 0.4) {
             if(hitEstimation["crash"] == false && position_x > 0.55 && position_x < 0.75){
                 Log.d("Crash","Crash Hit")
                 // 사운드 재생
@@ -629,7 +636,7 @@ class CameraFragment : Fragment() {
             }
             hitEstimation["hiHat"] = true
         }
-        if(position_y > 0.59){
+        if(position_y > 0.58){
             if(hitEstimation["snare"] == false && position_x > 0.55 && position_x < 0.8){
                 Log.d("snare Hit","snare Hit")
                 // 사운드 재생
@@ -729,7 +736,7 @@ class CameraFragment : Fragment() {
         val position_x = landmarkList.position.x / width
         val position_y = landmarkList.position.y / height
 
-        if(position_y < 0.34) {
+        if(position_y < 0.39) {
             hitEstimation["crash"] = false
             hitEstimation["ride"] = false
             hitEstimation["hiHat"] = false
@@ -750,7 +757,7 @@ class CameraFragment : Fragment() {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(position_y < 0.57){
+        if(position_y < 0.56){
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
@@ -791,25 +798,24 @@ class CameraFragment : Fragment() {
     /**
      * 각도 계산
      */
-    data class Point(val x: Double, val y: Double)
-    fun angle(pointA: Point, pointB: Point, pointC: Point): Double {
-        val vectorAB = Point(pointB.x - pointA.x, pointB.y - pointA.y)
-        val vectorCB = Point(pointB.x - pointC.x, pointB.y - pointC.y)
-
-        val dotProduct = (vectorAB.x * vectorCB.x) + (vectorAB.y * vectorCB.y)
-        val magnitudeAB = Math.sqrt((vectorAB.x * vectorAB.x) + (vectorAB.y * vectorAB.y))
-        val magnitudeCB = Math.sqrt((vectorCB.x * vectorCB.x) + (vectorCB.y * vectorCB.y))
-
-        val cosTheta = dotProduct / (magnitudeAB * magnitudeCB)
-
-        // 아크코사인을 사용하여 라디안 단위의 각도를 계산합니다.
-        val angleRad = Math.acos(cosTheta)
-
-        // 라디안 각도를 도로 변환합니다.
-        val angleDeg = Math.toDegrees(angleRad)
-
-        return angleDeg
-    }
+//    fun angle(pointA: Point, pointB: Point, pointC: Point): Double {
+//        val vectorAB = Point(pointB.x - pointA.x, pointB.y - pointA.y)
+//        val vectorCB = Point(pointB.x - pointC.x, pointB.y - pointC.y)
+//
+//        val dotProduct = (vectorAB.x * vectorCB.x) + (vectorAB.y * vectorCB.y)
+//        val magnitudeAB = Math.sqrt((vectorAB.x * vectorAB.x) + (vectorAB.y * vectorAB.y))
+//        val magnitudeCB = Math.sqrt((vectorCB.x * vectorCB.x) + (vectorCB.y * vectorCB.y))
+//
+//        val cosTheta = dotProduct / (magnitudeAB * magnitudeCB)
+//
+//        // 아크코사인을 사용하여 라디안 단위의 각도를 계산합니다.
+//        val angleRad = Math.acos(cosTheta)
+//
+//        // 라디안 각도를 도로 변환합니다.
+//        val angleDeg = Math.toDegrees(angleRad)
+//
+//        return angleDeg
+//    }
 
 
 
@@ -840,6 +846,23 @@ class CameraFragment : Fragment() {
 
         imageView.startAnimation(set)
     }
+
+
+
+
+
+
+    /**
+     * Math관련 함수들
+     * */
+    data class Point(val x: Float, val y: Float)
+
+    fun calculateDistance(pointA: Point, pointB: Point): Float {
+        val dx = pointB.x - pointA.x
+        val dy = pointB.y - pointA.y
+        return sqrt(dx * dx + dy * dy)
+    }
+
 
 
 }
