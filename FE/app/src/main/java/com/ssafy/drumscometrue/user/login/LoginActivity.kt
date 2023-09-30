@@ -1,5 +1,6 @@
 package com.ssafy.drumscometrue.user.login
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -17,6 +18,12 @@ import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
+import com.kakao.sdk.auth.LoginClient
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.model.AuthErrorCause
+import com.kakao.sdk.common.util.Utility
+import com.kakao.sdk.user.UserApiClient
 import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.freePlay.FreePlayActivity
 import com.ssafy.drumscometrue.mainpage.MainPageActivity
@@ -61,6 +68,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val keyHash = Utility.getKeyHash(this)
+        Log.d("Hash", keyHash)
+        KakaoSdk.init(this, "9d9f74e5dee02dda5e82ada45e4dda8f")
         initUI() // UI 설정
         setupListeners() // Listners 설정
     }
@@ -97,6 +107,7 @@ class LoginActivity : AppCompatActivity() {
         // 버튼 리스너 설정
         loginBtn.setOnClickListener { handleLoginButtonClick() }
         joinBtn.setOnClickListener { handleJoinButtonClick() }
+        kakaoLoginImg.setOnClickListener { handleKakaoLoginButtonClick() }
 
         val drumTestBtn = findViewById<Button>(R.id.drum_test)
         drumTestBtn.setOnClickListener { handleDrumTestButtonClick() }
@@ -172,4 +183,26 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, FreePlayActivity::class.java)
         startActivity(intent)
     }
+
+    private fun handleKakaoLoginButtonClick() {
+        if(LoginClient.instance.isKakaoTalkLoginAvailable(this)){
+            Log.d("available", "call")
+            LoginClient.instance.loginWithKakaoTalk(this, callback = callback)
+        }else{
+            Log.d("available", "fail")
+            LoginClient.instance.loginWithKakaoAccount(this, callback = callback)
+        }
+    }
+    val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        if (error != null) {
+            Log.e(TAG, "카카오계정으로 로그인 실패", error)
+        } else if (token != null) {
+            Log.i(TAG, "카카오계정으로 로그인 성공 ${token.scopes}")
+            Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+            // 메인 페이지로 이동
+            val intent = Intent(this@LoginActivity, MainPageActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
 }

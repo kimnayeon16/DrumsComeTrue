@@ -1,14 +1,29 @@
 package com.ssafy.drumscometrue.kpop
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.freePlay.fragment.CameraFragment
 import java.util.Timer
 import kotlin.concurrent.timer
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import com.ssafy.drumscometrue.databinding.ActivityKpopPlayBinding
+import com.ssafy.drumscometrue.databinding.ActivityMainBinding
+import java.util.TimerTask
+import kotlin.concurrent.scheduleAtFixedRate
+
 
 class KpopPlayActivity : AppCompatActivity() {
     //해당 activity의 FrameLayout id
@@ -25,19 +40,26 @@ class KpopPlayActivity : AppCompatActivity() {
 
     //곡제목
     private var songName: String ? = null
+    private lateinit var binding: ActivityKpopPlayBinding
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_kpop_play)
+//        setContentView(R.layout.activity_kpop_play)
+
+        binding = ActivityKpopPlayBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            startDownload()
+        }, 5000)
 
         //KpopListActivity에서 받은 값
         val song = intent.getStringExtra("song")
         val score = intent.getStringExtra("score")
         val prelude = intent.getLongExtra("prelude", 0)
         val interval = intent.getLongExtra("interval", 0)
-        System.out.println("ppppppprrrrrrrrrrrreeeeeeeeeeeeeelllllllllllluuuuuuuuuudddddddddddeeeeeeee $prelude")
-        System.out.println("iiiiiiiiinnnnnnnnnntttttttttteeeeeerrrrrrrrvvvvvvvvvvvvaaaaaaalllllll $interval")
         //곡제목 변수에 activity에서 받은 값 넣기
         songName = song
 
@@ -54,20 +76,15 @@ class KpopPlayActivity : AppCompatActivity() {
         kPopBoardFragment.arguments = args
         //kPopCountFragment 생성
         val kPopCountFragment = KPopCountFragment()
-        //Fragment 트랜잭션
-//        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.camera, cameraFragment)
-//        transaction.replace(R.id.board, kPopBoardFragment)
-//        transaction.replace(R.id.count, kPopCountFragment)
-//        transaction.commit()
 
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.board, kPopBoardFragment)
         transaction.add(R.id.find_id_ui_fragment, cameraFragment)
         transaction.add(R.id.count, kPopCountFragment)
-        transaction.commit()
-        //트랜잭션을 완료하고 화면에 변경된 fragment 표시
 
+        if (!cameraFragment.isAdded && !kPopBoardFragment.isAdded && !kPopCountFragment.isAdded) {
+            transaction.commit()
+        }
 
         //frameLayout 초기화
         frameLayout = findViewById(R.id.frameLayout)
@@ -75,13 +92,82 @@ class KpopPlayActivity : AppCompatActivity() {
         //시작 카운트 및 음악 실행
         startCountdown()
 
-//        timerSong = timer(period = 10) {
-//            songTime += 10 // songTime을 1/1000초 단위로 증가
+        val songLengthMillis = 40000L // 노래의 길이(밀리초)
+        val modalDelayMillis = 6000L // 모달창이 표시된 후 자동 이동까지의 딜레이(밀리초)
+
+        Handler().postDelayed({
+            // 모달창 띄우기
+            var finishSign: LinearLayout = findViewById(R.id.finishSign)
+            var finishSong: TextView = findViewById(R.id.finishSong)
+            var progressBar : ProgressBar = findViewById(R.id.progressBar)
+            finishSign.visibility = View.VISIBLE
+            finishSong.text = "$song"
+            //로딩 페이지 - progressBar 타이머 업데이트
+            val progressBarUpdateTimer = Timer()
+            val progressBarUpdateInterval = 1000L
+
+            val animator = ValueAnimator.ofInt(0, 100)
+            animator.duration = 5000 // 5초 동안 애니메이션 실행
+            animator.addUpdateListener { animation ->
+                val progress = animation.animatedValue as Int
+                progressBar.progress = progress
+            }
+
+            animator.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    // 애니메이션 종료 후 다른 액티비티로 이동하는 코드 추가
+                    val intent = Intent(this@KpopPlayActivity, KpopListActivity::class.java)
+                    startActivity(intent)
+                    finish() // 현재 액티비티 종료 (선택사항)
+                }
+            })
+            animator.start()
+        }, songLengthMillis)
+    }
+
+    private fun startDownload() {
+        val durationInSeconds = 40 // 다운로드를 원하는 시간 (초)
+        val totalProgressSteps = 100 // 전체 프로그레스 단계
+        val updateInterval = (durationInSeconds * 1000) / totalProgressSteps // 업데이트 간격 (밀리초)
+        val increment = 1
+        val handler = Handler(Looper.getMainLooper())
+
+        var progress = 0
+
+        val progressAnimator = ValueAnimator.ofInt(0, 100)
+        progressAnimator.duration = durationInSeconds * 1000L // 총 애니메이션 시간 (밀리초)
+
+        progressAnimator.addUpdateListener { animation ->
+            val progress = animation.animatedValue as Int
+            binding.progressSong.progress = progress
+        }
+
+        progressAnimator.start()
+
+//        fun updateProgress() {
+//            progress += increment
+//            binding.progressSong.progress = (progress * 100 / totalProgressSteps)
+//
+//            if (progress < 100) {
+//                handler.postDelayed({ updateProgress() }, updateInterval.toLong())
+//            }
 //        }
+//
+//        updateProgress()
 
-//        val hiHatTextView = findViewById<TextView>(R.id.hiHat)
-//        Rhythm.applyTranslationAnimation(hiHatTextView)
-
+//        Thread(Runnable {
+//            while (progress < 100) {
+//                progress += 1
+//
+//                // UI 업데이트
+//                runOnUiThread {
+////                    binding.progressSong.progress = progress
+//                    binding.progressSong.progress = (progress * 100 / totalProgressSteps)
+//                }
+////                Thread.sleep(50)
+//                Thread.sleep(updateInterval.toLong())
+//            }
+//        }).start()
     }
 
     //곡 연주 시작 전 카운트다운
@@ -128,6 +214,25 @@ class KpopPlayActivity : AppCompatActivity() {
     override fun onBackPressed() {
         // 이전 액티비티로 돌아가기 위한 코드 작성
         mediaPlayer?.release()
+        val boardFragment = supportFragmentManager.findFragmentById(R.id.board)
+        val cameraFragment = supportFragmentManager.findFragmentById(R.id.find_id_ui_fragment)
+        val countFragment = supportFragmentManager.findFragmentById(R.id.count)
+
+        if (boardFragment != null && cameraFragment != null && countFragment != null) {
+            val transaction = supportFragmentManager.beginTransaction()
+            if (boardFragment.isAdded) {
+                transaction.remove(boardFragment)
+            }
+            if (cameraFragment.isAdded) {
+                transaction.remove(cameraFragment)
+            }
+            if (countFragment.isAdded) {
+                transaction.remove(countFragment)
+            }
+
+            transaction.commit()
+        }
+
         super.onBackPressed()
     }
 }

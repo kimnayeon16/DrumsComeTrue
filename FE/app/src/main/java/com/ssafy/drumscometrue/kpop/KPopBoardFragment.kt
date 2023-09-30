@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.drumscometrue.R
@@ -28,14 +29,13 @@ class KPopBoardFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val rootView = inflater.inflate(R.layout.fragment_kpop_board, container, false)
 
         val score = arguments?.getString("score")
         val song = arguments?.getString("song")
         prelude = arguments?.getLong("prelude") ?: 0L
         interval = arguments?.getLong("interval") ?: 0L
-//        System.out.println("ppppppprrrrrrrrrrrreeeeeeeeeeeeeelllllllllllluuuuuuuuuudddddddddddeeeeeeee $prelude")
-//        System.out.println("iiiiiiiiinnnnnnnnnntttttttttteeeeeerrrrrrrrvvvvvvvvvvvvaaaaaaalllllll $interval")
         val songTextView = rootView?.findViewById<TextView>(R.id.songName)
 
         if(song != null){
@@ -67,7 +67,9 @@ class KPopBoardFragment : Fragment() {
             }
         }
         return rootView
+
     }
+
 
     private fun scheduleNextFragment() {
         if (currentIndex < scoreList.size) {
@@ -88,77 +90,67 @@ class KPopBoardFragment : Fragment() {
     }
 
     private fun updateDrumFragment(drumValuesArray: JSONArray) {
-        //곰세마리, 나비야, 거미
-        if (drumValuesArray.toString() == "[3]") {
-            val drumHiHatFragment = DrumHiHatFragment()
-            val transaction = childFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(
-                R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
-                0// 왼쪽으로 나가는 애니메이션
-            )
-            transaction.replace(R.id.drumContainer, drumHiHatFragment)
-            transaction.commit()
+        if(isAdded){
+            var transaction = childFragmentManager.beginTransaction()
+
             //곰세마리, 나비야, 거미
-        } else if (drumValuesArray.toString() == "[3.1]") {
-            val drumHiHatFragment1 = DrumHiHatFragment1()
-            val transaction = childFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(
-                R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
-                0// 왼쪽으로 나가는 애니메이션
-            )
-            transaction.replace(R.id.drumContainer, drumHiHatFragment1)
-            transaction.commit()
-            //곰세마리
-        }else if (drumValuesArray.toString() == "[3.2]") {
-            val drumHiHatFragment2 = DrumHiHatFragment2()
-            val transaction = childFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(
-                R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
-                0// 왼쪽으로 나가는 애니메이션
-            )
-            transaction.replace(R.id.drumContainer, drumHiHatFragment2)
-            transaction.commit()
-            //곰세마리, 나비야, 거미
-        }else if (drumValuesArray.toString() == "[3,8]") {
-            val transaction = childFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(
-                R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
-                0 // 왼쪽으로 나가는 애니메이션
-            )
-            val drumHiHatFragment = DrumHiHatFragment()
-            transaction.add(R.id.drumContainer, drumHiHatFragment)
+            if (drumValuesArray.toString() == "[3]") {
+                val drumHiHatFragment = DrumHiHatFragment()
+                transaction.setCustomAnimations(
+                    R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
+                    0// 왼쪽으로 나가는 애니메이션
+                )
+                transaction.replace(R.id.drumContainer, drumHiHatFragment)
+                //곰세마리, 나비야, 거미
+            } else if (drumValuesArray.toString() == "[3.1]") {
+                val drumHiHatFragment1 = DrumHiHatFragment1()
+                transaction.setCustomAnimations(
+                    R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
+                    0// 왼쪽으로 나가는 애니메이션
+                )
+                transaction.replace(R.id.drumContainer, drumHiHatFragment1)
+                //곰세마리
+            }else if (drumValuesArray.toString() == "[3.2]") {
+                val drumHiHatFragment2 = DrumHiHatFragment2()
+                transaction.setCustomAnimations(
+                    R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
+                    0// 왼쪽으로 나가는 애니메이션
+                )
+                transaction.replace(R.id.drumContainer, drumHiHatFragment2)
+                //곰세마리, 나비야, 거미
+            }else if (drumValuesArray.toString() == "[3,8]") {
+                val drumHiHatFragment = DrumHiHatFragment()
+                val drumSnareFragment = DrumSnareFragment()
 
-            val drumSnareFragment = DrumSnareFragment()
-            transaction.add(R.id.drumContainer, drumSnareFragment)
+                transaction.setCustomAnimations(
+                    R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
+                    0 // 왼쪽으로 나가는 애니메이션
+                )
+                transaction.add(R.id.drumContainer, drumHiHatFragment)
+                transaction.add(R.id.drumContainer, drumSnareFragment)
+                //나비야, 거미
+            }else if (drumValuesArray.toString() == "[3,10]") {
+                val drumHiHatFragment = DrumHiHatFragment()
+                val drumBassFragment = DrumBassFragment()
 
-            transaction.commit()
-            //나비야, 거미
-        }else if (drumValuesArray.toString() == "[3,10]") {
-            val transaction = childFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(
-                R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
-                0 // 왼쪽으로 나가는 애니메이션
-            )
-            val drumHiHatFragment = DrumHiHatFragment()
-            transaction.add(R.id.drumContainer, drumHiHatFragment)
+                transaction.setCustomAnimations(
+                    R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
+                    0 // 왼쪽으로 나가는 애니메이션
+                )
+                transaction.add(R.id.drumContainer, drumHiHatFragment)
+                transaction.add(R.id.drumContainer, drumBassFragment)
+                //거미
+            }else if (drumValuesArray.toString() == "[1,10]") {
+                val drumCrashFragment = DrumCrashFragment()
+                val drumBassFragment = DrumBassFragment()
 
-            val drumBassFragment = DrumBassFragment()
-            transaction.add(R.id.drumContainer, drumBassFragment)
-
-            transaction.commit()
-            //거미
-        }else if (drumValuesArray.toString() == "[1,10]") {
-            val transaction = childFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(
-                R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
-                0 // 왼쪽으로 나가는 애니메이션
-            )
-            val drumCrashFragment = DrumCrashFragment()
-            transaction.add(R.id.drumContainer, drumCrashFragment)
-
-            val drumBassFragment = DrumBassFragment()
-            transaction.add(R.id.drumContainer, drumBassFragment)
-
+                transaction.setCustomAnimations(
+                    R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
+                    0 // 왼쪽으로 나가는 애니메이션
+                )
+                transaction.add(R.id.drumContainer, drumCrashFragment)
+                transaction.add(R.id.drumContainer, drumBassFragment)
+            }
             transaction.commit()
         }
     }

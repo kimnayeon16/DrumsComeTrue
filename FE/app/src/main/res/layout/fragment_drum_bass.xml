@@ -8,7 +8,7 @@
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/tick_bass"
+        android:src="@drawable/kpop_tick_bass"
         android:layout_marginTop="100dp"/>
 
 </FrameLayout>
