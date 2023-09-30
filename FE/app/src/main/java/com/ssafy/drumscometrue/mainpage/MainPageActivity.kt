@@ -44,7 +44,7 @@ class MainPageActivity : AppCompatActivity() {
             }
         }
 
-        viewPager = findViewById(R.id.viewPager)
+        viewPager = findViewById(R.id.view_pager)
 
         initViews()
     }

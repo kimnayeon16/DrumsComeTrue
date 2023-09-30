@@ -18,7 +18,9 @@ package com.ssafy.drumscometrue.freePlay
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.databinding.ActivityFreePlayBinding
+import com.ssafy.drumscometrue.persistentbottom.PersistentFragment
 
 class FreePlayActivity : AppCompatActivity() {
     private lateinit var activityMainBinding: ActivityFreePlayBinding
@@ -29,6 +31,13 @@ class FreePlayActivity : AppCompatActivity() {
         activityMainBinding = ActivityFreePlayBinding.inflate(layoutInflater)
         // activityMainBinding에 바인딩된 레이아웃을 액티비티의 컨텐츠로 설정합니다.
         setContentView(activityMainBinding.root)
+
+        // PersistentFragment 추가
+        if (savedInstanceState == null) { // 첫 생성 시만 Fragment 추가
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.persistent_fragment_container, PersistentFragment())
+                .commit()
+        }
     }
 
     override fun onBackPressed() {
