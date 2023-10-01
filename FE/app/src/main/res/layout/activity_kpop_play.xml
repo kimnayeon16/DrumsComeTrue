@@ -8,13 +8,6 @@
     android:orientation="vertical"
     tools:context=".kpop.KpopPlayActivity">
 
-
-
-<!--    <FrameLayout-->
-<!--        android:id="@+id/camera"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        />-->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/find_id_ui_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -25,6 +18,16 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph"
         tools:context=".freePlay.FreePlayActivity" />
+
+    <ProgressBar
+        android:id="@+id/progressSong"
+        style="@style/KpopProgressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_weight="4"
+        android:max="100"
+        tools:progress="60"
+        />
 
     <FrameLayout
         android:id="@+id/board"
@@ -40,13 +43,38 @@
         android:layout_gravity="center"
         />
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/hiHat"-->
-    <!--        android:layout_width="20dp"-->
-    <!--        android:layout_height="20dp"-->
-    <!--        android:background="#F44336"-->
-    <!--        android:layout_marginTop="15dp"-->
-    <!--        android:layout_marginStart="30dp" />-->
+    <LinearLayout
+        android:id="@+id/finishSign"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/round_backgroud_border_black"
+        android:visibility="invisible"
+        >
+        <TextView
+            android:id="@+id/finishSong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="안녕하세요?"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:gravity="center"
+           />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:indeterminateOnly="false"
+            android:progressDrawable="@drawable/progressbar_circle"
+            tools:progress="60"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+
     <!--
         <TextView
             android:id="@+id/countTime"

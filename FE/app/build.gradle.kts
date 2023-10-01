@@ -94,5 +94,11 @@ android {
         testImplementation("junit:junit:4.13.2")
         androidTestImplementation("androidx.test.ext:junit:1.1.5")
         androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+        implementation("com.airbnb.android:lottie:5.0.2")
+        implementation("com.kakao.sdk:v2-user:2.3.0") // 카카오 로그인
+
+        implementation("com.google.android.material:material:1.9.0")
+
+
     }
 }

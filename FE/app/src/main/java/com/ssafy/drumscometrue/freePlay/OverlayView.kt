@@ -51,12 +51,14 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
         results = pose
         this.imageHeight = imageHeight
         this.imageWidth = imageWidth
-
-        println("viewScale1: "+ width)  //overlayView자체의 너비
-        println("viewScale2: "+ height)
-        println(imageWidth) //이미지의 너비
-        println(imageHeight)
         scaleFactor = max(width * 1f / imageHeight, height * 1f / imageWidth)
+
+        println(width)
+        println(height)
+        println(imageWidth)
+        println(imageHeight)
+        println(scaleFactor)
+        println("======================")
         invalidate() // 뷰를 다시 그리도록 요청
     }
 
@@ -80,8 +82,8 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
 
             for (landmark in pose.allPoseLandmarks) {
                 canvas.drawPoint(
-                    landmark.position.x /imageHeight * width , // 좌표를 scaleFactor로 조정
-                    landmark.position.y /imageWidth * height, // 좌표를 scaleFactor로 조정
+                    landmark.position.x * scaleFactor , // 좌표를 scaleFactor로 조정
+                    landmark.position.y * scaleFactor, // 좌표를 scaleFactor로 조정
                     pointPaint
                 )
                 val nose = pose.getPoseLandmark(PoseLandmark.NOSE)
@@ -176,10 +178,10 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
         val avgZInImagePixel = (start.z + end.z) / 2
 
         canvas.drawLine(
-            start.x / imageHeight * width,
-            start.y / imageWidth * height,
-            end.x / imageHeight * width,
-            end.y / imageWidth * height,
+            start.x * scaleFactor,
+            start.y * scaleFactor,
+            end.x * scaleFactor,
+            end.y * scaleFactor,
             paint
         )
 

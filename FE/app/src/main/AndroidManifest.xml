@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ssafy.drumscometrue"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- Declare features -->
-    <uses-feature android:name="android.hardware.camera" />
-
-    <!-- Declare permissions -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Declare features -->
+    <uses-feature android:name="android.hardware.camera" /> <!-- Declare permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -20,19 +17,38 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DrumsComeTrue"
         tools:targetApi="31">
+        <activity
+            android:name=".padPlay.PadPlayActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
+        <!-- Kakao SDK 설정 추가 -->
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="9d9f74e5dee02dda5e82ada45e4dda8f" />
 
+        <!-- Kakao 로그인 Activity 설정 추가 -->
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
+                <data android:host="oauth"
+                    android:scheme="kakao9d9f74e5dee02dda5e82ada45e4dda8f" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".kpop.KpopListActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".freePlay.FreePlayActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".user.login.LoginActivity"></activity>
-        <activity android:name=".user.JoinActivity"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".user.login.LoginActivity" />
+        <activity android:name=".user.JoinActivity" />
         <activity
             android:name=".kpop.KpopPlayActivity"
             android:exported="false" />
@@ -42,25 +58,19 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".mainpage.UserPageActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".practice.PracticeActivity"
             android:exported="true" />
         <activity
             android:name=".mainpage.MainPageActivity"
-            android:exported="true" >
-        </activity>
-<!--        <activity-->
-<!--            android:name=".kpop.KpopListActivity"-->
-<!--            android:exported="false" />-->
-<!--        <activity android:name=".user.LoginActivity" />-->
-
+            android:exported="true" />
     </application>
 
 </manifest>
