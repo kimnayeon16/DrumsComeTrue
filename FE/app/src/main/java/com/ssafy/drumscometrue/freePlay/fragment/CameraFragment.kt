@@ -208,53 +208,57 @@ class CameraFragment : Fragment() {
             if (_fragmentCameraBinding != null) {
                 // fragmentCameraBinding.overlay - 화면에 그리기 작업을 처리하는 커스텀 OverlayView
                 setImg()
-                fragmentCameraBinding.overlay.setResults(
-                    pose,
-                    imageHeight = image.height,
-                    imageWidth = image.width
-                )
                 if(!pose.allPoseLandmarks.isEmpty()){
+                    // 손====================================
                     val leftHand = pose.getPoseLandmark(19)
                     val rightHand = pose.getPoseLandmark(20)
+
+                    // kick판단==============================
 //                    val leftKnee = pose.getPoseLandmark(25)
 //                    val rightKnee = pose.getPoseLandmark(26)
                     val leftFoot = pose.getPoseLandmark(31)
                     val rightFoot = pose.getPoseLandmark(32)
 
+                    // 손 연장선 -> 드럼 채
                     val rightElbow = pose.getPoseLandmark(14)
                     val rightWrist = pose.getPoseLandmark(16)
-                    val rightIndex = pose.getPoseLandmark(20)
+
                     val leftElbow = pose.getPoseLandmark(13)
                     val leftWrist = pose.getPoseLandmark(15)
-                    val leftIndex = pose.getPoseLandmark(19)
-
-//                    val leftDistance = calculateDistance(leftElbow.position.x, leftElbow.position.y, leftWrist.position.x, leftWrist.position.y) / 2
-//                    val rightDistance = calculateDistance(rightElbow.position.x, rightElbow.position.y, rightWrist.position.x, rightWrist.position.y) / 2
 
 
+                    val leftPointElbow = Point(leftElbow.position.x , leftElbow.position.y)
+                    val leftPointWrist = Point(leftWrist.position.x , leftWrist.position.y)
+                    val leftPointHand = Point(leftHand.position.x , leftHand.position.y)
+                    val rightPointElbow = Point(rightElbow.position.x , rightElbow.position.y)
+                    val rightPointWrist = Point(rightWrist.position.x , rightWrist.position.y)
+                    val rightPointHand = Point(rightHand.position.x , rightHand.position.y)
 
-                    // 각도를 위한 Point
-//                    val leftElbowPoint = Point(leftElbow.position.x.toDouble(), leftElbow.position.y.toDouble())
-//                    val leftWristPoint = Point(leftWrist.position.x.toDouble(), leftWrist.position.y.toDouble())
-//                    val leftInedxPoint = Point(leftIndex.position.x.toDouble(), leftIndex.position.y.toDouble())
-//                    val rightElbowPoint = Point(rightElbow.position.x.toDouble(), rightElbow.position.y.toDouble())
-//                    val rightWristPoint = Point(rightWrist.position.x.toDouble(), rightWrist.position.y.toDouble())
-//                    val rightInedxPoint = Point(rightIndex.position.x.toDouble(), rightIndex.position.y.toDouble())
-//
-//                    val leftAngle = angle(leftElbowPoint, leftWristPoint, leftInedxPoint)
-//                    val rightAngle = angle(rightElbowPoint, rightWristPoint, rightInedxPoint)
+                    val leftDistance = calculateDistance(leftPointElbow, leftPointWrist) * 0.8F
+                    val rightDistance = calculateDistance(rightPointElbow, rightPointWrist) * 0.8F
 
-//                    println(rightAngle)
+                    val leftPoint = findPointOnLine(leftPointHand, leftPointElbow, leftDistance)
+                    val rightPoint = findPointOnLine(rightPointHand, rightPointElbow, rightDistance)
 
                     val width = image.width
                     val height = image.height
+
+
+                    // 화면에 그려주기
+                    fragmentCameraBinding.overlay.setResults(
+                        pose,
+                        imageHeight = image.height,
+                        imageWidth = image.width,
+                        leftPoint,
+                        rightPoint
+                    )
 
 
                     if(!start){
                         val handler = Handler()
 
                         handler.postDelayed({
-                            // 3초 후에 실행할 코드를 여기에 작성합니다.
+                            // 5초 후에 실행할 코드를 여기에 작성합니다.
                             settingEstimation(leftHand, height, width)
                             settingEstimation(rightHand, height, width)
                             settingLeftHihat(leftFoot,height,width)
@@ -263,19 +267,17 @@ class CameraFragment : Fragment() {
 //                            setRightKnee  = rightKnee.position.y
                             start = true
                             fragmentCameraBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
-                        }, 4000)
+                        }, 5000)
                     }else{
-                        leftHandEstimation = cameraFragment.hit(leftHand, cameraFragment.leftHandEstimation, height, width)
-                        rightHandEstimation = cameraFragment.hit(rightHand, cameraFragment.rightHandEstimation, height, width)
-                        leftHandEstimation = cameraFragment.back(leftHand, cameraFragment.leftHandEstimation, height, width)
-                        rightHandEstimation = cameraFragment.back(rightHand, cameraFragment.rightHandEstimation, height, width)
+                        leftHandEstimation = hitPoint(leftPoint, leftHandEstimation, height, width)
+                        rightHandEstimation = hitPoint(rightPoint, rightHandEstimation, height, width)
+                        leftHandEstimation = backPoint(leftPoint, leftHandEstimation, height, width)
+                        rightHandEstimation = backPoint(rightPoint, rightHandEstimation, height, width)
 
                         hitLeftHihat(leftFoot, height, width)
                         hitRightBass(rightFoot, height, width)
                         backLeftHihat(leftFoot, height, width)
                         backRightBass(rightFoot, height, width)
-
-                        println(rightHand.position.x / image.height)
 
                     }
                 }
@@ -395,7 +397,6 @@ class CameraFragment : Fragment() {
      * */
     @SuppressLint("UnsafeOptInUsageError")
     private fun bindCameraUseCases() {
-
         // CameraProvider
         val cameraProvider = cameraProvider
             ?: throw IllegalStateException("Camera initialization failed.")
@@ -658,9 +659,9 @@ class CameraFragment : Fragment() {
             hitEstimation["snare"] = true
             hitEstimation["floorTom"] = true
         }
-
         return hitEstimation
     }
+
 
     private fun hitLeftHihat(leftFoot : PoseLandmark, width : Int, height : Int){
         val position_x = leftFoot.position.x / width
@@ -857,12 +858,158 @@ class CameraFragment : Fragment() {
      * */
     data class Point(val x: Float, val y: Float)
 
+    // 두 점 사이의 거리 구하는 함수
     fun calculateDistance(pointA: Point, pointB: Point): Float {
         val dx = pointB.x - pointA.x
         val dy = pointB.y - pointA.y
         return sqrt(dx * dx + dy * dy)
     }
 
+    fun findPointOnLine(a: Point, b: Point, distance: Float): Point {
+
+        // 두 점으로 기울기 구하기
+        val m = (b.y - a.y) / (b.x - a.x)
+
+        // y절편 구하기
+        val bValue = a.y - m * a.x
+
+        var cX :Float = 1F
+
+        if(a.x > b.x){
+            cX = a.x + distance / sqrt(1 + m * m)
+        }else{
+            cX = a.x - distance / sqrt(1 + m * m)
+        }
+
+        val cY = m * cX + bValue
+
+        return Point(cX, cY)
+    }
+
+
+    private fun hitPoint(point : Point, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> 비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
+
+        if(position_y > 0.36) {
+            if(hitEstimation["crash"] == false && position_x > 0.65 && position_x < 0.85){
+                Log.d("Crash","Crash Hit")
+                // 사운드 재생
+                val soundId = soundMap["crash"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(crashImg)
+                }
+            }
+            if (hitEstimation["hTom"] == false && position_x > 0.4 && position_x < 0.6) {
+                Log.d("hTom Hit", "hTom Hit")
+                // 사운드 재생
+                val soundId = soundMap["hTom"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(hTomImg)
+                }
+            }
+            if (hitEstimation["mTom"] == false && position_x > 0.15 && position_x < 0.35) {
+                Log.d("mTom Hit", "mTom Hit")
+                // 사운드 재생
+                val soundId = soundMap["mTom"]
+                soundId?.let {
+                    soundPool.play(it, 0.8f, 0.7f, 1, 0, 1.0f)
+                    hitAnimation(mTomImg)
+                }
+            }
+            hitEstimation["crash"] = true
+            hitEstimation["hTom"] = true
+            hitEstimation["mTom"] = true
+        }
+
+        if(position_y > 0.47) {
+            if(hitEstimation["hiHat"] == false && position_x > 0.8){
+//                println(leftHihat)
+                if(leftHihat){
+                    Log.d("openHat Hit","openHat Hit")
+                    // 사운드 재생
+                    val soundId = soundMap["openHat"]
+                    soundId?.let {
+                        soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                        hitAnimation(hihatImg)
+                    }
+                }else{
+                    Log.d("closedHat Hit","closedHat Hit")
+                    // 사운드 재생
+                    val soundId = soundMap["closedHat"]
+                    soundId?.let {
+                        soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                        hitAnimation(hihatImg)
+                    }
+                }
+            }
+            if(hitEstimation["ride"] == false && position_x < 0.25){
+                Log.d("ride Hit","ride Hit")
+                // 사운드 재생
+                val soundId = soundMap["ride"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(rideImg)
+                }
+            }
+            hitEstimation["hiHat"] = true
+            hitEstimation["ride"] = true
+        }
+        if(position_y > 0.58){
+            if(hitEstimation["snare"] == false && position_x > 0.45 && position_x < 0.8){
+                Log.d("snare Hit","snare Hit")
+                // 사운드 재생
+                val soundId = soundMap["snare"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(snareImg)
+                }
+            }
+            if(hitEstimation["floorTom"] == false && position_x > 0.05 && position_x < 0.25){
+                Log.d("floorTom Hit","floorTom Hit")
+                // 사운드 재생
+                val soundId = soundMap["floorTom"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(fTomImg)
+                }
+            }
+            hitEstimation["snare"] = true
+            hitEstimation["floorTom"] = true
+        }
+        return hitEstimation
+    }
+
+    private fun backPoint(point : Point, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> dp비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
+
+        if(position_y < 0.35) {
+            hitEstimation["crash"] = false
+            hitEstimation["ride"] = false
+            hitEstimation["hiHat"] = false
+            hitEstimation["hTom"] = false
+            hitEstimation["mTom"] = false
+            hitEstimation["floorTom"] = false
+            hitEstimation["snare"] = false
+        }
+        if(position_y < 0.46) {
+            hitEstimation["hiHat"] = false
+            hitEstimation["ride"] = false
+            hitEstimation["floorTom"] = false
+            hitEstimation["snare"] = false
+        }
+        if(position_y < 0.56){
+            hitEstimation["floorTom"] = false
+            hitEstimation["snare"] = false
+        }
+
+        return hitEstimation
+    }
 
 
 }
