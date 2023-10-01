@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".kpop.DrumCrashFragment">
+    tools:context=".kpop.DrumRideFragment">
 
     <ImageView
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:src="@drawable/kpop_tick_crash"
-        android:layout_marginTop="5dp"/>
+        android:src="@drawable/kpop_tick_ride"
+        android:layout_marginTop="15dp"/>
 
 </FrameLayout>
