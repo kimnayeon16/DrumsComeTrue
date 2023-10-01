@@ -153,11 +153,12 @@ class PadPlayFragment : Fragment() {
             if (_fragmentPadPlayBinding != null) {
                 // fragmentCameraBinding.overlay - 화면에 그리기 작업을 처리하는 커스텀 OverlayView
                 setImg()
-                fragmentPadPlayBinding.overlay.setResults(
-                    pose,
-                    imageHeight = image.height,
-                    imageWidth = image.width
-                )
+//                fragmentPadPlayBinding.overlay.setResults(
+//                    pose,
+//                    imageHeight = image.height,
+//                    imageWidth = image.width,
+//
+//                )
                 if(!pose.allPoseLandmarks.isEmpty()){
                     val leftHand = pose.getPoseLandmark(19)
                     val rightHand = pose.getPoseLandmark(20)
