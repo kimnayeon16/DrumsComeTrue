@@ -2,6 +2,7 @@ package com.ssafy.drumscometrue.tutorial
 
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -10,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction
 
 import androidx.viewpager2.widget.ViewPager2
 import com.ssafy.drumscometrue.R
+import com.ssafy.drumscometrue.freePlay.FreePlayActivity
 import com.ssafy.drumscometrue.freePlay.fragment.CameraFragment
 
 
@@ -34,6 +36,5 @@ class TutorialActivity : AppCompatActivity() {
         val viewPager: ViewPager2 = findViewById(R.id.view_pager)
         val videoAdapter = VideoAdapter(videoItems)
         viewPager.adapter = videoAdapter
-
     }
 }
