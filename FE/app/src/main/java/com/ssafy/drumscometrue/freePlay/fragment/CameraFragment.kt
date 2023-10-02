@@ -214,10 +214,10 @@ class CameraFragment : Fragment() {
                     val rightHand = pose.getPoseLandmark(20)
 
                     // kick판단==============================
-//                    val leftKnee = pose.getPoseLandmark(25)
-//                    val rightKnee = pose.getPoseLandmark(26)
-                    val leftFoot = pose.getPoseLandmark(31)
-                    val rightFoot = pose.getPoseLandmark(32)
+                    val leftKnee = pose.getPoseLandmark(25)
+                    val rightKnee = pose.getPoseLandmark(26)
+//                    val leftFoot = pose.getPoseLandmark(31)
+//                    val rightFoot = pose.getPoseLandmark(32)
 
                     // 손 연장선 -> 드럼 채
                     val rightElbow = pose.getPoseLandmark(14)
@@ -261,10 +261,10 @@ class CameraFragment : Fragment() {
                             // 5초 후에 실행할 코드를 여기에 작성합니다.
                             settingEstimation(leftHand, height, width)
                             settingEstimation(rightHand, height, width)
-                            settingLeftHihat(leftFoot,height,width)
-                            settingRightBass(rightFoot,height,width)
-//                            setLeftKnee = leftKnee.position.y
-//                            setRightKnee  = rightKnee.position.y
+//                            settingLeftHihat(leftFoot,height,width)
+//                            settingRightBass(rightFoot,height,width)
+                            setLeftKnee = leftKnee.position.y
+                            setRightKnee  = rightKnee.position.y
                             start = true
                             fragmentCameraBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
                         }, 5000)
@@ -274,10 +274,15 @@ class CameraFragment : Fragment() {
                         leftHandEstimation = backPoint(leftPoint, leftHandEstimation, height, width)
                         rightHandEstimation = backPoint(rightPoint, rightHandEstimation, height, width)
 
-                        hitLeftHihat(leftFoot, height, width)
-                        hitRightBass(rightFoot, height, width)
-                        backLeftHihat(leftFoot, height, width)
-                        backRightBass(rightFoot, height, width)
+                        hitLeftHihat2(leftKnee, setLeftKnee, height, width)
+                        hitRightBass2(rightKnee, setRightKnee, height, width)
+                        backLeftHihat2(leftKnee, setLeftKnee, height, width)
+                        backRightBass2(rightKnee, setRightKnee, height, width)
+
+//                        hitLeftHihat(leftFoot, height, width)
+//                        hitRightBass(rightFoot, height, width)
+//                        backLeftHihat(leftFoot, height, width)
+//                        backRightBass(rightFoot, height, width)
 
                     }
                 }
@@ -783,14 +788,14 @@ class CameraFragment : Fragment() {
     private fun backLeftHihat2(leftFoot : PoseLandmark, setLeftKnee:Float, width : Int, height : Int){
         val position_x = leftFoot.position.x / width
         val position_y = leftFoot.position.y / height
-        if(position_y < setLeftKnee / height-0.02){
+        if(position_y < setLeftKnee / height-0.03){
             leftHihat = false
         }
     }
     private fun backRightBass2(rightFoot : PoseLandmark, setRightKnee:Float, width : Int, height : Int){
         val position_x = rightFoot.position.x / width
         val position_y = rightFoot.position.y / height
-        if(position_y < setRightKnee / height-0.02){
+        if(position_y < setRightKnee / height-0.03){
             rightBass = false
         }
     }
