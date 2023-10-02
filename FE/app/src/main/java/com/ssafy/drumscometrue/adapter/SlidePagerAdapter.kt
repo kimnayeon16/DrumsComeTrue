@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.ssafy.drumscometrue.persistentbottom.PersistentFragment
-import com.ssafy.drumscometrue.practice.MetronomeFragment
-import com.ssafy.drumscometrue.practice.RecordFragment
+import com.ssafy.drumscometrue.tutorial.MetronomeFragment
+import com.ssafy.drumscometrue.tutorial.RecordFragment
 
 class SlidePagerAdapter(fragment: PersistentFragment) : FragmentStateAdapter(fragment.childFragmentManager, fragment.lifecycle) {
 

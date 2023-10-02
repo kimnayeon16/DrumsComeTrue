@@ -1,4 +1,4 @@
-package com.ssafy.drumscometrue.practice
+package com.ssafy.drumscometrue.tutorial
 
 import android.annotation.SuppressLint
 import android.media.AudioAttributes
