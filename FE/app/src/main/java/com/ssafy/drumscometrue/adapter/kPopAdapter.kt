@@ -17,6 +17,7 @@ class kPopAdapter(val context: Context, val kpopList: ArrayList<Kpop>, val itemC
         private val songText = itemView?.findViewById<TextView>(R.id.tv_rv_song)
         private val singerText = itemView?.findViewById<TextView>(R.id.tv_rv_singer)
         private val songImage =	itemView?.findViewById<ImageView>(R.id.img_rv_photo)
+        private val level = itemView?.findViewById<TextView>(R.id.tv_rv_level)
 
         fun bind(kpop: Kpop, context: Context) {
             if(kpop.image != ""){
@@ -28,6 +29,7 @@ class kPopAdapter(val context: Context, val kpopList: ArrayList<Kpop>, val itemC
 
             songText?.text = kpop.song
             singerText?.text = kpop.singer
+            level?.text = kpop.level
 
             itemView?.setOnClickListener{itemClick(kpop)}
 

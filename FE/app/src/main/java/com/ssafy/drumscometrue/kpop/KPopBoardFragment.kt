@@ -63,7 +63,7 @@ class KPopBoardFragment : Fragment() {
             if (scoreList.isNotEmpty()) {
                 handler.postDelayed({
                     scheduleNextFragment()
-                }, prelude)
+                }, prelude+12000)
             }
         }
         return rootView
@@ -150,6 +150,16 @@ class KPopBoardFragment : Fragment() {
                 )
                 transaction.add(R.id.drumContainer, drumCrashFragment)
                 transaction.add(R.id.drumContainer, drumBassFragment)
+            }else if (drumValuesArray.toString() == "[1,8]") {
+                val drumCrashFragment = DrumCrashFragment()
+                val drumhiHatFragment = DrumHiHatFragment()
+
+                transaction.setCustomAnimations(
+                    R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
+                    0 // 왼쪽으로 나가는 애니메이션
+                )
+                transaction.add(R.id.drumContainer, drumCrashFragment)
+                transaction.add(R.id.drumContainer, drumhiHatFragment)
             }
             transaction.commit()
         }

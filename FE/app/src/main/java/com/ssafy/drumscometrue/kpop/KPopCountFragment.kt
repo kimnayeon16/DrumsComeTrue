@@ -12,7 +12,7 @@ import java.util.Timer
 import kotlin.concurrent.timer
 
 class KPopCountFragment : Fragment() {
-    private var startTime = 5
+    private var startTime = 12
     private var timerTask: Timer?= null
 
     override fun onCreateView(
