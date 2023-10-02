@@ -12,6 +12,11 @@ import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.freePlay.FreePlayActivity
 
 class VideoPage : Fragment() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -19,7 +24,7 @@ class VideoPage : Fragment() {
         val view = inflater.inflate(R.layout.fragment_video_page, container, false)
 
         view.findViewById<Button>(R.id.tutor_btn).setOnClickListener {
-            Log.d("VideoPage", "Button clicked")
+
             val intent = Intent(requireActivity(), FreePlayActivity::class.java)
             startActivity(intent)
         }
