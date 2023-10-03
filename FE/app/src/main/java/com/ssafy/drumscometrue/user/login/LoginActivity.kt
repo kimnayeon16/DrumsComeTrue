@@ -11,7 +11,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -21,7 +20,6 @@ import com.google.gson.JsonSyntaxException
 import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
-import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.ssafy.drumscometrue.R
@@ -68,10 +66,21 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val keyHash = Utility.getKeyHash(this)
-        Log.d("Hash", keyHash)
-        KakaoSdk.init(this, "9d9f74e5dee02dda5e82ada45e4dda8f")
         initUI() // UI 설정
+
+        // Email과 Nickname 값을 SharedPreference에서 확인합니다.
+        val userId = userInfo.getString("userId", null)
+
+        // Email과 Nickname 값이 존재하면 (즉, 이미 로그인한 사용자라면) MainPageActivity로 이동합니다.
+        if (userId != null) {
+            val intent = Intent(this, MainPageActivity::class.java)
+            startActivity(intent)
+            finish() // LoginActivity를 종료하여 뒤로 가기를 눌렀을 때 다시 로그인 화면으로 돌아오지 않게 합니다.
+            return
+        }
+
+        val keyHash = Utility.getKeyHash(this)
+        KakaoSdk.init(this, "9d9f74e5dee02dda5e82ada45e4dda8f")
         setupListeners() // Listners 설정
     }
 
@@ -90,9 +99,9 @@ class LoginActivity : AppCompatActivity() {
         naverLoginImg = findViewById(R.id.naver_login)
 
         // Retrofit 초기화
-        val gson = GsonBuilder().setLenient().create()
+        gson = GsonBuilder().setLenient().create()
 
-        val retrofit = Retrofit.Builder()
+        retrofit = Retrofit.Builder()
             .baseUrl("https://j9b107.p.ssafy.io:8000")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -193,12 +202,29 @@ class LoginActivity : AppCompatActivity() {
             LoginClient.instance.loginWithKakaoAccount(this, callback = callback)
         }
     }
+
     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
             Log.e(TAG, "카카오계정으로 로그인 실패", error)
         } else if (token != null) {
-            Log.i(TAG, "카카오계정으로 로그인 성공 ${token.scopes}")
-            Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+            Log.i(TAG, "카카오계정으로 로그인 성공 ${token}")
+
+            // 여기서 사용자 정보를 요청합니다.
+            UserApiClient.instance.me { user, userError ->
+                if (userError != null) {
+                    Log.e(TAG, "사용자 정보 요청 실패", userError)
+                } else if (user != null) {
+                    val email = user.kakaoAccount?.email
+                    val nickname = user.kakaoAccount?.profile?.nickname
+                    Log.i(TAG, "Email: $email, Nickname: $nickname")
+
+                    userInfo.edit {
+                        putString("userId", email)
+                        putString("userName", nickname)
+                    }
+                }
+            }
+
             // 메인 페이지로 이동
             val intent = Intent(this@LoginActivity, MainPageActivity::class.java)
             startActivity(intent)
