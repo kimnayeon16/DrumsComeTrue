@@ -19,7 +19,11 @@ import kotlin.concurrent.timer
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import com.ssafy.drumscometrue.SharedViewModel
 import com.ssafy.drumscometrue.databinding.ActivityKpopPlayBinding
+import org.w3c.dom.Text
 
 
 class KpopPlayActivity : AppCompatActivity() {
@@ -38,6 +42,8 @@ class KpopPlayActivity : AppCompatActivity() {
     //곡제목
     private var songName: String ? = null
     private lateinit var binding: ActivityKpopPlayBinding
+
+//    private lateinit var sharedViewModel1: SharedViewModel
 
 
 
@@ -98,12 +104,16 @@ class KpopPlayActivity : AppCompatActivity() {
         val modalDelayMillis = 6000L // 모달창이 표시된 후 자동 이동까지의 딜레이(밀리초)
 
         Handler().postDelayed({
+            var sharedViewModel1 = ViewModelProvider(this).get(SharedViewModel::class.java)
             // 모달창 띄우기
             var finishSign: LinearLayout = findViewById(R.id.finishSign)
             var finishSong: TextView = findViewById(R.id.finishSong)
             var progressBar : ProgressBar = findViewById(R.id.progressBar)
+            var totalHit : TextView = findViewById(R.id.totalHit)
             finishSign.visibility = View.VISIBLE
             finishSong.text = "$song"
+            var total = sharedViewModel1.totalHit
+            totalHit.text = "${total}개"
             //로딩 페이지 - progressBar 타이머 업데이트
             val progressBarUpdateTimer = Timer()
             val progressBarUpdateInterval = 1000L

@@ -45,6 +45,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 //import com.google.firebase.ml.vision.common.FirebaseVisionImage
 //import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
@@ -55,6 +56,7 @@ import com.google.mlkit.vision.pose.PoseDetection
 import com.google.mlkit.vision.pose.PoseDetector
 import com.google.mlkit.vision.pose.PoseLandmark
 import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
+import com.ssafy.drumscometrue.SharedViewModel
 import com.ssafy.drumscometrue.databinding.FragmentCameraBinding
 import com.ssafy.drumscometrue.freePlay.OverlayView
 import kotlinx.coroutines.delay
@@ -155,6 +157,7 @@ class CameraFragment : Fragment() {
     // CameraX 영상을 분석 후 발견된 Landmark를 담고 있는 Pose객체 넘겨주는 콜백
     private val onPoseDetected: (pose: Pose) -> Unit = { pose ->
     }
+
 
     // ML Kit Pose Detector
     private class CameraAnalyzer(
@@ -892,8 +895,14 @@ class CameraFragment : Fragment() {
         val position_x = point.x / width
         val position_y = point.y / height
 
+        //어떤 드럼을 쳤는지 판별하기 위한 변수(KPopoBoardFragment로 보내기)
+        val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
         if(position_y > 0.36) {
             if(hitEstimation["crash"] == false && position_x > 0.65 && position_x < 0.85){
+                //Crash를 쳤으므로 변수에 담기
+                sharedViewModel.data2 = "Crash"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data2}")
                 Log.d("Crash","Crash Hit")
                 // 사운드 재생
                 val soundId = soundMap["crash"]
@@ -902,7 +911,11 @@ class CameraFragment : Fragment() {
                     hitAnimation(crashImg)
                 }
             }
+
             if (hitEstimation["hTom"] == false && position_x > 0.4 && position_x < 0.6) {
+                //하이탐?을 쳤으므로 변수에 담기
+                sharedViewModel.data6 = "hTom"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data6}")
                 Log.d("hTom Hit", "hTom Hit")
                 // 사운드 재생
                 val soundId = soundMap["hTom"]
@@ -912,6 +925,9 @@ class CameraFragment : Fragment() {
                 }
             }
             if (hitEstimation["mTom"] == false && position_x > 0.15 && position_x < 0.35) {
+                //미들탐 ?을 쳤으므로 변수에 담기
+                sharedViewModel.data7 = "mTom"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data7}")
                 Log.d("mTom Hit", "mTom Hit")
                 // 사운드 재생
                 val soundId = soundMap["mTom"]
@@ -924,11 +940,12 @@ class CameraFragment : Fragment() {
             hitEstimation["hTom"] = true
             hitEstimation["mTom"] = true
         }
-
         if(position_y > 0.47) {
             if(hitEstimation["hiHat"] == false && position_x > 0.8){
-//                println(leftHihat)
                 if(leftHihat){
+                    //오픈하이햇을 쳤으므로 변수에 담기
+                    sharedViewModel.data = "openHiHat"
+                    Log.d("board frag로 보낼 데이터","${sharedViewModel.data}")
                     Log.d("openHat Hit","openHat Hit")
                     // 사운드 재생
                     val soundId = soundMap["openHat"]
@@ -937,6 +954,9 @@ class CameraFragment : Fragment() {
                         hitAnimation(hihatImg)
                     }
                 }else{
+                    //클로즈 하이햇을 쳤으므로 변수에 담기
+                    sharedViewModel.data4 = "closedHat"
+                    Log.d("board frag로 보낼 데이터","${sharedViewModel.data4}")
                     Log.d("closedHat Hit","closedHat Hit")
                     // 사운드 재생
                     val soundId = soundMap["closedHat"]
@@ -947,6 +967,9 @@ class CameraFragment : Fragment() {
                 }
             }
             if(hitEstimation["ride"] == false && position_x < 0.25){
+                //라이드를 쳤으므로 변수에 담기
+                sharedViewModel.data3 = "ride"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data3}")
                 Log.d("ride Hit","ride Hit")
                 // 사운드 재생
                 val soundId = soundMap["ride"]
@@ -960,6 +983,9 @@ class CameraFragment : Fragment() {
         }
         if(position_y > 0.58){
             if(hitEstimation["snare"] == false && position_x > 0.45 && position_x < 0.8){
+                //라이드를 쳤으므로 변수에 담기
+                sharedViewModel.data1 = "snare"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data1}")
                 Log.d("snare Hit","snare Hit")
                 // 사운드 재생
                 val soundId = soundMap["snare"]
@@ -969,6 +995,9 @@ class CameraFragment : Fragment() {
                 }
             }
             if(hitEstimation["floorTom"] == false && position_x > 0.05 && position_x < 0.25){
+                //플로어를 쳤으므로 변수에 담기
+                sharedViewModel.data8 = "floor"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data8}")
                 Log.d("floorTom Hit","floorTom Hit")
                 // 사운드 재생
                 val soundId = soundMap["floorTom"]
