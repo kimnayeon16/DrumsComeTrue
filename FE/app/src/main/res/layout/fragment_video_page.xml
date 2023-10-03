@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+
+\\<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -83,6 +84,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
+            android:fontFamily="@font/suite_variable"
             android:text="1. 어쩌고 \n\n2.저쩌고\n\n3.어쩌고저쩌고"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
