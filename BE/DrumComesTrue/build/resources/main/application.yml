@@ -81,7 +81,7 @@ server:
 jwt:
   secretKey: dasdasf234fuhvertsv34789yhi3sfgg
   access:
-    expiration: 32460
+    expiration: 1500000
     header: Authorization
   refresh:
     expiration: 1209600000
