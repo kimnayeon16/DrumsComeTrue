@@ -35,23 +35,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="8dp"
+                    android:padding="40dp"
                     android:textColor="@color/page_text"
                     android:text="자유연주"
                     android:textSize="35sp" />
 
-                <TextView
-                    android:id="@+id/page_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="20dp"
-                    android:textSize="20sp"
-                    android:ellipsize="end"
-                    android:maxLines="3"
-                    android:minLines="3"
-                    android:textColor="@color/page_text"
-                    android:text="@tools:sample/lorem/random" />
+<!--                <TextView-->
+<!--                    android:id="@+id/page_description"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="8dp"-->
+<!--                    android:layout_marginBottom="20dp"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:ellipsize="end"-->
+<!--                    android:maxLines="3"-->
+<!--                    android:minLines="3"-->
+<!--                    android:textColor="@color/page_text"-->
+<!--                    android:text="@tools:sample/lorem/random" />-->
 
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.cardview.widget.CardView>

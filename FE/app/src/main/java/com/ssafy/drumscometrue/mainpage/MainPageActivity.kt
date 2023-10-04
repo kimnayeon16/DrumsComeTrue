@@ -52,21 +52,21 @@ class MainPageActivity : AppCompatActivity() {
     private fun initViews() {
         val pageDataList = listOf(
             PageData(
-                R.drawable.page_img_freeplaying,
+                R.drawable.drum_img,
                 "자유연주",
-                "자유연주로 자유롭게 연주하세요",
+//                "자유연주로 자유롭게 연주하세요",
                 1
             ),
             PageData(
-                R.drawable.page_img_practice,
+                R.drawable.pad_img,
                 "연습하기",
-                "연습하기로 연습하세요",
+//                "연습하기로 연습하세요",
                 2
             ),
             PageData(
-                R.drawable.page_img_tutor,
+                R.drawable.tutorial_img,
                 "튜토리얼",
-                "튜토리얼을 통해 튜토리얼을 하세요",
+//                "튜토리얼을 통해 튜토리얼을 하세요",
                 3
             )
         )
