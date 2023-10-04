@@ -48,7 +48,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.382"
-        app:srcCompat="@drawable/crash" />
+        app:srcCompat="@drawable/crash"
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/hihat_img"
@@ -60,7 +61,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.513"
-        app:srcCompat="@drawable/hihat" />
+        app:srcCompat="@drawable/hihat"
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/h_tom_img"
@@ -72,7 +74,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.4"
-        app:srcCompat="@drawable/h_tom" />
+        app:srcCompat="@drawable/h_tom"
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/m_tom_img"
@@ -84,7 +87,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.401"
-        app:srcCompat="@drawable/m_tom" />
+        app:srcCompat="@drawable/m_tom"
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/ride_img"
@@ -96,7 +100,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.499"
-        app:srcCompat="@drawable/ride" />
+        app:srcCompat="@drawable/ride"
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/snare_img"
@@ -108,7 +113,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.61"
-        app:srcCompat="@drawable/snare" />
+        app:srcCompat="@drawable/snare"
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/f_tom_img"
@@ -120,7 +126,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.663"
-        app:srcCompat="@drawable/f_tom" />
+        app:srcCompat="@drawable/f_tom"
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/bass_img"
@@ -132,6 +139,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.966"
-        app:srcCompat="@drawable/bass" />
+        app:srcCompat="@drawable/bass"
+        android:visibility="invisible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
