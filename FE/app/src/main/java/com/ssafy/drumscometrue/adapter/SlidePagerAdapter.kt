@@ -12,7 +12,7 @@ class SlidePagerAdapter(fragment: PersistentFragment) : FragmentStateAdapter(fra
 
     override fun getItemCount(): Int {
         Log.d("SlidePagerAdapter", "getItemCount called: 2")
-        return 3
+        return 2
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -23,10 +23,6 @@ class SlidePagerAdapter(fragment: PersistentFragment) : FragmentStateAdapter(fra
                 MusicFragment()
             }
             1 -> {
-                Log.d("SlidePagerAdapter", "Creating RecordFragment")
-                RecordFragment()
-            }
-            2 -> {
                 Log.d("SlidePagerAdapter", "Creating MetronomeFragment")
                 MetronomeFragment()
             }
