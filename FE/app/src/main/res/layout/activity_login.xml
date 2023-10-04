@@ -11,7 +11,7 @@
         android:id="@+id/main_ui_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#121111"
+        android:background="@drawable/back_img"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -133,35 +133,12 @@
                 android:layout_height="70dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.366"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.813"
                 app:srcCompat="@drawable/kakao_login_img" />
 
-            <ImageView
-                android:id="@+id/naver_login"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.633"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.813"
-                app:srcCompat="@drawable/naver_login_img" />
-
-            <Button
-                android:id="@+id/drum_test"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DrumTest"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.146"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.039" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
