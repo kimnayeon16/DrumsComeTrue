@@ -4,11 +4,11 @@
 # characterEncoding=UTF-8: ?????? ???? ???? ?? ???? UTF-8? ??
 spring:
   datasource:
-#    url: jdbc:mysql://j9b107.p.ssafy.io:3500/drum?serverTimezone=UTC&characterEncoding=UTF-8
-    url: jdbc:mysql://localhost:3306/drum?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://j9b107.p.ssafy.io:3500/drum?serverTimezone=UTC&characterEncoding=UTF-8
+#    url: jdbc:mysql://localhost:3306/drum?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
-    password: root
-#    password: q1w2e3r4
+#    password: root
+    password: q1w2e3r4
     driver-class-name: com.mysql.cj.jdbc.Driver
   security:
     oauth2:
