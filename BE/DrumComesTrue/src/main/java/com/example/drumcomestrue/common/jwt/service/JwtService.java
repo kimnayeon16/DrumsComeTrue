@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.drumcomestrue.common.error.JwtException;
 import com.example.drumcomestrue.common.error.NotFoundException;
 import com.example.drumcomestrue.common.exception.ApplicationError;
 import com.example.drumcomestrue.db.entity.User;
@@ -178,7 +179,7 @@ public class JwtService {
 			return true;
 		} catch (Exception e) {
 			log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
-			return false;
+			throw new JwtException(ApplicationError.INVALID_TOKEN);
 		}
 	}
 
