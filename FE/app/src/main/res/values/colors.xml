@@ -30,7 +30,10 @@
     <color name="gray">#A6A6A6</color>
     <color name="clicked_gray">#DFDFDF</color>
 
-    <color name="colorForMusicSelect">#FF0000</color> <!-- 예: 빨간색 -->
-    <color name="colorForRecord">#00FF00</color>      <!-- 예: 초록색 -->
-    <color name="colorForMetronome">#0000FF</color>  <!-- 예: 파란색 -->
+    <color name="colorForMusicSelect">#FF0000</color>
+    <color name="colorForRecord">#00FF00</color>
+    <color name="colorForMetronome">#0000FF</color>
+
+    <color name="not_selected_color">#54FFFFFF</color>
+    <color name="selected_color">#00FF00</color>
 </resources>
