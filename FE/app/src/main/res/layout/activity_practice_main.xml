@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".practice.PracticeMainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_margin="30dp"
+            android:id="@+id/practice1_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/practice1_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="리듬 연습"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/practice1_image"
+                app:layout_constraintTop_toTopOf="@id/practice1_image" />
+
+            <TextView
+                android:id="@+id/practice1_subtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:text="난이도에 따라 \n곡을 선택하고\n리듬감을 익히세요!"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/practice1_title"
+                app:layout_constraintStart_toStartOf="@id/practice1_title"
+                app:layout_constraintTop_toBottomOf="@id/practice1_title" />
+
+            <ImageView
+                android:id="@+id/practice1_image"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:src="@drawable/practice_card1_img1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_margin="30dp"
+            android:id="@+id/practice_select2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/practice2_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="한 자리 연습"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tutor_image"
+                app:layout_constraintTop_toTopOf="@id/tutor_image" />
+
+            <TextView
+                android:id="@+id/practice2_subtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:text="스네어를 이용하여\n한 자리를 집중해서\n연습하세요!"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/practice2_title"
+                app:layout_constraintStart_toStartOf="@id/practice2_title"
+                app:layout_constraintTop_toBottomOf="@id/practice2_title" />
+
+            <ImageView
+                android:id="@+id/tutor_image"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:src="@drawable/practice_card_img2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

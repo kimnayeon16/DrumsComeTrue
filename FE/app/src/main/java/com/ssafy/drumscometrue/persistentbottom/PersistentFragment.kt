@@ -26,7 +26,7 @@ class PersistentFragment : Fragment(R.layout.fragment_persistent) {
 
         // TabLayout과 ViewPager2 연결
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = if (position == 0) "녹음" else "메트로놈"
+            tab.text = if (position == 0) "음악선택" else if (position == 1) "녹음" else "메트로놈"
         }.attach()
 
         initEvent()
