@@ -241,8 +241,8 @@ class CameraFragment : Fragment() {
                     val rightPointWrist = Point(rightWrist.position.x , rightWrist.position.y)
                     val rightPointHand = Point(rightHand.position.x , rightHand.position.y)
 
-                    val leftDistance = calculateDistance(leftPointElbow, leftPointWrist) * 0.8F
-                    val rightDistance = calculateDistance(rightPointElbow, rightPointWrist) * 0.8F
+                    val leftDistance = calculateDistance(leftPointElbow, leftPointWrist) * 0.6F
+                    val rightDistance = calculateDistance(rightPointElbow, rightPointWrist) * 0.6F
 
                     val leftPoint = findPointOnLine(leftPointHand, leftPointElbow, leftDistance)
                     val rightPoint = findPointOnLine(rightPointHand, rightPointElbow, rightDistance)
@@ -1034,7 +1034,7 @@ class CameraFragment : Fragment() {
             hitEstimation["hiHat"] = true
             hitEstimation["ride"] = true
         }
-        if(position_y > 0.58){
+        if(position_y > 0.61){
             if(hitEstimation["snare"] == false && position_x > 0.45 && position_x < 0.8){
                 //라이드를 쳤으므로 변수에 담기
                 sharedViewModel.data1 = "snare"
@@ -1085,7 +1085,7 @@ class CameraFragment : Fragment() {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(position_y < 0.56){
+        if(position_y < 0.59){
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
