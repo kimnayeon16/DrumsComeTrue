@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="40dp"
+
                     android:text="자유연주"
                     android:textColor="@color/page_text"
                     android:textSize="35sp" />
