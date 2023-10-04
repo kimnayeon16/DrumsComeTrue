@@ -4,15 +4,20 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
+import android.widget.Button
+import android.widget.TextView
 import android.widget.VideoView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.kpop.KpopListActivity
-import com.ssafy.drumscometrue.padPlay.PadPlayActivity
+import com.ssafy.drumscometrue.partPlay.PadPlayActivity
 
 class PracticeMainActivity : AppCompatActivity() {
 
     private lateinit var videoView: VideoView
+    private lateinit var btn: Button
+    private lateinit var textView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,19 +25,21 @@ class PracticeMainActivity : AppCompatActivity() {
 
         // VideoView 초기화 및 동영상 재생
         videoView = findViewById(R.id.videoView)
-        val videoUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.back_video_prac)
-        playVideo(R.raw.back_video_prac)
+        textView = findViewById(R.id.explain_text)
+        btn = findViewById(R.id.practice_move_btn)
+
+        playVideo(R.raw.back_video_prac, "Practice")
 
         val navBottom = findViewById<BottomNavigationView>(R.id.nav_bottom)
         navBottom.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.to_practice -> {
-                    playVideo(R.raw.back_video_prac)
+                    playVideo(R.raw.back_video_prac, "Practice")
                     true
                 }
 
                 R.id.to_snare -> {
-                    playVideo(R.raw.back_video_snare)
+                    playVideo(R.raw.back_video_snare, "Snare")
                     true
                 }
 
@@ -45,24 +52,42 @@ class PracticeMainActivity : AppCompatActivity() {
         videoView.setOnCompletionListener {
             videoView.start()
         }
-
-
     }
 
-    private fun playVideo(videoResId: Int) {
+    private fun playVideo(videoResId: Int, text: String) {
         val videoUri = Uri.parse("android.resource://$packageName/$videoResId")
         videoView.setVideoURI(videoUri)
-        videoView.start()
+
+        videoView.setOnPreparedListener { mediaPlayer ->
+            val videoRatio = mediaPlayer.videoWidth / mediaPlayer.videoHeight.toFloat()
+            val screenRatio = videoView.width / videoView.height.toFloat()
+            val scaleX = videoRatio / screenRatio
+            if (scaleX >= 1f) {
+                videoView.scaleX = scaleX
+            } else {
+                videoView.scaleY = 1f / scaleX
+            }
+            videoView.start()
+        }
+
+        // TextView의 텍스트 변경
+        if(text == "Practice") {
+            textView.text = "Kpop 음악과 악보를 통해 \n게임을 즐기듯 연습하세요!\n"
+        } else {
+            textView.text = "메트로놈과 스네어로 \n박자감각을 익혀보세요!\n"
+        }
+
+        textView.gravity = Gravity.CENTER
+
+        // 버튼의 클릭 리스너 설정
+        btn.setOnClickListener {
+            val intent = if (text == "Practice") {
+                Intent(this, KpopListActivity::class.java)
+            } else {
+                Intent(this, PadPlayActivity::class.java)
+            }
+            startActivity(intent)
+        }
     }
+
 }
-
-
-//        practice1Layout.setOnClickListener {
-//            val intent = Intent(this, KpopListActivity::class.java)
-//            startActivity(intent)
-//        }
-//
-//        practice2Layout.setOnClickListener {
-//            val intent = Intent(this, PadPlayActivity::class.java)
-//            startActivity(intent)
-//        }
