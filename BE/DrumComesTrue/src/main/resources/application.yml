@@ -5,7 +5,9 @@
 spring:
   datasource:
     url: jdbc:mysql://j9b107.p.ssafy.io:3500/drum?serverTimezone=UTC&characterEncoding=UTF-8
+#    url: jdbc:mysql://localhost:3306/drum?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
+#    password: root
     password: q1w2e3r4
     driver-class-name: com.mysql.cj.jdbc.Driver
   security:
@@ -48,10 +50,28 @@ spring:
 
 
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
+
+cloud:
+  aws:
+    s3:
+      bucket: drumcomestrue
+    region:
+      static: ap-northeast-2 #Asia Pacific -> seoul
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIAUEUEPWDIUDY33S2W
+      secret-key: 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
+servlet:
+  multipart:
+    enabled: true
+    max-file-size: 20MB
+    max-request-size: 20MB
+
 server:
   port: 8000
   ssl:
@@ -61,8 +81,9 @@ server:
 jwt:
   secretKey: dasdasf234fuhvertsv34789yhi3sfgg
   access:
-    expiration: 3600000
+    expiration: 1500000
     header: Authorization
   refresh:
     expiration: 1209600000
     header: Authorization-refresh
+# 3600000

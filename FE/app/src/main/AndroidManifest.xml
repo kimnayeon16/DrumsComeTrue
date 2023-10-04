@@ -24,10 +24,11 @@
         android:theme="@style/Theme.DrumsComeTrue"
         tools:targetApi="31">
         <activity
-            android:name=".practice.PracticeMainActivity"
-            android:exported="false" />
+            android:name=".partPlay.OneSoundActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".padPlay.PadPlayActivity"
+            android:name=".partPlay.PadPlayActivity"
             android:exported="false"
             android:screenOrientation="portrait" /> <!-- Kakao SDK 설정 추가 -->
         <meta-data

@@ -264,18 +264,24 @@ class CameraFragment : Fragment() {
 
                     if(!start){
                         val handler = Handler()
-
+                        leftHandEstimation = settingPointEstimation(leftPoint, height, width)
+                        rightHandEstimation = settingPointEstimation(rightPoint, height, width)
                         handler.postDelayed({
-                            // 5초 후에 실행할 코드를 여기에 작성합니다.
-                            settingEstimation(leftHand, height, width)
-                            settingEstimation(rightHand, height, width)
-//                            settingLeftHihat(leftFoot,height,width)
-//                            settingRightBass(rightFoot,height,width)
                             setLeftKnee = leftKnee.position.y
                             setRightKnee  = rightKnee.position.y
                             start = true
+                            // 10초 후에 실행할 코드를 여기에 작성합니다.
                             fragmentCameraBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
-                        }, 5000)
+                            fragmentCameraBinding.layoutOverlay.bassImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.crashImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.fTomImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.hihatImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.hTomImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.mTomImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.rideImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.snareImg.visibility = View.VISIBLE
+
+                        }, 10000)
                     }else{
                         leftHandEstimation = hitPoint(leftPoint, leftHandEstimation, height, width)
                         rightHandEstimation = hitPoint(rightPoint, rightHandEstimation, height, width)
@@ -831,29 +837,6 @@ class CameraFragment : Fragment() {
     }
 
 
-    /**
-     * 각도 계산
-     */
-//    fun angle(pointA: Point, pointB: Point, pointC: Point): Double {
-//        val vectorAB = Point(pointB.x - pointA.x, pointB.y - pointA.y)
-//        val vectorCB = Point(pointB.x - pointC.x, pointB.y - pointC.y)
-//
-//        val dotProduct = (vectorAB.x * vectorCB.x) + (vectorAB.y * vectorCB.y)
-//        val magnitudeAB = Math.sqrt((vectorAB.x * vectorAB.x) + (vectorAB.y * vectorAB.y))
-//        val magnitudeCB = Math.sqrt((vectorCB.x * vectorCB.x) + (vectorCB.y * vectorCB.y))
-//
-//        val cosTheta = dotProduct / (magnitudeAB * magnitudeCB)
-//
-//        // 아크코사인을 사용하여 라디안 단위의 각도를 계산합니다.
-//        val angleRad = Math.acos(cosTheta)
-//
-//        // 라디안 각도를 도로 변환합니다.
-//        val angleDeg = Math.toDegrees(angleRad)
-//
-//        return angleDeg
-//    }
-
-
 
     private fun hitAnimation(imageView: ImageView) {
         // ImageView의 색상을 검은색으로 설정
@@ -919,6 +902,44 @@ class CameraFragment : Fragment() {
         val cY = m * cX + bValue
 
         return Point(cX, cY)
+    }
+
+    private fun settingPointEstimation(point : Point, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> dp비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
+
+        val updates = mutableMapOf(
+            "crash" to false,
+            "ride" to false,
+            "hiHat" to false,
+            "hTom" to false,
+            "mTom" to false,
+            "floorTom" to false,
+            "snare" to false
+        )
+
+        if(position_y > 0.36){
+            updates["crash"] = true
+            updates["hTom"] = true
+            updates["mTom"] = true
+        }else if(position_y > 0.45){
+            updates["crash"] = true
+            updates["ride"] = true
+            updates["hiHat"] = true
+            updates["hTom"] = true
+            updates["mTom"] = true
+        }else if(position_y > 0.58){
+            updates["crash"] = true
+            updates["ride"] = true
+            updates["hiHat"] = true
+            updates["hTom"] = true
+            updates["mTom"] = true
+            updates["floorTom"] = true
+            updates["snare"] = true
+        }
+
+        return updates
     }
 
 

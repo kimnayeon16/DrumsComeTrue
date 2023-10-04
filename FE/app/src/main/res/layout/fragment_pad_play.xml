@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".freePlay.fragment.PadPlayFragment">
+    tools:context=".partPlay.fragment.PadPlayFragment">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/view_finder"

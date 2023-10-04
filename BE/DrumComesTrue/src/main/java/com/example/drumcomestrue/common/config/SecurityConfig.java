@@ -20,6 +20,7 @@ import com.example.drumcomestrue.common.handler.LoginSuccessHandler;
 import com.example.drumcomestrue.common.handler.OAuth2LoginFailureHandler;
 import com.example.drumcomestrue.common.handler.OAuth2LoginSuccessHandler;
 import com.example.drumcomestrue.common.jwt.filter.CustomJsonUsernamePasswordAuthenticationFilter;
+import com.example.drumcomestrue.common.jwt.filter.ExceptionHandlerFilter;
 import com.example.drumcomestrue.common.jwt.filter.JwtAuthenticationProcessingFilter;
 import com.example.drumcomestrue.common.jwt.service.JwtService;
 import com.example.drumcomestrue.common.jwt.service.LoginService;
@@ -57,6 +58,7 @@ public class SecurityConfig {
 			.authorizeRequests()
 			.mvcMatchers("/").permitAll()
 			.mvcMatchers(HttpMethod.POST, "/api/v1/user/signup").permitAll()
+			.mvcMatchers("/api/v1/music/**").permitAll()
 			.mvcMatchers(HttpMethod.POST, "/user/login").permitAll()
 			.mvcMatchers(HttpMethod.GET, "/api/v1/user/login/**").permitAll()
 			.anyRequest().authenticated()
@@ -68,7 +70,7 @@ public class SecurityConfig {
 		return http
 			.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
 			.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class)
-			// .addFilterBefore(exceptionHandlerFilter(), JwtAuthenticationProcessingFilter.class)
+			.addFilterBefore(exceptionHandlerFilter(), JwtAuthenticationProcessingFilter.class)
 			.build();
 	}
 
@@ -110,8 +112,8 @@ public class SecurityConfig {
 		return new JwtAuthenticationProcessingFilter(jwtService, memberRepository);
 	}
 
-	// @Bean
-	// public ExceptionHandlerFilter exceptionHandlerFilter() {
-	// 	return new ExceptionHandlerFilter(objectMapper);
-	// }
+	@Bean
+	public ExceptionHandlerFilter exceptionHandlerFilter() {
+		return new ExceptionHandlerFilter(objectMapper);
+	}
 }
