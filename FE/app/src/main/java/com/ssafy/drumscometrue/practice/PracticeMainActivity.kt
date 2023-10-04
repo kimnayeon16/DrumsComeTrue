@@ -11,7 +11,7 @@ import android.widget.VideoView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.kpop.KpopListActivity
-import com.ssafy.drumscometrue.padPlay.PadPlayActivity
+import com.ssafy.drumscometrue.partPlay.PadPlayActivity
 
 class PracticeMainActivity : AppCompatActivity() {
 
