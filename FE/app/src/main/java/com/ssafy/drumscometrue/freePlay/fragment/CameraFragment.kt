@@ -62,6 +62,7 @@ import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
 import com.ssafy.drumscometrue.SharedViewModel
 import com.ssafy.drumscometrue.databinding.FragmentCameraBinding
 import com.ssafy.drumscometrue.freePlay.OverlayView
+import com.ssafy.drumscometrue.kpop.KPopCountFragment
 import kotlinx.coroutines.delay
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.ExecutorService
@@ -250,6 +251,7 @@ class CameraFragment : Fragment() {
                     val height = image.height
 
 
+
                     // 화면에 그려주기
                     fragmentCameraBinding.overlay.setResults(
                         pose,
@@ -332,6 +334,17 @@ class CameraFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+
+        val childFragmentManager = childFragmentManager
+        val transaction = childFragmentManager.beginTransaction()
+
+        // 추가하려는 자식 프래그먼트를 생성합니다.
+        val childFragment = KPopCountFragment()
+
+        // 자식 프래그먼트를 추가하거나 교체합니다.
+        transaction.replace(R.id.count, childFragment)
+        transaction.commit()
+
         println("onCreate")
         setSound()
     }
@@ -959,9 +972,9 @@ class CameraFragment : Fragment() {
             hitEstimation["hTom"] = true
             hitEstimation["mTom"] = true
         }
-        if(position_y > 0.47) {
+        if(position_y > 0.45) {
             if(hitEstimation["hiHat"] == false && position_x > 0.8){
-                if(leftHihat){
+                if(!leftHihat){
                     //오픈하이햇을 쳤으므로 변수에 담기
                     sharedViewModel.data = "openHiHat"
                     Log.d("board frag로 보낼 데이터","${sharedViewModel.data}")
@@ -1045,7 +1058,7 @@ class CameraFragment : Fragment() {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(position_y < 0.46) {
+        if(position_y < 0.44) {
             hitEstimation["hiHat"] = false
             hitEstimation["ride"] = false
             hitEstimation["floorTom"] = false
