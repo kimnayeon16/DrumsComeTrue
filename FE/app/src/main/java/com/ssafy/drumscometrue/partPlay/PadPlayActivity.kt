@@ -1,9 +1,7 @@
-package com.ssafy.drumscometrue.padPlay
+package com.ssafy.drumscometrue.partPlay
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.ssafy.drumscometrue.R
-import com.ssafy.drumscometrue.databinding.ActivityFreePlayBinding
 import com.ssafy.drumscometrue.databinding.ActivityPadPlayBinding
 
 class PadPlayActivity : AppCompatActivity() {

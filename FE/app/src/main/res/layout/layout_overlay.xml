@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     >
 
-    <com.ssafy.drumscometrue.freePlay.OverlayViewGrid
-        android:id="@+id/overlayViewGrid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+<!--    <com.ssafy.drumscometrue.freePlay.OverlayViewGrid-->
+<!--        android:id="@+id/overlayViewGrid"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        tools:layout_editor_absoluteX="0dp"-->
+<!--        tools:layout_editor_absoluteY="0dp" />-->
 
 <!--    <View-->
 <!--        android:id="@+id/pedal_hihat"-->

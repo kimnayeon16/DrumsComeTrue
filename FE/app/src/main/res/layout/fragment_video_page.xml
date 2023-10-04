@@ -38,11 +38,13 @@
             app:layout_constraintStart_toEndOf="@id/tutor_image"
             app:layout_constraintTop_toTopOf="@id/tutor_image" />
 
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/tutor_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="연습하기"
+            android:label=""
             android:layout_marginEnd="20dp"
             android:background="@drawable/practice_card_bg"
             app:layout_constraintBottom_toTopOf="@+id/tutor_description"
@@ -88,6 +90,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tutor_image" />
+
+        <TextView
+            android:id="@+id/num_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="4"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/tutor_btn"
+            app:layout_constraintStart_toStartOf="@id/tutor_title"
+            app:layout_constraintTop_toBottomOf="@id/tutor_title"
+            android:visibility="invisible"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

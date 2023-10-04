@@ -22,8 +22,8 @@
             android:background="@android:color/transparent"
             android:keepScreenOn="true"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_graph_pad"
-            tools:context=".partPlay.PadPlayActivity" />
+            app:navGraph="@navigation/nav_graph_one_sound"
+            tools:context=".partPlay.OneSoundActivity" />
     </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

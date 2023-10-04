@@ -1,6 +1,23 @@
-package com.ssafy.drumscometrue.freePlay.fragment
+/*
+ * Copyright 2023 The TensorFlow Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.ssafy.drumscometrue.partPlay.fragment
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.media.AudioAttributes
 import android.media.SoundPool
@@ -8,7 +25,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,30 +32,38 @@ import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import androidx.camera.core.AspectRatio
-import androidx.camera.core.Camera
+import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import androidx.camera.core.Preview
+import androidx.camera.core.Camera
+import androidx.camera.core.AspectRatio
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.ssafy.drumscometrue.R
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.pose.Pose
 import com.google.mlkit.vision.pose.PoseDetection
 import com.google.mlkit.vision.pose.PoseDetector
 import com.google.mlkit.vision.pose.PoseLandmark
 import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
-import com.ssafy.drumscometrue.R
-import com.ssafy.drumscometrue.databinding.FragmentCameraBinding
-import com.ssafy.drumscometrue.databinding.FragmentPadPlayBinding
+import com.ssafy.drumscometrue.databinding.FragmentOneSoundBinding
+import com.ssafy.drumscometrue.freePlay.fragment.PermissionsFragment
+import com.ssafy.drumscometrue.kpop.KPopCountFragment
+import com.ssafy.drumscometrue.partPlay.OneSoundActivity
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import kotlin.math.sqrt
 
-class PadPlayFragment : Fragment() {
+
+/**`
+ * 카메라를 사용하여 실시간으로 사용자의 포즈를 감지하고 표시하는 데 사용되는 프래그먼트
+ * TensorFlow와 CameraX라이브러리를 사용하여 구현
+ */
+class OneSoundFragment : Fragment() {
 
     /**
      * 클래스 내부에 정적인 변수와 메서드를 선언하는 데 사용
@@ -48,17 +72,16 @@ class PadPlayFragment : Fragment() {
         private const val TAG = "Pose Landmarker"
     }
 
-//    private var _fragmentCameraBinding: FragmentCameraBinding? = null
+    //
+    private var _fragmentOneSoundBinding: FragmentOneSoundBinding? = null
     private lateinit var displayMetrics: DisplayMetrics
-//
-//    private val fragmentCameraBinding
-//        get() = _fragmentCameraBinding!!
 
-    private var _fragmentPadPlayBinding : FragmentPadPlayBinding? = null
-    private val fragmentPadPlayBinding
-        get() = _fragmentPadPlayBinding!!
+    private val fragmentOneSoundBinding
+        get() = _fragmentOneSoundBinding!!
 
-    private val PadPlayFragment : PadPlayFragment = this
+    private val oneSoundFragment:OneSoundFragment = this
+
+    private lateinit var receivedData: String
 
 
     //카메라 미리보기 및 이미지 분석과 관련된 변수들 -> glSurfaceView로 변경해도 될듯
@@ -78,11 +101,31 @@ class PadPlayFragment : Fragment() {
     private val soundMap = mutableMapOf<String, Int>()
 
     private var start = false
-
-    private var leftSnare = false
-    private var rightSnare = false
+    private var setFoot = false
+    var setLeftKnee : Float = 1F
+    var setRightKnee : Float = 1F
+    private var leftHandEstimation = mutableMapOf<String, Boolean>(
+        "crash" to false,
+        "hiHat" to false,
+        "snare" to false
+    )
+    private var rightHandEstimation = mutableMapOf<String, Boolean>(
+        "crash" to false,
+        "hiHat" to false,
+        "snare" to false
+    )
+    private var leftHihat : Boolean = false
+    private var rightBass : Boolean = false
 
     private lateinit var snareImg : ImageView
+    private lateinit var bassImg : ImageView
+    private lateinit var hihatImg : ImageView
+    private lateinit var fTomImg : ImageView
+    private lateinit var hTomImg : ImageView
+    private lateinit var mTomImg : ImageView
+    private lateinit var crashImg : ImageView
+    private lateinit var rideImg : ImageView
+
 
 
     //ML_Kit테스트
@@ -101,11 +144,12 @@ class PadPlayFragment : Fragment() {
     private val onPoseDetected: (pose: Pose) -> Unit = { pose ->
     }
 
+
     // ML Kit Pose Detector
     private class CameraAnalyzer(
         private val poseDetector: PoseDetector,
         private val onPoseDetected: (pose: Pose) -> Unit,
-        private val padPlayFragment: PadPlayFragment
+        private val oneSoundFragment: OneSoundFragment
     ) : ImageAnalysis.Analyzer {
 
         override fun analyze(imageProxy: ImageProxy) {
@@ -128,7 +172,7 @@ class PadPlayFragment : Fragment() {
                 //포즈감지 성공시 감지된 포즈 onPoseDetected콜백함수에 전달
                 .addOnSuccessListener { pose ->
                     onPoseDetected(pose)
-                    padPlayFragment.poseResults(pose,inputImage)
+                    oneSoundFragment.poseResults(pose,inputImage)
                 }
                 .addOnFailureListener { e ->
                     //handel error
@@ -150,39 +194,80 @@ class PadPlayFragment : Fragment() {
         image: InputImage
     ){
         activity?.runOnUiThread {
-            if (_fragmentPadPlayBinding != null) {
+            if (_fragmentOneSoundBinding != null) {
                 // fragmentCameraBinding.overlay - 화면에 그리기 작업을 처리하는 커스텀 OverlayView
                 setImg()
-//                fragmentPadPlayBinding.overlay.setResults(
-//                    pose,
-//                    imageHeight = image.height,
-//                    imageWidth = image.width,
-//
-//                )
                 if(!pose.allPoseLandmarks.isEmpty()){
+                    // 손====================================
                     val leftHand = pose.getPoseLandmark(19)
                     val rightHand = pose.getPoseLandmark(20)
+
+                    // kick판단==============================
+                    val leftKnee = pose.getPoseLandmark(25)
+                    val rightKnee = pose.getPoseLandmark(26)
+//                    val leftFoot = pose.getPoseLandmark(31)
+//                    val rightFoot = pose.getPoseLandmark(32)
+
+                    // 손 연장선 -> 드럼 채
+                    val rightElbow = pose.getPoseLandmark(14)
+                    val rightWrist = pose.getPoseLandmark(16)
+
+                    val leftElbow = pose.getPoseLandmark(13)
+                    val leftWrist = pose.getPoseLandmark(15)
+
+
+                    val leftPointElbow = Point(leftElbow.position.x , leftElbow.position.y)
+                    val leftPointWrist = Point(leftWrist.position.x , leftWrist.position.y)
+                    val leftPointHand = Point(leftHand.position.x , leftHand.position.y)
+                    val rightPointElbow = Point(rightElbow.position.x , rightElbow.position.y)
+                    val rightPointWrist = Point(rightWrist.position.x , rightWrist.position.y)
+                    val rightPointHand = Point(rightHand.position.x , rightHand.position.y)
+
+                    val leftDistance = calculateDistance(leftPointElbow, leftPointWrist) * 0.8F
+                    val rightDistance = calculateDistance(rightPointElbow, rightPointWrist) * 0.8F
+
+                    val leftPoint = findPointOnLine(leftPointHand, leftPointElbow, leftDistance)
+                    val rightPoint = findPointOnLine(rightPointHand, rightPointElbow, rightDistance)
+
                     val width = image.width
                     val height = image.height
 
-
                     if(!start){
                         val handler = Handler()
+                        leftHandEstimation = settingPointEstimation(leftPoint, height, width)
+                        rightHandEstimation = settingPointEstimation(rightPoint, height, width)
                         handler.postDelayed({
-
+                            setLeftKnee = leftKnee.position.y
+                            setRightKnee  = rightKnee.position.y
                             start = true
-                            fragmentPadPlayBinding.drumPose.visibility = View.INVISIBLE
-                        }, 4000)
+                            // 10초 후에 실행할 코드를 여기에 작성합니다.
+                            fragmentOneSoundBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
+                            fragmentOneSoundBinding.layoutOverlay.bassImg.visibility = View.VISIBLE
+                            fragmentOneSoundBinding.layoutOverlay.crashImg.visibility = View.VISIBLE
+                            fragmentOneSoundBinding.layoutOverlay.fTomImg.visibility = View.VISIBLE
+                            fragmentOneSoundBinding.layoutOverlay.hihatImg.visibility = View.VISIBLE
+                            fragmentOneSoundBinding.layoutOverlay.hTomImg.visibility = View.VISIBLE
+                            fragmentOneSoundBinding.layoutOverlay.mTomImg.visibility = View.VISIBLE
+                            fragmentOneSoundBinding.layoutOverlay.rideImg.visibility = View.VISIBLE
+                            fragmentOneSoundBinding.layoutOverlay.snareImg.visibility = View.VISIBLE
+
+                        }, 10000)
                     }else{
-                        leftHit(leftHand, height, width)
-                        rightHit(rightHand, height, width)
-                        leftBack(leftHand, height, width)
-                        rightBack(rightHand, height, width)
+                        leftHandEstimation = hitPoint(leftPoint, leftHandEstimation, height, width)
+                        rightHandEstimation = hitPoint(rightPoint, rightHandEstimation, height, width)
+                        leftHandEstimation = backPoint(leftPoint, leftHandEstimation, height, width)
+                        rightHandEstimation = backPoint(rightPoint, rightHandEstimation, height, width)
+
+                        hitLeftHihat2(leftKnee, setLeftKnee, height, width)
+                        hitRightBass2(rightKnee, setRightKnee, height, width)
+                        backLeftHihat2(leftKnee, setLeftKnee, height, width)
+                        backRightBass2(rightKnee, setRightKnee, height, width)
+
                     }
                 }
                 // overlayView를 화면에 다시 그리도록 invalidate메서드 호출
                 // -> 포즈 감지 결과가 화면에 업데이트 및 표시됨
-                fragmentPadPlayBinding.overlay.invalidate()
+                fragmentOneSoundBinding.overlay.invalidate()
             }
         }
     }
@@ -208,7 +293,7 @@ class PadPlayFragment : Fragment() {
      * 백그라운드 스레드를 종료
      * */
     override fun onDestroyView() {
-        _fragmentPadPlayBinding = null
+        _fragmentOneSoundBinding = null
         super.onDestroyView()
 
         // Shut down our background executor
@@ -220,6 +305,20 @@ class PadPlayFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+
+        receivedData = arguments?.getString("receivedData").toString()
+
+
+        val childFragmentManager = childFragmentManager
+        val transaction = childFragmentManager.beginTransaction()
+
+        // 추가하려는 자식 프래그먼트를 생성합니다.
+        val childFragment = KPopCountFragment()
+
+        // 자식 프래그먼트를 추가하거나 교체합니다.
+        transaction.replace(R.id.count, childFragment)
+        transaction.commit()
+
         println("onCreate")
         setSound()
     }
@@ -236,10 +335,10 @@ class PadPlayFragment : Fragment() {
         val context = requireContext()
         displayMetrics = context.resources.displayMetrics
         //FragmentCameraBinding클래스를 사용하여 뷰와 데이터 바인딩을 생성
-        _fragmentPadPlayBinding =
-            FragmentPadPlayBinding.inflate(inflater, container, false)
+        _fragmentOneSoundBinding =
+            FragmentOneSoundBinding.inflate(inflater, container, false)
         // fragment의 실제 뷰
-        return fragmentPadPlayBinding.root
+        return fragmentOneSoundBinding.root
     }
 
 
@@ -257,7 +356,7 @@ class PadPlayFragment : Fragment() {
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
         // Wait for the views to be properly laid out
-        fragmentPadPlayBinding.viewFinder.post {
+        fragmentOneSoundBinding.viewFinder.post {
             // Set up the camera and its use cases
             setUpCamera()
         }
@@ -296,7 +395,6 @@ class PadPlayFragment : Fragment() {
      * */
     @SuppressLint("UnsafeOptInUsageError")
     private fun bindCameraUseCases() {
-
         // CameraProvider
         val cameraProvider = cameraProvider
             ?: throw IllegalStateException("Camera initialization failed.")
@@ -310,7 +408,7 @@ class PadPlayFragment : Fragment() {
         // 비율, 디스플레이의 회전 방향을 설정
         preview = Preview.Builder()
             .setTargetAspectRatio(AspectRatio.RATIO_16_9)
-            .setTargetRotation(fragmentPadPlayBinding.viewFinder.display.rotation)
+            .setTargetRotation(fragmentOneSoundBinding.viewFinder.display.rotation)
             .build()
 
         // 이미지 분석 사용 설정
@@ -318,13 +416,13 @@ class PadPlayFragment : Fragment() {
         imageAnalyzer = //이미지 분석기 설정
             ImageAnalysis.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_16_9)    //분석기가 사용할 이미지의 종횡비 설정
-                .setTargetRotation(fragmentPadPlayBinding.viewFinder.display.rotation)   //이미지의 회전 방향 설정
+                .setTargetRotation(fragmentOneSoundBinding.viewFinder.display.rotation)   //이미지의 회전 방향 설정
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)   //이미지 처리 속도가 분석보다 빠를경우 최신 이미지만 유지
                 .build()    // 설정한 내용으로 이미지 분석기 생성
                 // 이미지 분석기의 설정 마무리 : 이미지 객체에 대한 설정작업을 진행하는 클로저 실행
                 .also {
                     it.setAnalyzer(backgroundExecutor) { image ->   // 이미지 분석기에 분석할 작업 설정 -> 이미지 분석기가 카메라에서 받아온 이미지를 처리하는 부분
-                        CameraAnalyzer(poseDetector, onPoseDetected, PadPlayFragment).analyze(image)
+                        CameraAnalyzer(poseDetector, onPoseDetected, oneSoundFragment).analyze(image)
                     }
                 }
 
@@ -338,14 +436,21 @@ class PadPlayFragment : Fragment() {
             )
 
             // 미리보기를 viewFinder에 연결
-            preview?.setSurfaceProvider(fragmentPadPlayBinding.viewFinder.surfaceProvider)
+            preview?.setSurfaceProvider(fragmentOneSoundBinding.viewFinder.surfaceProvider)
         } catch (exc: Exception) {
             Log.e(TAG, "Use case binding failed", exc)
         }
     }
 
     private fun setImg() {
-        snareImg = fragmentPadPlayBinding.padLayoutOverlay.snareImg
+        snareImg = fragmentOneSoundBinding.layoutOverlay.snareImg
+        bassImg = fragmentOneSoundBinding.layoutOverlay.bassImg
+        hihatImg = fragmentOneSoundBinding.layoutOverlay.hihatImg
+        fTomImg = fragmentOneSoundBinding.layoutOverlay.fTomImg
+        hTomImg = fragmentOneSoundBinding.layoutOverlay.hTomImg
+        mTomImg = fragmentOneSoundBinding.layoutOverlay.mTomImg
+        crashImg = fragmentOneSoundBinding.layoutOverlay.crashImg
+        rideImg = fragmentOneSoundBinding.layoutOverlay.rideImg
     }
 
     /** SoundPool설정 */
@@ -365,65 +470,72 @@ class PadPlayFragment : Fragment() {
                 .build()
 
             // 사운드 파일 미리 로드
+            soundMap["bass"] = soundPool.load(context, R.raw.bass2, 1)
             soundMap["snare"] = soundPool.load(context, R.raw.snare, 1)
+            soundMap["openHat"] = soundPool.load(context, R.raw.open_hat, 1)
+            soundMap["closedHat"] = soundPool.load(context, R.raw.closed_hat, 1)
+            soundMap["pedalHat"] = soundPool.load(context, R.raw.pedal_hat, 1)
+            soundMap["crash"] = soundPool.load(context, R.raw.crash, 1)
+            soundMap["ride"] = soundPool.load(context, R.raw.ride, 1)
+            soundMap["hTom"] = soundPool.load(context, R.raw.high_tom, 1)
+            soundMap["mTom"] = soundPool.load(context, R.raw.mid_tom, 1)
+            soundMap["floorTom"] = soundPool.load(context, R.raw.floor_tom, 1)
         }
     }
 
 
-    /** hit판단 */
-    private fun leftHit(landmarkList : PoseLandmark,  width : Int, height : Int){
-        //px -> 비율로 변환하기
-        val position_x = landmarkList.position.x / width
-        val position_y = landmarkList.position.y / height
-        if(position_y > 0.58){
-            if(leftSnare == false && position_x > 0.3 && position_x < 0.7){
-                snareHit()
+    private fun hitLeftHihat2(leftFoot : PoseLandmark, setLeftKnee:Float, width : Int, height : Int){
+        val position_x = leftFoot.position.x / width
+        val position_y = leftFoot.position.y / height
+
+        if(leftHihat == false && position_y > setLeftKnee / height - 0.01){
+
+            Log.d("[Foot] pedalHat hit!","[Foot] pedalHat hit! ${position_y}")
+            val soundId = soundMap["pedalHat"]
+            val soundIdOpen = soundMap["openHat"]
+
+            soundId?.let {
+                soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                //openHat소리 재생중이었으면 소리 끔
+                soundIdOpen?.let{
+                    soundPool.stop(soundIdOpen)
+                }
+                hitAnimation(hihatImg)
             }
-            leftSnare = true
+            leftHihat = true
         }
     }
-    private fun rightHit(landmarkList : PoseLandmark,  width : Int, height : Int){
-        //px -> 비율로 변환하기
-        val position_x = landmarkList.position.x / width
-        val position_y = landmarkList.position.y / height
+    private fun hitRightBass2(rightFoot : PoseLandmark, setRightKnee:Float, width : Int, height : Int){
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
+        if(rightBass == false && position_y > setRightKnee/height-0.01){
 
-        if(position_y > 0.58){
-            if(rightSnare == false && position_x > 0.3 && position_x < 0.7){
-                snareHit()
+            Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
+            val soundId = soundMap["bass"]
+            soundId?.let {
+                soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                hitAnimation(bassImg)
             }
-            rightSnare = true
+            rightBass = true
         }
     }
 
-    private fun snareHit(){
-        Log.d("snare Hit","snare Hit")
-        // 사운드 재생
-        val soundId = soundMap["snare"]
-        soundId?.let {
-            soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
-            hitAnimation(snareImg)
+    private fun backLeftHihat2(leftFoot : PoseLandmark, setLeftKnee:Float, width : Int, height : Int){
+        val position_x = leftFoot.position.x / width
+        val position_y = leftFoot.position.y / height
+        if(position_y < setLeftKnee / height-0.03){
+            leftHihat = false
+        }
+    }
+    private fun backRightBass2(rightFoot : PoseLandmark, setRightKnee:Float, width : Int, height : Int){
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
+        if(position_y < setRightKnee / height-0.03){
+            rightBass = false
         }
     }
 
-    /** hit소리를 낼 준비하는지 판단 */
-    private fun leftBack(landmarkList : PoseLandmark, width : Int, height : Int){
-        //px -> dp비율로 변환하기
-        val position_x = landmarkList.position.x / width
-        val position_y = landmarkList.position.y / height
 
-        if(position_y < 0.56){
-            leftSnare = false
-        }
-    }
-    private fun rightBack(landmarkList : PoseLandmark, width : Int, height : Int){
-        //px -> dp비율로 변환하기
-        val position_x = landmarkList.position.x / width
-        val position_y = landmarkList.position.y / height
-
-        if(position_y < 0.56){
-            rightSnare = false
-        }
-    }
 
     private fun hitAnimation(imageView: ImageView) {
         // ImageView의 색상을 검은색으로 설정
@@ -463,11 +575,117 @@ class PadPlayFragment : Fragment() {
      * */
     data class Point(val x: Float, val y: Float)
 
+    // 두 점 사이의 거리 구하는 함수
     fun calculateDistance(pointA: Point, pointB: Point): Float {
         val dx = pointB.x - pointA.x
         val dy = pointB.y - pointA.y
         return sqrt(dx * dx + dy * dy)
     }
 
+    fun findPointOnLine(a: Point, b: Point, distance: Float): Point {
+
+        // 두 점으로 기울기 구하기
+        val m = (b.y - a.y) / (b.x - a.x)
+
+        // y절편 구하기
+        val bValue = a.y - m * a.x
+
+        var cX :Float = 1F
+
+        if(a.x > b.x){
+            cX = a.x + distance / sqrt(1 + m * m)
+        }else{
+            cX = a.x - distance / sqrt(1 + m * m)
+        }
+
+        val cY = m * cX + bValue
+
+        return Point(cX, cY)
+    }
+
+    private fun settingPointEstimation(point : Point, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> dp비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
+
+        val updates = mutableMapOf(
+            "crash" to false,
+            "hiHat" to false,
+            "snare" to false
+        )
+
+        if(position_y > 0.36){
+            updates["crash"] = true
+        }else if(position_y > 0.45){
+            updates["crash"] = true
+            updates["hiHat"] = true
+        }else if(position_y > 0.58){
+            updates["crash"] = true
+            updates["hiHat"] = true
+            updates["snare"] = true
+        }
+
+        return updates
+    }
+
+
+    private fun hitPoint(point : Point, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> 비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
+
+        if(position_y > 0.45) {
+            if(hitEstimation["hiHat"] == false && position_x > 0.8){
+                if(!leftHihat){
+                    // 사운드 재생
+                    val soundId = soundMap["openHat"]
+                    soundId?.let {
+                        soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                        hitAnimation(hihatImg)
+                    }
+                }else{
+                    // 사운드 재생
+                    val soundId = soundMap["closedHat"]
+                    soundId?.let {
+                        soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                        hitAnimation(hihatImg)
+                    }
+                }
+            }
+            hitEstimation["hiHat"] = true
+        }
+        if(position_y > 0.58){
+            if(hitEstimation["snare"] == false && position_x > 0.45 && position_x < 0.8){
+                // 사운드 재생
+                val soundId = soundMap["snare"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(snareImg)
+                }
+            }
+            hitEstimation["snare"] = true
+        }
+        return hitEstimation
+    }
+
+    private fun backPoint(point : Point, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> dp비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
+
+        if(position_y < 0.35) {
+            hitEstimation["crash"] = false
+            hitEstimation["hiHat"] = false
+            hitEstimation["snare"] = false
+        }
+        if(position_y < 0.44) {
+            hitEstimation["hiHat"] = false
+            hitEstimation["snare"] = false
+        }
+        if(position_y < 0.56){
+            hitEstimation["floorTom"] = false
+        }
+        return hitEstimation
+    }
 
 }
