@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.freePlay.FreePlayActivity
 import com.ssafy.drumscometrue.kpop.KpopListActivity
+import com.ssafy.drumscometrue.practice.PracticeMainActivity
 import com.ssafy.drumscometrue.tutorial.TutorialActivity
 
 class MainPageActivity : AppCompatActivity() {
@@ -91,7 +92,7 @@ class MainPageActivity : AppCompatActivity() {
                 }
 
                 1 -> {
-                    val intent = Intent(this, KpopListActivity::class.java)
+                    val intent = Intent(this, PracticeMainActivity::class.java)
                     startActivity(intent)
                 }
 

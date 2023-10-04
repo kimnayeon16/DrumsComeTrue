@@ -83,6 +83,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
+            android:fontFamily="@font/suite_variable"
             android:text="1. 어쩌고 \n\n2.저쩌고\n\n3.어쩌고저쩌고"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"

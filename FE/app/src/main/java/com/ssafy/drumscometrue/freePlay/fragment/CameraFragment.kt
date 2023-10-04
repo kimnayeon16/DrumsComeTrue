@@ -27,13 +27,16 @@ import android.os.Handler
 import android.os.SystemClock
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -375,6 +378,17 @@ class CameraFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 튜토리얼에서 넘어온 경우에만 퀘스트 텍스트를 설정
+        if (arguments?.getBoolean("fromTutorial", false) == true) {
+            val questText = TextView(requireContext())
+            questText.text = "튜토리얼 1 페이지\n연습하기 버튼을 누르세요"
+            questText.gravity = Gravity.CENTER
+            questText.setTextColor(Color.WHITE)
+
+            // board에 퀘스트 텍스트 추가
+            val board = view.findViewById<FrameLayout>(R.id.board)
+            board.addView(questText)
+        }
         // Initialize our background executor
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
