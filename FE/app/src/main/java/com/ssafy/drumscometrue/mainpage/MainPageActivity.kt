@@ -3,6 +3,7 @@ package com.ssafy.drumscometrue.mainpage
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
@@ -12,15 +13,31 @@ import com.ssafy.drumscometrue.freePlay.FreePlayActivity
 import com.ssafy.drumscometrue.kpop.KpopListActivity
 import com.ssafy.drumscometrue.practice.PracticeMainActivity
 import com.ssafy.drumscometrue.tutorial.TutorialActivity
+import com.ssafy.drumscometrue.user.login.LoginActivity
 
 class MainPageActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
+    private lateinit var logoutBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_page)
 
         viewPager = findViewById(R.id.view_pager)
+        logoutBtn = findViewById(R.id.logout_btn)
+
+        logoutBtn.setOnClickListener {
+            // SharedPreferences 초기화
+            val sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE)
+            sharedPreferences.edit().clear().apply()
+
+            // 로그인 페이지로 이동
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+
+            // MainPageActivity 종료 (선택적)
+            finish()
+        }
 
         initViews()
     }
