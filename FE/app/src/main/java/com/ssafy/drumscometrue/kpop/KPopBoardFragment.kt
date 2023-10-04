@@ -317,7 +317,7 @@ class KPopBoardFragment : Fragment() {
 
 
                 //하이햇, 베이스 - 나비야, 거미
-            }else if (drumValuesArray.toString() == "[3,10]") {
+            } else if (drumValuesArray.toString() == "[3,10]") {
                 val drumHiHatFragment = DrumHiHatFragment(0)
                 val drumBassFragment = DrumBassFragment()
 

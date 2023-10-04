@@ -20,31 +20,6 @@ class MainPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_page)
 
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
-        bottomNav.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.toDrum -> {
-                    val intent = Intent(this, FreePlayActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-
-                R.id.toHome -> {
-//                    val intent = Intent(this, MainActivity::class.java)
-//                    startActivity(intent)
-                    true
-                }
-
-                R.id.toUser -> {
-                    val intent = Intent(this, UserPageActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-
-                else -> false
-            }
-        }
-
         viewPager = findViewById(R.id.view_pager)
 
         initViews()
