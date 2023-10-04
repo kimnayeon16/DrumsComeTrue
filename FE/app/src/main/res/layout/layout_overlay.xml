@@ -6,37 +6,37 @@
     android:layout_height="match_parent"
     >
 
-    <com.ssafy.drumscometrue.freePlay.OverlayViewGrid
-        android:id="@+id/overlayViewGrid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+<!--    <com.ssafy.drumscometrue.freePlay.OverlayViewGrid-->
+<!--        android:id="@+id/overlayViewGrid"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        tools:layout_editor_absoluteX="0dp"-->
+<!--        tools:layout_editor_absoluteY="0dp" />-->
 
-    <View
-        android:id="@+id/pedal_hihat"
-        android:layout_width="100dp"
-        android:layout_height="10dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.003"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.957" />
+<!--    <View-->
+<!--        android:id="@+id/pedal_hihat"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="10dp"-->
+<!--        android:background="@color/black"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.003"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.957" />-->
 
-    <View
-        android:id="@+id/bass"
-        android:layout_width="80dp"
-        android:layout_height="10dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.743"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.958" />
+<!--    <View-->
+<!--        android:id="@+id/bass"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="10dp"-->
+<!--        android:background="@color/black"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.743"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.958" />-->
 
     <ImageView
         android:id="@+id/crash_img"
