@@ -1,9 +1,11 @@
 package com.ssafy.drumscometrue.persistentbottom
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
@@ -22,7 +24,12 @@ class PersistentFragment : Fragment(R.layout.fragment_persistent) {
         binding = FragmentPersistentBinding.bind(view)
 
         // 초기 indicator 색상 설정
-        binding.tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.colorForMusicSelect, null))
+        binding.tabLayout.setSelectedTabIndicatorColor(
+            resources.getColor(
+                R.color.colorForMusicSelect,
+                null
+            )
+        )
 
         // ViewPager2 설정
         Log.d("PersistentFragment", "onViewCreated called")
@@ -63,19 +70,23 @@ class PersistentFragment : Fragment(R.layout.fragment_persistent) {
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when(newState) {
+                when (newState) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         Log.d(TAG, "onStateChanged: 접음")
                     }
+
                     BottomSheetBehavior.STATE_DRAGGING -> {
                         Log.d(TAG, "onStateChanged: 드래그")
                     }
+
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         Log.d(TAG, "onStateChanged: 펼침")
                     }
+
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         Log.d(TAG, "onStateChanged: 숨기기")
                     }
+
                     BottomSheetBehavior.STATE_SETTLING -> {
                         Log.d(TAG, "onStateChanged: 고정됨")
                     }
