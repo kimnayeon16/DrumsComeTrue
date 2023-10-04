@@ -100,6 +100,8 @@ android {
         implementation("com.google.android.material:material:1.9.0")
 
         implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0") //유튜브
+
+        implementation ("com.google.android.exoplayer:exoplayer-core:2.19.1")
     }
 }
 dependencies {

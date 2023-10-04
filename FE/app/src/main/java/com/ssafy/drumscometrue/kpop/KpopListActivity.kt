@@ -11,11 +11,10 @@ import com.ssafy.drumscometrue.adapter.kPopAdapter
 
 class KpopListActivity : AppCompatActivity() {
 
-    var kpopList = arrayListOf<Kpop>(
+    private var kpopList = arrayListOf<Kpop>(
         Kpop("작은별", "작은별", "img_seoul_night", "Star", 5610, 683, 48000, "레벨1"),
         Kpop("곰 세마리", "북극곰", "img_three_bears", "ThreeBears", 6590, 470, 38000, "레벨2"),
-        Kpop("나비야", "나비", "img_butterfly", "Butterfly", 6034, 483, 42000, "레벨2"),
-//        Kpop("Rooftop(옥탑방)", "N.Flying(엔플라잉)", "img_rooftop", "ThreeBears", 500, 480, 10000),
+        Kpop("나비야", "나비", "img_butterfly", "Butterfly", 6517, 483, 42000, "레벨2"),
         Kpop("거미가 줄을 타고 올라갑니다", "거미", "img_spider", "Spider", 4455, 383, 46000, "레벨3")
     )
 

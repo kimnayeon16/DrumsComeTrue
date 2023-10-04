@@ -91,7 +91,7 @@ class MetronomeFragment : Fragment() {
         val metronomeInfoButton = view.findViewById<ImageButton>(R.id.metronomeInfoBtn)
         metronomeInfoButton.setOnClickListener {
             val title = "메트로놈 사용법"
-            val message = "\uD83D\uDD01 - 소리 변경     ▶️ - 재생     +- - bpm 1씩 증가/감소"
+            val message = "  \uD83D\uDD01 -> 소리 변경\n\n  ▶️ -> 재생\n\n  -/+ -> bpm 1씩 감소/증가"
             DialogUtils.showInfoDialog(requireContext(), title, message)
         }
         return view

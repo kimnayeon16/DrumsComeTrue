@@ -49,9 +49,11 @@ class KPopBoardFragment : Fragment() {
 //                val dp35 = dpToPx(rootView.context, 35f)
     private val xPositionStart = 125f
     private val xPositionEnd = -25f
-    private val dp40 = 40f
+    private var dp40 = 0
 //    private val sharedViewModel1 = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
     private var totalHit = 0
+
+    private var margin = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,10 +90,10 @@ class KPopBoardFragment : Fragment() {
                 val drumValuesArray = jsonObject.getJSONArray("drum")
 
                 scoreList.add(Pair(time.toDouble(), drumValuesArray))
-                System.out.println("!!!!!!!!!! ${time} 초에 ${drumValuesArray} 쳐!!!!")
+//                System.out.println("!!!!!!!!!! ${time} 초에 ${drumValuesArray} 쳐!!!!")
             }
 
-            System.out.println(scoreList)
+//            System.out.println(scoreList)
 
             //전주 시간 + 자세 잡는 시간 카운팅(12000)초 뒤에 scheduleNextFragment() 실행
             if (scoreList.isNotEmpty()) {
@@ -100,6 +102,20 @@ class KPopBoardFragment : Fragment() {
                 }, prelude+10500)
             }
         }
+
+        // 비율을 계산합니다.
+        val ratio = 0.10f // 10% 비율
+
+        // 마진을 계산하고 설정합니다.
+        margin = (resources.displayMetrics.widthPixels * ratio).toInt()
+//        dp40 = margin
+        dp40 = 35
+
+        val finishLine = rootView.findViewById<TextView>(R.id.finishLine)
+        val layoutParams = finishLine.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.marginStart = margin
+        finishLine.layoutParams = layoutParams
+
         return rootView
 
     }
@@ -110,7 +126,7 @@ class KPopBoardFragment : Fragment() {
             val pair = scoreList[currentIndex]
             val timeInSeconds = pair.first
             val drumValuesArray = pair.second
-            System.out.println("TimeInSeconed는 ${timeInSeconds}이고, drumValuesArray는 ${drumValuesArray}")
+//            System.out.println("TimeInSeconed는 ${timeInSeconds}이고, drumValuesArray는 ${drumValuesArray}")
 
             // 예약된 시간(밀리초)을 계산합니다.
             val timeInMillis = (timeInSeconds * 1000).toLong()
@@ -122,7 +138,7 @@ class KPopBoardFragment : Fragment() {
                 scheduleNextFragment()
             }, interval)
         }else{
-            sharedViewModel.totalHit = totalHit
+            sharedViewModel.totalHit = totalHit/2
         }
     }
 
@@ -147,7 +163,6 @@ class KPopBoardFragment : Fragment() {
             var dataFromCameraFragment7 = sharedViewModel.data7
             var dataFromCameraFragment8 = sharedViewModel.data8
             var dataFromCameraFragment9 = sharedViewModel.data9
-            System.out.println("!!!!! 어떤 드럼을 쳤나요? $dataFromCameraFragment")
 
             //하이햇 - 곰세마리, 나비야, 거미
             if (drumValuesArray.toString() == "[3]") {
@@ -163,27 +178,27 @@ class KPopBoardFragment : Fragment() {
                 animator.duration = 3000 // 애니메이션 지속 시간 (밀리초)
 
                 animator.addUpdateListener { animation ->
-                    val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
-//                    System.out.println("X Position: $xPosition")
+                    val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표 //100 99 88 0
                     // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
-                        //만약 지금 친 드럼이 hihat이라면
-                        if(dataFromCameraFragment == "openHiHat"){
-                            totalHit+=1
-                            System.out.println("$totalHit 3에서 발생")
-                            var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
-                            //hit 표시
-                            hit?.visibility = View.VISIBLE
-//                            val drumHiHatFragment = DrumHiHatFragment(1)
+                        if (xPosition >= dp40 - 2 && xPosition <= dp40 + 2) { //== 39dp ~ 41dp
+                            System.out.println("xPosition : $xPosition")
+                            //만약 지금 친 드럼이 hihat이라면
+                            if (dataFromCameraFragment == "openHiHat") {
+                                totalHit += 1
+                                System.out.println("$totalHit : 3에서 발생")
+                                var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                                //hit 표시
+                                hit?.visibility = View.VISIBLE
+                                val drumHiHatFragment = DrumHiHatFragment(1)
 //                            transaction.replace(R.id.drumContainer, drumHiHatFragment)
-                            //0.2초 뒤 사라지게 하고 값도 제거
-                            handler.postDelayed({
-                                hit?.visibility = View.INVISIBLE
-                                sharedViewModel.data = ""
-                                dataFromCameraFragment = ""
-                            }, 100)
+                                //0.2초 뒤 사라지게 하고 값도 제거
+                                handler.postDelayed({
+                                    hit?.visibility = View.INVISIBLE
+                                    sharedViewModel.data = ""
+                                    dataFromCameraFragment = ""
+                                }, 100)
+                            }
                         }
-                    }
                 }
                 animator.start()
 
@@ -241,7 +256,7 @@ class KPopBoardFragment : Fragment() {
 
                 animator.addUpdateListener { animation ->
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
-                    System.out.println("X Position: $xPosition")
+//                    System.out.println("X Position: $xPosition")
 
                     // X 좌표가 40dp +- 1일 때의 처리
                     if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
@@ -287,8 +302,10 @@ class KPopBoardFragment : Fragment() {
                     if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
                         //만약 지금 친 드럼이 hihat이라면
                         if(dataFromCameraFragment == "openHiHat"){
+                            System.out.println("dp40: $dp40")
+                            System.out.println("X Position: $xPosition")
                             totalHit+=1
-                            System.out.println("$totalHit 3,8에서 발생")
+                            System.out.println("$totalHit 3,8에서 하이햇 발생")
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                             //hit 표시
                             hit?.visibility = View.VISIBLE
@@ -301,6 +318,7 @@ class KPopBoardFragment : Fragment() {
                         }
                         if(dataFromCameraFragment1 == "snare"){
                             totalHit+=1
+                            System.out.println("$totalHit 3,8에서 스네어 발생")
                             var snare = rootView?.findViewById<TextView>(R.id.hitSnare)
                             //hit 표시
                             snare?.visibility = View.VISIBLE
@@ -317,7 +335,7 @@ class KPopBoardFragment : Fragment() {
 
 
                 //하이햇, 베이스 - 나비야, 거미
-            }else if (drumValuesArray.toString() == "[3,10]") {
+            } else if (drumValuesArray.toString() == "[3,10]") {
                 val drumHiHatFragment = DrumHiHatFragment(0)
                 val drumBassFragment = DrumBassFragment()
 
@@ -334,7 +352,7 @@ class KPopBoardFragment : Fragment() {
 
                 animator.addUpdateListener { animation ->
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
-                    System.out.println("X Position: $xPosition")
+
 
                     // X 좌표가 40dp +- 1일 때의 처리
                     if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
@@ -384,7 +402,7 @@ class KPopBoardFragment : Fragment() {
 
                 animator.addUpdateListener { animation ->
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
-                    System.out.println("X Position: $xPosition")
+//                    System.out.println("X Position: $xPosition")
 
                     // X 좌표가 40dp +- 1일 때의 처리
                     if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
@@ -434,7 +452,7 @@ class KPopBoardFragment : Fragment() {
 
                 animator.addUpdateListener { animation ->
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
-                    System.out.println("X Position: $xPosition")
+//                    System.out.println("X Position: $xPosition")
 
                     // X 좌표가 40dp +- 1일 때의 처리
                     if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {

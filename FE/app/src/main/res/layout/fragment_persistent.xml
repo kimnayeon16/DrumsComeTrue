@@ -22,7 +22,15 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
+            android:background="@color/black"
+            app:tabTextColor="@color/not_selected_color"
+            app:tabSelectedTextColor="@color/selected_color"
             android:layout_height="30dp">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="음악선택" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
