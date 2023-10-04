@@ -49,9 +49,11 @@ class KPopBoardFragment : Fragment() {
 //                val dp35 = dpToPx(rootView.context, 35f)
     private val xPositionStart = 125f
     private val xPositionEnd = -25f
-    private val dp40 = 40f
+    private var dp40 = 0
 //    private val sharedViewModel1 = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
     private var totalHit = 0
+
+    private var margin = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,6 +102,19 @@ class KPopBoardFragment : Fragment() {
                 }, prelude+10500)
             }
         }
+
+        // 비율을 계산합니다.
+        val ratio = 0.10f // 10% 비율
+
+        // 마진을 계산하고 설정합니다.
+        margin = (resources.displayMetrics.widthPixels * ratio).toInt()
+        dp40 = margin
+
+        val finishLine = rootView.findViewById<TextView>(R.id.finishLine)
+        val layoutParams = finishLine.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.marginStart = margin
+        finishLine.layoutParams = layoutParams
+
         return rootView
 
     }
@@ -163,14 +178,13 @@ class KPopBoardFragment : Fragment() {
                 animator.duration = 3000 // 애니메이션 지속 시간 (밀리초)
 
                 animator.addUpdateListener { animation ->
-                    val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
-//                    System.out.println("X Position: $xPosition")
+                    val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표 //100 99 88 0
                     // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
+                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) { //== 39dp ~ 41dp
                         //만약 지금 친 드럼이 hihat이라면
                         if(dataFromCameraFragment == "openHiHat"){
                             totalHit+=1
-                            System.out.println("$totalHit 3에서 발생")
+                            System.out.println("$totalHit : 3에서 발생")
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                             //hit 표시
                             hit?.visibility = View.VISIBLE
