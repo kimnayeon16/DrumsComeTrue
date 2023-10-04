@@ -59,15 +59,47 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:text="안녕하세요?"
+            android:text="곡제목"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:gravity="center"
            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:text="훌륭한 연주였어요!"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="총 hit 개수"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/totalHit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:gravity="center"
+            />
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="70dp"
             android:layout_height="70dp"
+            android:layout_marginBottom="20dp"
             android:indeterminateOnly="false"
             android:progressDrawable="@drawable/progressbar_circle"
             tools:progress="60"

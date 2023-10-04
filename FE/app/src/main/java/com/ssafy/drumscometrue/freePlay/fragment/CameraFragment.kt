@@ -27,13 +27,16 @@ import android.os.Handler
 import android.os.SystemClock
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -45,6 +48,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 //import com.google.firebase.ml.vision.common.FirebaseVisionImage
 //import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
@@ -55,8 +59,10 @@ import com.google.mlkit.vision.pose.PoseDetection
 import com.google.mlkit.vision.pose.PoseDetector
 import com.google.mlkit.vision.pose.PoseLandmark
 import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
+import com.ssafy.drumscometrue.SharedViewModel
 import com.ssafy.drumscometrue.databinding.FragmentCameraBinding
 import com.ssafy.drumscometrue.freePlay.OverlayView
+import com.ssafy.drumscometrue.kpop.KPopCountFragment
 import kotlinx.coroutines.delay
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.ExecutorService
@@ -156,6 +162,7 @@ class CameraFragment : Fragment() {
     private val onPoseDetected: (pose: Pose) -> Unit = { pose ->
     }
 
+
     // ML Kit Pose Detector
     private class CameraAnalyzer(
         private val poseDetector: PoseDetector,
@@ -208,74 +215,82 @@ class CameraFragment : Fragment() {
             if (_fragmentCameraBinding != null) {
                 // fragmentCameraBinding.overlay - 화면에 그리기 작업을 처리하는 커스텀 OverlayView
                 setImg()
-                fragmentCameraBinding.overlay.setResults(
-                    pose,
-                    imageHeight = image.height,
-                    imageWidth = image.width
-                )
                 if(!pose.allPoseLandmarks.isEmpty()){
+                    // 손====================================
                     val leftHand = pose.getPoseLandmark(19)
                     val rightHand = pose.getPoseLandmark(20)
-//                    val leftKnee = pose.getPoseLandmark(25)
-//                    val rightKnee = pose.getPoseLandmark(26)
-                    val leftFoot = pose.getPoseLandmark(31)
-                    val rightFoot = pose.getPoseLandmark(32)
 
+                    // kick판단==============================
+                    val leftKnee = pose.getPoseLandmark(25)
+                    val rightKnee = pose.getPoseLandmark(26)
+//                    val leftFoot = pose.getPoseLandmark(31)
+//                    val rightFoot = pose.getPoseLandmark(32)
+
+                    // 손 연장선 -> 드럼 채
                     val rightElbow = pose.getPoseLandmark(14)
                     val rightWrist = pose.getPoseLandmark(16)
-                    val rightIndex = pose.getPoseLandmark(20)
+
                     val leftElbow = pose.getPoseLandmark(13)
                     val leftWrist = pose.getPoseLandmark(15)
-                    val leftIndex = pose.getPoseLandmark(19)
-
-//                    val leftDistance = calculateDistance(leftElbow.position.x, leftElbow.position.y, leftWrist.position.x, leftWrist.position.y) / 2
-//                    val rightDistance = calculateDistance(rightElbow.position.x, rightElbow.position.y, rightWrist.position.x, rightWrist.position.y) / 2
 
 
+                    val leftPointElbow = Point(leftElbow.position.x , leftElbow.position.y)
+                    val leftPointWrist = Point(leftWrist.position.x , leftWrist.position.y)
+                    val leftPointHand = Point(leftHand.position.x , leftHand.position.y)
+                    val rightPointElbow = Point(rightElbow.position.x , rightElbow.position.y)
+                    val rightPointWrist = Point(rightWrist.position.x , rightWrist.position.y)
+                    val rightPointHand = Point(rightHand.position.x , rightHand.position.y)
 
-                    // 각도를 위한 Point
-//                    val leftElbowPoint = Point(leftElbow.position.x.toDouble(), leftElbow.position.y.toDouble())
-//                    val leftWristPoint = Point(leftWrist.position.x.toDouble(), leftWrist.position.y.toDouble())
-//                    val leftInedxPoint = Point(leftIndex.position.x.toDouble(), leftIndex.position.y.toDouble())
-//                    val rightElbowPoint = Point(rightElbow.position.x.toDouble(), rightElbow.position.y.toDouble())
-//                    val rightWristPoint = Point(rightWrist.position.x.toDouble(), rightWrist.position.y.toDouble())
-//                    val rightInedxPoint = Point(rightIndex.position.x.toDouble(), rightIndex.position.y.toDouble())
-//
-//                    val leftAngle = angle(leftElbowPoint, leftWristPoint, leftInedxPoint)
-//                    val rightAngle = angle(rightElbowPoint, rightWristPoint, rightInedxPoint)
+                    val leftDistance = calculateDistance(leftPointElbow, leftPointWrist) * 0.8F
+                    val rightDistance = calculateDistance(rightPointElbow, rightPointWrist) * 0.8F
 
-//                    println(rightAngle)
+                    val leftPoint = findPointOnLine(leftPointHand, leftPointElbow, leftDistance)
+                    val rightPoint = findPointOnLine(rightPointHand, rightPointElbow, rightDistance)
 
                     val width = image.width
                     val height = image.height
+
+
+
+                    // 화면에 그려주기
+                    fragmentCameraBinding.overlay.setResults(
+                        pose,
+                        imageHeight = image.height,
+                        imageWidth = image.width,
+                        leftPoint,
+                        rightPoint
+                    )
 
 
                     if(!start){
                         val handler = Handler()
 
                         handler.postDelayed({
-                            // 3초 후에 실행할 코드를 여기에 작성합니다.
+                            // 5초 후에 실행할 코드를 여기에 작성합니다.
                             settingEstimation(leftHand, height, width)
                             settingEstimation(rightHand, height, width)
-                            settingLeftHihat(leftFoot,height,width)
-                            settingRightBass(rightFoot,height,width)
-//                            setLeftKnee = leftKnee.position.y
-//                            setRightKnee  = rightKnee.position.y
+//                            settingLeftHihat(leftFoot,height,width)
+//                            settingRightBass(rightFoot,height,width)
+                            setLeftKnee = leftKnee.position.y
+                            setRightKnee  = rightKnee.position.y
                             start = true
                             fragmentCameraBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
-                        }, 4000)
+                        }, 5000)
                     }else{
-                        leftHandEstimation = cameraFragment.hit(leftHand, cameraFragment.leftHandEstimation, height, width)
-                        rightHandEstimation = cameraFragment.hit(rightHand, cameraFragment.rightHandEstimation, height, width)
-                        leftHandEstimation = cameraFragment.back(leftHand, cameraFragment.leftHandEstimation, height, width)
-                        rightHandEstimation = cameraFragment.back(rightHand, cameraFragment.rightHandEstimation, height, width)
+                        leftHandEstimation = hitPoint(leftPoint, leftHandEstimation, height, width)
+                        rightHandEstimation = hitPoint(rightPoint, rightHandEstimation, height, width)
+                        leftHandEstimation = backPoint(leftPoint, leftHandEstimation, height, width)
+                        rightHandEstimation = backPoint(rightPoint, rightHandEstimation, height, width)
 
-                        hitLeftHihat(leftFoot, height, width)
-                        hitRightBass(rightFoot, height, width)
-                        backLeftHihat(leftFoot, height, width)
-                        backRightBass(rightFoot, height, width)
+                        hitLeftHihat2(leftKnee, setLeftKnee, height, width)
+                        hitRightBass2(rightKnee, setRightKnee, height, width)
+                        backLeftHihat2(leftKnee, setLeftKnee, height, width)
+                        backRightBass2(rightKnee, setRightKnee, height, width)
 
-                        println(rightHand.position.x / image.height)
+//                        hitLeftHihat(leftFoot, height, width)
+//                        hitRightBass(rightFoot, height, width)
+//                        backLeftHihat(leftFoot, height, width)
+//                        backRightBass(rightFoot, height, width)
 
                     }
                 }
@@ -319,6 +334,17 @@ class CameraFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+
+        val childFragmentManager = childFragmentManager
+        val transaction = childFragmentManager.beginTransaction()
+
+        // 추가하려는 자식 프래그먼트를 생성합니다.
+        val childFragment = KPopCountFragment()
+
+        // 자식 프래그먼트를 추가하거나 교체합니다.
+        transaction.replace(R.id.count, childFragment)
+        transaction.commit()
+
         println("onCreate")
         setSound()
     }
@@ -352,6 +378,17 @@ class CameraFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 튜토리얼에서 넘어온 경우에만 퀘스트 텍스트를 설정
+        if (arguments?.getBoolean("fromTutorial", false) == true) {
+            val questText = TextView(requireContext())
+            questText.text = "튜토리얼 1 페이지\n연습하기 버튼을 누르세요"
+            questText.gravity = Gravity.CENTER
+            questText.setTextColor(Color.WHITE)
+
+            // board에 퀘스트 텍스트 추가
+            val board = view.findViewById<FrameLayout>(R.id.board)
+            board.addView(questText)
+        }
         // Initialize our background executor
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
@@ -395,7 +432,6 @@ class CameraFragment : Fragment() {
      * */
     @SuppressLint("UnsafeOptInUsageError")
     private fun bindCameraUseCases() {
-
         // CameraProvider
         val cameraProvider = cameraProvider
             ?: throw IllegalStateException("Camera initialization failed.")
@@ -658,9 +694,9 @@ class CameraFragment : Fragment() {
             hitEstimation["snare"] = true
             hitEstimation["floorTom"] = true
         }
-
         return hitEstimation
     }
+
 
     private fun hitLeftHihat(leftFoot : PoseLandmark, width : Int, height : Int){
         val position_x = leftFoot.position.x / width
@@ -782,14 +818,14 @@ class CameraFragment : Fragment() {
     private fun backLeftHihat2(leftFoot : PoseLandmark, setLeftKnee:Float, width : Int, height : Int){
         val position_x = leftFoot.position.x / width
         val position_y = leftFoot.position.y / height
-        if(position_y < setLeftKnee / height-0.02){
+        if(position_y < setLeftKnee / height-0.03){
             leftHihat = false
         }
     }
     private fun backRightBass2(rightFoot : PoseLandmark, setRightKnee:Float, width : Int, height : Int){
         val position_x = rightFoot.position.x / width
         val position_y = rightFoot.position.y / height
-        if(position_y < setRightKnee / height-0.02){
+        if(position_y < setRightKnee / height-0.03){
             rightBass = false
         }
     }
@@ -857,12 +893,184 @@ class CameraFragment : Fragment() {
      * */
     data class Point(val x: Float, val y: Float)
 
+    // 두 점 사이의 거리 구하는 함수
     fun calculateDistance(pointA: Point, pointB: Point): Float {
         val dx = pointB.x - pointA.x
         val dy = pointB.y - pointA.y
         return sqrt(dx * dx + dy * dy)
     }
 
+    fun findPointOnLine(a: Point, b: Point, distance: Float): Point {
+
+        // 두 점으로 기울기 구하기
+        val m = (b.y - a.y) / (b.x - a.x)
+
+        // y절편 구하기
+        val bValue = a.y - m * a.x
+
+        var cX :Float = 1F
+
+        if(a.x > b.x){
+            cX = a.x + distance / sqrt(1 + m * m)
+        }else{
+            cX = a.x - distance / sqrt(1 + m * m)
+        }
+
+        val cY = m * cX + bValue
+
+        return Point(cX, cY)
+    }
+
+
+    private fun hitPoint(point : Point, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> 비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
+
+        //어떤 드럼을 쳤는지 판별하기 위한 변수(KPopoBoardFragment로 보내기)
+        val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        if(position_y > 0.36) {
+            if(hitEstimation["crash"] == false && position_x > 0.65 && position_x < 0.85){
+                //Crash를 쳤으므로 변수에 담기
+                sharedViewModel.data2 = "Crash"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data2}")
+                Log.d("Crash","Crash Hit")
+                // 사운드 재생
+                val soundId = soundMap["crash"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(crashImg)
+                }
+            }
+
+            if (hitEstimation["hTom"] == false && position_x > 0.4 && position_x < 0.6) {
+                //하이탐?을 쳤으므로 변수에 담기
+                sharedViewModel.data6 = "hTom"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data6}")
+                Log.d("hTom Hit", "hTom Hit")
+                // 사운드 재생
+                val soundId = soundMap["hTom"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(hTomImg)
+                }
+            }
+            if (hitEstimation["mTom"] == false && position_x > 0.15 && position_x < 0.35) {
+                //미들탐 ?을 쳤으므로 변수에 담기
+                sharedViewModel.data7 = "mTom"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data7}")
+                Log.d("mTom Hit", "mTom Hit")
+                // 사운드 재생
+                val soundId = soundMap["mTom"]
+                soundId?.let {
+                    soundPool.play(it, 0.8f, 0.7f, 1, 0, 1.0f)
+                    hitAnimation(mTomImg)
+                }
+            }
+            hitEstimation["crash"] = true
+            hitEstimation["hTom"] = true
+            hitEstimation["mTom"] = true
+        }
+        if(position_y > 0.45) {
+            if(hitEstimation["hiHat"] == false && position_x > 0.8){
+                if(!leftHihat){
+                    //오픈하이햇을 쳤으므로 변수에 담기
+                    sharedViewModel.data = "openHiHat"
+                    Log.d("board frag로 보낼 데이터","${sharedViewModel.data}")
+                    Log.d("openHat Hit","openHat Hit")
+                    // 사운드 재생
+                    val soundId = soundMap["openHat"]
+                    soundId?.let {
+                        soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                        hitAnimation(hihatImg)
+                    }
+                }else{
+                    //클로즈 하이햇을 쳤으므로 변수에 담기
+                    sharedViewModel.data4 = "closedHat"
+                    Log.d("board frag로 보낼 데이터","${sharedViewModel.data4}")
+                    Log.d("closedHat Hit","closedHat Hit")
+                    // 사운드 재생
+                    val soundId = soundMap["closedHat"]
+                    soundId?.let {
+                        soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                        hitAnimation(hihatImg)
+                    }
+                }
+            }
+            if(hitEstimation["ride"] == false && position_x < 0.25){
+                //라이드를 쳤으므로 변수에 담기
+                sharedViewModel.data3 = "ride"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data3}")
+                Log.d("ride Hit","ride Hit")
+                // 사운드 재생
+                val soundId = soundMap["ride"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(rideImg)
+                }
+            }
+            hitEstimation["hiHat"] = true
+            hitEstimation["ride"] = true
+        }
+        if(position_y > 0.58){
+            if(hitEstimation["snare"] == false && position_x > 0.45 && position_x < 0.8){
+                //라이드를 쳤으므로 변수에 담기
+                sharedViewModel.data1 = "snare"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data1}")
+                Log.d("snare Hit","snare Hit")
+                // 사운드 재생
+                val soundId = soundMap["snare"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(snareImg)
+                }
+            }
+            if(hitEstimation["floorTom"] == false && position_x > 0.05 && position_x < 0.25){
+                //플로어를 쳤으므로 변수에 담기
+                sharedViewModel.data8 = "floor"
+                Log.d("board frag로 보낼 데이터","${sharedViewModel.data8}")
+                Log.d("floorTom Hit","floorTom Hit")
+                // 사운드 재생
+                val soundId = soundMap["floorTom"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(fTomImg)
+                }
+            }
+            hitEstimation["snare"] = true
+            hitEstimation["floorTom"] = true
+        }
+        return hitEstimation
+    }
+
+    private fun backPoint(point : Point, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> dp비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
+
+        if(position_y < 0.35) {
+            hitEstimation["crash"] = false
+            hitEstimation["ride"] = false
+            hitEstimation["hiHat"] = false
+            hitEstimation["hTom"] = false
+            hitEstimation["mTom"] = false
+            hitEstimation["floorTom"] = false
+            hitEstimation["snare"] = false
+        }
+        if(position_y < 0.44) {
+            hitEstimation["hiHat"] = false
+            hitEstimation["ride"] = false
+            hitEstimation["floorTom"] = false
+            hitEstimation["snare"] = false
+        }
+        if(position_y < 0.56){
+            hitEstimation["floorTom"] = false
+            hitEstimation["snare"] = false
+        }
+
+        return hitEstimation
+    }
 
 
 }

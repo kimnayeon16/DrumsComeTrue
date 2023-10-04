@@ -6,9 +6,11 @@
     tools:context=".kpop.DrumHiHatFragment">
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/tick_hihat"
-        android:layout_marginTop="30dp"/>
+        android:id="@+id/hiHat"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/kpop_tick_hihat"
+        android:layout_marginTop="25dp"
+        android:visibility="visible"/>
 
 </FrameLayout>

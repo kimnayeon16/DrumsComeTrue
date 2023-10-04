@@ -8,6 +8,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+//import android.support.v4.media.MediaBrowserCompat.MediaItem
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -19,10 +20,12 @@ import kotlin.concurrent.timer
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.ssafy.drumscometrue.SharedViewModel
 import com.ssafy.drumscometrue.databinding.ActivityKpopPlayBinding
-import com.ssafy.drumscometrue.databinding.ActivityMainBinding
-import java.util.TimerTask
-import kotlin.concurrent.scheduleAtFixedRate
+import org.w3c.dom.Text
 
 
 class KpopPlayActivity : AppCompatActivity() {
@@ -31,16 +34,22 @@ class KpopPlayActivity : AppCompatActivity() {
     //음원 재생 변수
     private var mediaPlayer : MediaPlayer ?= null
     //곡 시작할 때 3,2,1, start 시간 재기 위한 변수
-    private var startTime = 5
+    private var startTime = 12
     //필요 없는 부분일 수도 있음.
     private var songTime = 0
     private var timerSong: Timer ?= null
     //3,2,1 카운트 및 노래 시작 시간을 위한 timer
     private var timerTask: Timer ?= null
 
+    private val handler = Handler()
+
     //곡제목
     private var songName: String ? = null
     private lateinit var binding: ActivityKpopPlayBinding
+
+    private var exoPlayer: SimpleExoPlayer? = null
+
+//    private lateinit var sharedViewModel1: SharedViewModel
 
 
 
@@ -51,17 +60,26 @@ class KpopPlayActivity : AppCompatActivity() {
         binding = ActivityKpopPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            startDownload()
-        }, 5000)
+        val displayMetrics = resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
 
-        //KpopListActivity에서 받은 값
+        System.out.println("screenWidth $screenWidth")
+
         val song = intent.getStringExtra("song")
         val score = intent.getStringExtra("score")
         val prelude = intent.getLongExtra("prelude", 0)
         val interval = intent.getLongExtra("interval", 0)
+        val songTotalTime = intent.getLongExtra("songTotalTime", 0)
+        val level = intent.getStringExtra("level")
         //곡제목 변수에 activity에서 받은 값 넣기
         songName = song
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            totalSongTime(songTotalTime)
+        }, 12000)
+
+        //KpopListActivity에서 받은 값
+
 
 
         val cameraFragment = CameraFragment()
@@ -73,6 +91,7 @@ class KpopPlayActivity : AppCompatActivity() {
         args.putString("score", score)
         args.putLong("prelude", prelude)
         args.putLong("interval", interval)
+        args.putString("level", level)
         kPopBoardFragment.arguments = args
         //kPopCountFragment 생성
         val kPopCountFragment = KPopCountFragment()
@@ -92,16 +111,20 @@ class KpopPlayActivity : AppCompatActivity() {
         //시작 카운트 및 음악 실행
         startCountdown()
 
-        val songLengthMillis = 40000L // 노래의 길이(밀리초)
+        val songLengthMillis = songTotalTime + 12000// 노래의 길이(밀리초)
         val modalDelayMillis = 6000L // 모달창이 표시된 후 자동 이동까지의 딜레이(밀리초)
 
         Handler().postDelayed({
+            var sharedViewModel1 = ViewModelProvider(this).get(SharedViewModel::class.java)
             // 모달창 띄우기
             var finishSign: LinearLayout = findViewById(R.id.finishSign)
             var finishSong: TextView = findViewById(R.id.finishSong)
             var progressBar : ProgressBar = findViewById(R.id.progressBar)
+            var totalHit : TextView = findViewById(R.id.totalHit)
             finishSign.visibility = View.VISIBLE
             finishSong.text = "$song"
+            var total = sharedViewModel1.totalHit
+            totalHit.text = "${total}개"
             //로딩 페이지 - progressBar 타이머 업데이트
             val progressBarUpdateTimer = Timer()
             val progressBarUpdateInterval = 1000L
@@ -115,8 +138,16 @@ class KpopPlayActivity : AppCompatActivity() {
 
             animator.addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
+                    mediaPlayer?.stop()
+                    mediaPlayer?.release()
+                    mediaPlayer = null
+
+                    // 타이머 취소
+                    timerTask?.cancel()
+
                     // 애니메이션 종료 후 다른 액티비티로 이동하는 코드 추가
                     val intent = Intent(this@KpopPlayActivity, KpopListActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                     finish() // 현재 액티비티 종료 (선택사항)
                 }
@@ -125,8 +156,8 @@ class KpopPlayActivity : AppCompatActivity() {
         }, songLengthMillis)
     }
 
-    private fun startDownload() {
-        val durationInSeconds = 40 // 다운로드를 원하는 시간 (초)
+    private fun totalSongTime(songTotalTime: Long) {
+        val durationInSeconds = songTotalTime/1000 // 다운로드를 원하는 시간 (초)
         val totalProgressSteps = 100 // 전체 프로그레스 단계
         val updateInterval = (durationInSeconds * 1000) / totalProgressSteps // 업데이트 간격 (밀리초)
         val increment = 1
@@ -143,31 +174,6 @@ class KpopPlayActivity : AppCompatActivity() {
         }
 
         progressAnimator.start()
-
-//        fun updateProgress() {
-//            progress += increment
-//            binding.progressSong.progress = (progress * 100 / totalProgressSteps)
-//
-//            if (progress < 100) {
-//                handler.postDelayed({ updateProgress() }, updateInterval.toLong())
-//            }
-//        }
-//
-//        updateProgress()
-
-//        Thread(Runnable {
-//            while (progress < 100) {
-//                progress += 1
-//
-//                // UI 업데이트
-//                runOnUiThread {
-////                    binding.progressSong.progress = progress
-//                    binding.progressSong.progress = (progress * 100 / totalProgressSteps)
-//                }
-////                Thread.sleep(50)
-//                Thread.sleep(updateInterval.toLong())
-//            }
-//        }).start()
     }
 
     //곡 연주 시작 전 카운트다운
@@ -183,7 +189,6 @@ class KpopPlayActivity : AppCompatActivity() {
             else -> R.raw.rooftop // 기본값으로 설정할 리소스 ID
         }
 
-        //startTime = 500
         startTime = startTime.toString().toInt()*100
         //0.01초마다 작업 수행
         timerTask = timer(period = 10){
@@ -193,16 +198,24 @@ class KpopPlayActivity : AppCompatActivity() {
 //                    countTime.text = "${sec-1}"
                 } else if (sec == 1){
 //                    countTime.text = "Start"
-                } else{
+                } else if(sec == 0){
 //                    countTime.text = ""
 //                    countTime.setPadding(0, 0, 0, 0)
                     timerTask?.cancel() //timeTask 종료
-                    mediaPlayer = MediaPlayer.create(this@KpopPlayActivity, soundResId) //음악 시작
-                    mediaPlayer?.start()
+                    playMusic(soundResId)
+
+//                    mediaPlayer = MediaPlayer.create(this@KpopPlayActivity, soundResId) //음악 시작
+//                    mediaPlayer?.start()
                 }
             }
             startTime--
         }
+    }
+
+    private fun playMusic(soundResId: Int) {
+        mediaPlayer = MediaPlayer.create(this@KpopPlayActivity, soundResId) //음악 시작
+        mediaPlayer?.seekTo(0)
+        mediaPlayer?.start()
     }
 
     override fun onStop(){
@@ -232,6 +245,12 @@ class KpopPlayActivity : AppCompatActivity() {
 
             transaction.commit()
         }
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
+
+        // 타이머 취소
+        timerTask?.cancel()
 
         super.onBackPressed()
     }

@@ -12,7 +12,7 @@ import java.util.Timer
 import kotlin.concurrent.timer
 
 class KPopCountFragment : Fragment() {
-    private var startTime = 5
+    private var startTime = 12
     private var timerTask: Timer?= null
 
     override fun onCreateView(
@@ -30,7 +30,7 @@ class KPopCountFragment : Fragment() {
                     countTime?.text = "${sec-1}"
                 } else if (sec == 1){
                     countTime?.text = "Start!"
-                } else{
+                } else if (sec == 0){
                     countTime?.text = ""
                     countTime?.setPadding(0, 0, 0, 0)
 
