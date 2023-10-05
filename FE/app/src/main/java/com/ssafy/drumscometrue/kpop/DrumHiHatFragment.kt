@@ -13,7 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.ssafy.drumscometrue.R
 
-class DrumHiHatFragment(private val isVISIBLE: Int) : Fragment() {
+class DrumHiHatFragment() : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -22,15 +22,15 @@ class DrumHiHatFragment(private val isVISIBLE: Int) : Fragment() {
 
         val imageView = rootView.findViewById<ImageView>(R.id.hiHat)
 
-        if (isVISIBLE == 1) {
-            imageView.visibility = View.INVISIBLE
-            imageView.invalidate()
-            System.out.println("언제 invisible로 바꾸는건데?")
-        }else{
-            imageView.visibility = View.VISIBLE
-            imageView.invalidate()
-            System.out.println("다시 보여줘")
-        }
+//        if (isVISIBLE == 1) {
+//            imageView.visibility = View.INVISIBLE
+//            imageView.invalidate()
+//            System.out.println("언제 invisible로 바꾸는건데?")
+//        }else{
+//            imageView.visibility = View.VISIBLE
+//            imageView.invalidate()
+//            System.out.println("다시 보여줘")
+//        }
 
         return rootView
     }
