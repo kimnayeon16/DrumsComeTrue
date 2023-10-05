@@ -60,6 +60,16 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
         invalidate() // 뷰를 다시 그리도록 요청
     }
 
+    fun setResultsBass(pose: Pose, imageHeight: Int, imageWidth: Int, leftPoint: CameraFragment.Point, rightPoint:CameraFragment.Point) {
+        results = pose
+        this.imageHeight = imageHeight
+        this.imageWidth = imageWidth
+        this.leftPoint = leftPoint
+        this.rightPoint = rightPoint
+
+        invalidate() // 뷰를 다시 그리도록 요청
+    }
+
     private fun initPaints() {
         linePaint.color = ContextCompat.getColor(context!!, R.color.mp_color_secondary)
         linePaint.strokeWidth = LANDMARK_STROKE_WIDTH
