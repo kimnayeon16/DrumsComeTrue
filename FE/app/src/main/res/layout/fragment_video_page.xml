@@ -16,13 +16,12 @@
         app:autoPlay="false"
         tools:ignore="MissingConstraints" />
 
-    <!-- 텍스트를 표시할 TextView -->
-    <androidx.constraintlayout.motion.widget.MotionLayout
-        android:id="@+id/tutor_video_info"
+    <!-- 첫 번째 서브 레이아웃 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/first_sub_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layoutDescription="@xml/fragment_video_page_xml_tutor_video_info_scene">
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteY="231dp">
 
         <TextView
             android:id="@+id/tutor_title"
@@ -45,16 +44,11 @@
             android:id="@+id/tutor_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
-=======
-            android:text="연습하기"
-            android:label=""
->>>>>>> 9c8a757f04a537b921022303f1caf479373877d4
             android:layout_marginEnd="20dp"
             android:background="@drawable/practice_card_bg"
             android:text="연습하기"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/tutor_description"
+            app:layout_constraintBottom_toBottomOf="@+id/first_sub_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tutor_title"
             app:layout_constraintTop_toTopOf="parent" />
@@ -81,17 +75,29 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_circle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/second_sub_layout"
+        android:layout_width="match_parent"
+        android:background="@drawable/main_bg"
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content">
+
         <TextView
+
             android:id="@+id/tutor_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
-            android:background="#0A0A0A"
+
             android:ellipsize="end"
             android:fontFamily="@font/suite_variable"
             android:text="1. 어쩌고 \n\n2.저쩌고\n\n3.어쩌고저쩌고"
@@ -99,7 +105,7 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tutor_image" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/num_btn"
@@ -111,13 +117,11 @@
             android:singleLine="true"
             android:text="4"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@id/tutor_btn"
-            app:layout_constraintStart_toStartOf="@id/tutor_title"
-            app:layout_constraintTop_toBottomOf="@id/tutor_title"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tutor_description" />
 
-
-    </androidx.constraintlayout.motion.widget.MotionLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
