@@ -93,7 +93,10 @@ class KPopBoardFragment : Fragment() {
 //                System.out.println("!!!!!!!!!! ${time} 초에 ${drumValuesArray} 쳐!!!!")
             }
 
-//            System.out.println(scoreList)
+            handler.postDelayed({
+                var poseGuide = rootView.findViewById<TextView>(R.id.poseGuide)
+                poseGuide.visibility = View.INVISIBLE
+            }, 13000)
 
             //전주 시간 + 자세 잡는 시간 카운팅(12000)초 뒤에 scheduleNextFragment() 실행
             if (scoreList.isNotEmpty()) {
@@ -137,8 +140,10 @@ class KPopBoardFragment : Fragment() {
                 scheduleNextFragment()
             }, interval)
         }else{
-            System.out.println("totalHit ???!!!!!! $totalHit")
-            sharedViewModel.totalHit = totalHit
+            handler.postDelayed({
+                System.out.println("totalHit ???!!!!!! $totalHit")
+                sharedViewModel.totalHit = totalHit
+            }, 2000)
         }
     }
 
@@ -166,7 +171,7 @@ class KPopBoardFragment : Fragment() {
             var dataFromCameraFragment8 = sharedViewModel.data8 //플로우
             var dataFromCameraFragment9 = sharedViewModel.data9 //베이스
 
-            correctHit = 10
+            correctHit = 14
 
             //하이햇 - 곰세마리, 나비야, 거미
             if (drumValuesArray.toString() == "[3]") {
@@ -183,7 +188,7 @@ class KPopBoardFragment : Fragment() {
                 animator.addUpdateListener { animation ->
                         val xPosition = animation.animatedValue as Float
                         // X 좌표가 40dp +- 1일 때의 처리
-                        if (xPosition >= correctHit + 1.25 && xPosition <= correctHit + 1.5 && boolean == 0) {
+                        if (xPosition >= correctHit + 2 && xPosition <= correctHit + 3 && boolean == 0) {
                             boolean = 1
                             if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
                                 System.out.println("3에서 발생 xPosition : $xPosition")
@@ -201,9 +206,9 @@ class KPopBoardFragment : Fragment() {
                                     sharedViewModel.data4 = ""
                                     dataFromCameraFragment = ""
                                     dataFromCameraFragment4 = ""
-                                }, 100)
+                                }, 200)
                             }
-                        }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 1.25 && boolean == 0) {
+                        }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 2 && boolean == 0) {
                             boolean = 1
                             if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
                                 System.out.println("3에서 발생 xPosition : $xPosition")
@@ -220,9 +225,9 @@ class KPopBoardFragment : Fragment() {
                                     sharedViewModel.data4 = ""
                                     dataFromCameraFragment = ""
                                     dataFromCameraFragment4 = ""
-                                }, 100)
+                                }, 200)
                             }
-                        }else if (xPosition >= correctHit - 0.5 && xPosition <= correctHit + 1 && boolean == 0) {
+                        }else if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
                             boolean = 1
                             if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
                                 totalHit += 1
@@ -262,7 +267,7 @@ class KPopBoardFragment : Fragment() {
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
 
                     // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= correctHit + 1.25 && xPosition <= correctHit + 1.5 && boolean == 0) {
+                    if (xPosition >= correctHit + 2 && xPosition <= correctHit + 3 && boolean == 0) {
                         boolean = 1
                         System.out.println("3.1에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
@@ -285,7 +290,7 @@ class KPopBoardFragment : Fragment() {
                                 dataFromCameraFragment4 = ""
                             }, 200)
                         }
-                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 1.25 && boolean == 0) {
+                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 2 && boolean == 0) {
                         boolean = 1
                         System.out.println("3.1에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
@@ -307,7 +312,7 @@ class KPopBoardFragment : Fragment() {
                                 dataFromCameraFragment4 = ""
                             }, 200)
                         }
-                    }else if (xPosition >= correctHit - 0.5 && xPosition <= correctHit + 1 && boolean == 0) {
+                    }else if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
                         boolean = 1
                         System.out.println("3.1에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
@@ -349,7 +354,7 @@ class KPopBoardFragment : Fragment() {
                 animator.addUpdateListener { animation ->
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
 
-                    if (xPosition >= correctHit + 1.25 && xPosition <= correctHit + 1.5 && boolean == 0) {
+                    if (xPosition >= correctHit + 2 && xPosition <= correctHit + 3 && boolean == 0) {
                         boolean = 1
                         System.out.println("3.2에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
@@ -369,7 +374,7 @@ class KPopBoardFragment : Fragment() {
                                 dataFromCameraFragment4 = ""
                             }, 200)
                         }
-                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 1.25 && boolean == 0) {
+                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 2 && boolean == 0) {
                         boolean = 1
                         System.out.println("3.2에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
@@ -391,7 +396,7 @@ class KPopBoardFragment : Fragment() {
                                 dataFromCameraFragment4 = ""
                             }, 200)
                         }
-                    }else if (xPosition >= correctHit - 0.5 && xPosition <= correctHit + 1 && boolean == 0) {
+                    }else if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
                         boolean = 1
                         System.out.println("3.2에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
@@ -435,7 +440,7 @@ class KPopBoardFragment : Fragment() {
                 animator.addUpdateListener { animation ->
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
 
-                    if (xPosition >= correctHit + 1.25 && xPosition <= correctHit + 1.5 && boolean == 0) {
+                    if (xPosition >= correctHit + 2 && xPosition <= correctHit + 3 && boolean == 0) {
                         boolean = 1
                         System.out.println("3,8에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
@@ -469,7 +474,7 @@ class KPopBoardFragment : Fragment() {
                                 dataFromCameraFragment1 = ""
                             }, 200)
                         }
-                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 1.25 && boolean == 0) {
+                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 2 && boolean == 0) {
                         boolean = 1
                         System.out.println("3,8에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
@@ -503,7 +508,7 @@ class KPopBoardFragment : Fragment() {
                                 dataFromCameraFragment1 = ""
                             }, 200)
                         }
-                    }else if (xPosition >= correctHit - 0.5 && xPosition <= correctHit + 1 && boolean == 0) {
+                    }else if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
                         boolean = 1
                         System.out.println("3,8에서 발생 xPosition : $xPosition")
                         if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){

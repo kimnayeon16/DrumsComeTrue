@@ -124,11 +124,12 @@ class KpopPlayActivity : AppCompatActivity() {
 //            var totalHit : TextView = findViewById(R.id.totalHit)
             finishSign.visibility = View.VISIBLE
             finishSong.text = "$song"
-            var total = sharedViewModel1.totalHit
             val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
-            val successCount = total
+            val successCount = sharedViewModel1.totalHit
             val totalCount = totalHit
-            val rhythmRating = successCount.toFloat() / totalCount.toFloat()
+            System.out.println("successCount $successCount")
+            System.out.println("totalCouont $totalCount")
+            val rhythmRating = successCount.toFloat() / totalCount.toFloat() * 3
             System.out.print("rhythmRating ?????!!!!!! $rhythmRating")
             ratingBar.rating = rhythmRating
 
