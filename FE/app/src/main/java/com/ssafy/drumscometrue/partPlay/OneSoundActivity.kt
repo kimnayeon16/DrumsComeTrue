@@ -6,6 +6,7 @@ import androidx.navigation.findNavController
 import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.databinding.ActivityOneSoundBinding
 import com.ssafy.drumscometrue.databinding.ActivityPadPlayBinding
+import com.ssafy.drumscometrue.freePlay.fragment.PermissionsFragment
 import com.ssafy.drumscometrue.partPlay.fragment.OneSoundFragment
 
 class OneSoundActivity : AppCompatActivity() {
