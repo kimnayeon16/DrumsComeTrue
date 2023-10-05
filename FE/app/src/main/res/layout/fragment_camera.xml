@@ -35,6 +35,13 @@
         android:layout_height="match_parent"
         app:scaleType="fillStart" />
 
+    <include
+        android:id="@+id/layout_drum_pose"
+        layout="@layout/layout_drum_pose"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
     <com.ssafy.drumscometrue.freePlay.OverlayView
         android:id="@+id/overlay"
         android:layout_width="match_parent"
@@ -56,13 +63,8 @@
         layout="@layout/layout_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
-
-    <include
-        android:id="@+id/layout_drum_pose"
-        layout="@layout/layout_drum_pose"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        app:layout_anchor="@+id/view_finder"
+        app:layout_anchorGravity="center" />
 
     <FrameLayout
         android:id="@+id/count"
