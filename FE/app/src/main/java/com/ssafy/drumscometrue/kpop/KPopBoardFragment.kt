@@ -137,6 +137,7 @@ class KPopBoardFragment : Fragment() {
                 scheduleNextFragment()
             }, interval)
         }else{
+            System.out.println("totalHit ???!!!!!! $totalHit")
             sharedViewModel.totalHit = totalHit
         }
     }
