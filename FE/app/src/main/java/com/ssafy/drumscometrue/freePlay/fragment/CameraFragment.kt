@@ -1205,7 +1205,8 @@ class CameraFragment : Fragment() {
         val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         if(beforeBass > position_y){
-            if(compareBass - 0.03 > position_y && !rightBass){
+//            println("발 올라감")
+            if(compareBass - 0.04 > position_y && !rightBass){
                 Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
                 sharedViewModel.data9 = "bass"
                 val soundId = soundMap["bass"]

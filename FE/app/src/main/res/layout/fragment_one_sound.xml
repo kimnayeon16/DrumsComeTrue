@@ -27,7 +27,7 @@
 
     <include
         android:id="@+id/layout_overlay"
-        layout="@layout/layout_overlay"
+        layout="@layout/layout_overlay_part_play"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
