@@ -104,19 +104,19 @@
         app:layout_constraintVertical_bias="0.473"
         app:srcCompat="@drawable/ride" />
 
+
     <ImageView
         android:id="@+id/snare_img"
         android:layout_width="178dp"
         android:layout_height="54dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintHorizontal_bias="0.287"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.636"
-        app:srcCompat="@drawable/snare"
-        android:visibility="invisible"/>
-
+        app:layout_constraintVertical_bias="0.626"
+        app:srcCompat="@drawable/snare" />
 
     <ImageView
         android:id="@+id/f_tom_img"
@@ -128,7 +128,7 @@
         app:layout_constraintHorizontal_bias="0.953"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.707"
+        app:layout_constraintVertical_bias="0.684"
         app:srcCompat="@drawable/f_tom" />
 
     <ImageView

@@ -22,7 +22,6 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.ssafy.drumscometrue.SharedViewModel
 import com.ssafy.drumscometrue.databinding.ActivityKpopPlayBinding
 import org.w3c.dom.Text
@@ -47,7 +46,7 @@ class KpopPlayActivity : AppCompatActivity() {
     private var songName: String ? = null
     private lateinit var binding: ActivityKpopPlayBinding
 
-    private var exoPlayer: SimpleExoPlayer? = null
+//    private var exoPlayer: SimpleExoPlayer? = null
 
 //    private lateinit var sharedViewModel1: SharedViewModel
 

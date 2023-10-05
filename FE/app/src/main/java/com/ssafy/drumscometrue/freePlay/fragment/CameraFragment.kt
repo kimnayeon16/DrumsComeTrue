@@ -1116,7 +1116,7 @@ class CameraFragment : Fragment() {
 
         if(beforeBass > position_y){
 //            println("발 올라감")
-            if(compareBass - 0.03 > position_y && !rightBass){
+            if(compareBass - 0.04 > position_y && !rightBass){
                 Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
                 val soundId = soundMap["bass"]
                 soundId?.let {
