@@ -20,12 +20,12 @@
 <!--        android:rotation="135"-->
 <!--        android:src="@drawable/kpop_finish_line" />-->
 
-<!--    <ImageView-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="200dp"-->
-<!--        android:layout_marginTop="-35dp"-->
-<!--        android:layout_marginStart="-10dp"-->
-<!--        android:src="@drawable/kpop_finish_line2" />-->
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="-10dp"
+        android:src="@drawable/kpop_finish_line3" />
 
     <TextView
         android:id="@+id/finishLine"
@@ -46,17 +46,17 @@
         android:visibility="visible"
         />
 
-    <TextView
-        android:id="@+id/songName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="75dp"
-        android:text="곡제목이에요"
-        android:textSize="24sp"
-        android:textColor="#673AB7"
-        android:visibility="visible"
-        />
+<!--    <TextView-->
+<!--        android:id="@+id/songName"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_marginStart="75dp"-->
+<!--        android:text="곡제목이에요"-->
+<!--        android:textSize="24sp"-->
+<!--        android:textColor="#673AB7"-->
+<!--        android:visibility="visible"-->
+<!--        />-->
 
     <TextView
         android:id="@+id/hitHiHat"
