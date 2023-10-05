@@ -7,6 +7,15 @@
     android:background="@drawable/back_img_main3"
     tools:context=".mainpage.MainPageActivity">
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/main_bg"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-99dp" />
+
     <Button
         android:id="@+id/logout_btn"
         android:layout_width="50dp"
@@ -16,14 +25,5 @@
         android:contentDescription="Logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/main_bg"
-        android:visibility="visible"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-99dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
