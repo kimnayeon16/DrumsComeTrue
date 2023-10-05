@@ -50,11 +50,10 @@ import com.google.mlkit.vision.pose.PoseDetection
 import com.google.mlkit.vision.pose.PoseDetector
 import com.google.mlkit.vision.pose.PoseLandmark
 import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
-import com.ssafy.drumscometrue.databinding.FragmentOneSoundBinding
+import com.ssafy.drumscometrue.databinding.FragmentSnareBinding
 import com.ssafy.drumscometrue.freePlay.fragment.CameraFragment
 import com.ssafy.drumscometrue.freePlay.fragment.PermissionsFragment
 import com.ssafy.drumscometrue.kpop.KPopCountFragment
-import com.ssafy.drumscometrue.partPlay.OneSoundActivity
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -65,7 +64,7 @@ import kotlin.math.sqrt
  * 카메라를 사용하여 실시간으로 사용자의 포즈를 감지하고 표시하는 데 사용되는 프래그먼트
  * TensorFlow와 CameraX라이브러리를 사용하여 구현
  */
-class OneSoundFragment : Fragment() {
+class SnareFragment : Fragment() {
 
     /**
      * 클래스 내부에 정적인 변수와 메서드를 선언하는 데 사용
@@ -75,13 +74,13 @@ class OneSoundFragment : Fragment() {
     }
 
     //
-    private var _fragmentOneSoundBinding: FragmentOneSoundBinding? = null
+    private var _fragmentSnareBinding: FragmentSnareBinding? = null
     private lateinit var displayMetrics: DisplayMetrics
 
-    private val fragmentOneSoundBinding
-        get() = _fragmentOneSoundBinding!!
+    private val fragmentSnareBinding
+        get() = _fragmentSnareBinding!!
 
-    private val oneSoundFragment:OneSoundFragment = this
+    private val SnareFragment:SnareFragment = this
 
 //    private lateinit var receivedData: String
 
@@ -116,8 +115,6 @@ class OneSoundFragment : Fragment() {
         "hiHat" to false,
         "snare" to false
     )
-    private var leftHihat : Boolean = false
-    private var rightBass : Boolean = false
 
     private lateinit var snareImg : ImageView
     private lateinit var bassImg : ImageView
@@ -128,13 +125,8 @@ class OneSoundFragment : Fragment() {
     private lateinit var crashImg : ImageView
     private lateinit var rideImg : ImageView
 
-    private lateinit var bassHitImg: ImageView
-    private lateinit var bassHitRingImg : ImageView
-
-    private var compareBass : Float = 0F
-    private var compareHihat : Float = 0F
-    private var beforeBass: Float = 0F
-    private var beforeHihat: Float = 0F
+    private lateinit var snareHitImg : ImageView
+    private lateinit var snareHitRingImg : ImageView
 
     //ML_Kit테스트
     // 포즈 인식 클라이언트에 적용되는 옵션
@@ -157,7 +149,7 @@ class OneSoundFragment : Fragment() {
     private class CameraAnalyzer(
         private val poseDetector: PoseDetector,
         private val onPoseDetected: (pose: Pose) -> Unit,
-        private val oneSoundFragment: OneSoundFragment
+        private val snareFragment: SnareFragment
     ) : ImageAnalysis.Analyzer {
 
         override fun analyze(imageProxy: ImageProxy) {
@@ -171,7 +163,7 @@ class OneSoundFragment : Fragment() {
                 //포즈감지 성공시 감지된 포즈 onPoseDetected콜백함수에 전달
                 .addOnSuccessListener { pose ->
                     onPoseDetected(pose)
-                    oneSoundFragment.poseResults(pose,inputImage)
+                    snareFragment.poseResults(pose,inputImage)
                 }
                 .addOnFailureListener { e ->
                     //handel error
@@ -193,17 +185,13 @@ class OneSoundFragment : Fragment() {
         image: InputImage
     ){
         activity?.runOnUiThread {
-            if (_fragmentOneSoundBinding != null) {
+            if (_fragmentSnareBinding != null) {
                 // fragmentCameraBinding.overlay - 화면에 그리기 작업을 처리하는 커스텀 OverlayView
                 setImg()
                 if(!pose.allPoseLandmarks.isEmpty()){
                     // 손====================================
                     val leftHand = pose.getPoseLandmark(19)
                     val rightHand = pose.getPoseLandmark(20)
-
-                    // kick판단==============================
-                    val leftKnee = pose.getPoseLandmark(25)
-                    val rightKnee = pose.getPoseLandmark(26)
 
                     // 손 연장선 -> 드럼 채
                     val rightElbow = pose.getPoseLandmark(14)
@@ -230,7 +218,7 @@ class OneSoundFragment : Fragment() {
                     val height = image.height
 
                     // 화면에 그려주기
-                    fragmentOneSoundBinding.overlay.setResults(
+                    fragmentSnareBinding.overlay.setResults(
                         pose,
                         imageHeight = image.height,
                         imageWidth = image.width,
@@ -241,35 +229,38 @@ class OneSoundFragment : Fragment() {
 
                     if(!start){
                         val handler = Handler()
+                        leftHandEstimation = settingPointEstimation(leftPoint, height, width)
+                        rightHandEstimation = settingPointEstimation(rightPoint, height, width)
                         handler.postDelayed({
-                            compareBass = rightKnee.position.y / width
-                            compareHihat = leftKnee.position.y
                             start = true
                             // 10초 후에 실행할 코드를 여기에 작성합니다.
-                            fragmentOneSoundBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
-                            fragmentOneSoundBinding.layoutOverlay.bassImg.visibility = View.VISIBLE
-                            fragmentOneSoundBinding.layoutOverlay.hihatImg.visibility = View.VISIBLE
-                            fragmentOneSoundBinding.layoutOverlay.snareImg.visibility = View.VISIBLE
+                            fragmentSnareBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
+                            fragmentSnareBinding.layoutOverlay.bassImg.visibility = View.VISIBLE
+                            fragmentSnareBinding.layoutOverlay.hihatImg.visibility = View.VISIBLE
+                            fragmentSnareBinding.layoutOverlay.snareImg.visibility = View.VISIBLE
 
-                            fragmentOneSoundBinding.layoutOverlay.hihatImg.setColorFilter(Color.BLACK)
+                            fragmentSnareBinding.layoutOverlay.hihatImg.setColorFilter(Color.BLACK)
+                            fragmentSnareBinding.layoutOverlay.bassImg.setColorFilter(Color.BLACK)
 
-                            fragmentOneSoundBinding.layoutOverlay.snareImg.setColorFilter(Color.BLACK)
-
-                            fragmentOneSoundBinding.layoutOverlay.crashImg.visibility = View.VISIBLE
-                            fragmentOneSoundBinding.layoutOverlay.fTomImg.visibility = View.VISIBLE
-                            fragmentOneSoundBinding.layoutOverlay.hTomImg.visibility = View.VISIBLE
-                            fragmentOneSoundBinding.layoutOverlay.mTomImg.visibility = View.VISIBLE
-                            fragmentOneSoundBinding.layoutOverlay.rideImg.visibility = View.VISIBLE
+                            fragmentSnareBinding.layoutOverlay.crashImg.visibility = View.VISIBLE
+                            fragmentSnareBinding.layoutOverlay.fTomImg.visibility = View.VISIBLE
+                            fragmentSnareBinding.layoutOverlay.hTomImg.visibility = View.VISIBLE
+                            fragmentSnareBinding.layoutOverlay.mTomImg.visibility = View.VISIBLE
+                            fragmentSnareBinding.layoutOverlay.rideImg.visibility = View.VISIBLE
 
 
                         }, 10000)
                     }else{
-                        hitBass(rightKnee, height, width)
+                        leftHandEstimation = hitPoint(leftPoint, leftHandEstimation, height, width)
+                        rightHandEstimation = hitPoint(rightPoint, rightHandEstimation, height, width)
+                        leftHandEstimation = backPoint(leftPoint, leftHandEstimation, height, width)
+                        rightHandEstimation = backPoint(rightPoint, rightHandEstimation, height, width)
+
                     }
                 }
                 // overlayView를 화면에 다시 그리도록 invalidate메서드 호출
                 // -> 포즈 감지 결과가 화면에 업데이트 및 표시됨
-                fragmentOneSoundBinding.overlay.invalidate()
+                fragmentSnareBinding.overlay.invalidate()
             }
         }
     }
@@ -295,7 +286,7 @@ class OneSoundFragment : Fragment() {
      * 백그라운드 스레드를 종료
      * */
     override fun onDestroyView() {
-        _fragmentOneSoundBinding = null
+        _fragmentSnareBinding = null
         super.onDestroyView()
 
         // Shut down our background executor
@@ -334,10 +325,10 @@ class OneSoundFragment : Fragment() {
         val context = requireContext()
         displayMetrics = context.resources.displayMetrics
         //FragmentCameraBinding클래스를 사용하여 뷰와 데이터 바인딩을 생성
-        _fragmentOneSoundBinding =
-            FragmentOneSoundBinding.inflate(inflater, container, false)
+        _fragmentSnareBinding =
+            FragmentSnareBinding.inflate(inflater, container, false)
         // fragment의 실제 뷰
-        return fragmentOneSoundBinding.root
+        return fragmentSnareBinding.root
     }
 
 
@@ -355,7 +346,7 @@ class OneSoundFragment : Fragment() {
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
         // Wait for the views to be properly laid out
-        fragmentOneSoundBinding.viewFinder.post {
+        fragmentSnareBinding.viewFinder.post {
             // Set up the camera and its use cases
             setUpCamera()
         }
@@ -407,7 +398,7 @@ class OneSoundFragment : Fragment() {
         // 비율, 디스플레이의 회전 방향을 설정
         preview = Preview.Builder()
             .setTargetAspectRatio(AspectRatio.RATIO_16_9)
-            .setTargetRotation(fragmentOneSoundBinding.viewFinder.display.rotation)
+            .setTargetRotation(fragmentSnareBinding.viewFinder.display.rotation)
             .build()
 
         // 이미지 분석 사용 설정
@@ -415,13 +406,13 @@ class OneSoundFragment : Fragment() {
         imageAnalyzer = //이미지 분석기 설정
             ImageAnalysis.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_16_9)    //분석기가 사용할 이미지의 종횡비 설정
-                .setTargetRotation(fragmentOneSoundBinding.viewFinder.display.rotation)   //이미지의 회전 방향 설정
+                .setTargetRotation(fragmentSnareBinding.viewFinder.display.rotation)   //이미지의 회전 방향 설정
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)   //이미지 처리 속도가 분석보다 빠를경우 최신 이미지만 유지
                 .build()    // 설정한 내용으로 이미지 분석기 생성
                 // 이미지 분석기의 설정 마무리 : 이미지 객체에 대한 설정작업을 진행하는 클로저 실행
                 .also {
                     it.setAnalyzer(backgroundExecutor) { image ->   // 이미지 분석기에 분석할 작업 설정 -> 이미지 분석기가 카메라에서 받아온 이미지를 처리하는 부분
-                        CameraAnalyzer(poseDetector, onPoseDetected, oneSoundFragment).analyze(image)
+                        CameraAnalyzer(poseDetector, onPoseDetected, SnareFragment).analyze(image)
                     }
                 }
 
@@ -435,24 +426,24 @@ class OneSoundFragment : Fragment() {
             )
 
             // 미리보기를 viewFinder에 연결
-            preview?.setSurfaceProvider(fragmentOneSoundBinding.viewFinder.surfaceProvider)
+            preview?.setSurfaceProvider(fragmentSnareBinding.viewFinder.surfaceProvider)
         } catch (exc: Exception) {
             Log.e(TAG, "Use case binding failed", exc)
         }
     }
 
     private fun setImg() {
-        snareImg = fragmentOneSoundBinding.layoutOverlay.snareImg
-        bassImg = fragmentOneSoundBinding.layoutOverlay.bassImg
-        hihatImg = fragmentOneSoundBinding.layoutOverlay.hihatImg
-        fTomImg = fragmentOneSoundBinding.layoutOverlay.fTomImg
-        hTomImg = fragmentOneSoundBinding.layoutOverlay.hTomImg
-        mTomImg = fragmentOneSoundBinding.layoutOverlay.mTomImg
-        crashImg = fragmentOneSoundBinding.layoutOverlay.crashImg
-        rideImg = fragmentOneSoundBinding.layoutOverlay.rideImg
+        snareImg = fragmentSnareBinding.layoutOverlay.snareImg
+        bassImg = fragmentSnareBinding.layoutOverlay.bassImg
+        hihatImg = fragmentSnareBinding.layoutOverlay.hihatImg
+        fTomImg = fragmentSnareBinding.layoutOverlay.fTomImg
+        hTomImg = fragmentSnareBinding.layoutOverlay.hTomImg
+        mTomImg = fragmentSnareBinding.layoutOverlay.mTomImg
+        crashImg = fragmentSnareBinding.layoutOverlay.crashImg
+        rideImg = fragmentSnareBinding.layoutOverlay.rideImg
 
-        bassHitImg = fragmentOneSoundBinding.layoutOverlay.bassHitImg
-        bassHitRingImg = fragmentOneSoundBinding.layoutOverlay.bassHitRingImg
+        snareHitImg = fragmentSnareBinding.layoutOverlay.snareHitImg
+        snareHitRingImg  = fragmentSnareBinding.layoutOverlay.snareHitRingImg
     }
 
     /** SoundPool설정 */
@@ -484,7 +475,6 @@ class OneSoundFragment : Fragment() {
             soundMap["floorTom"] = soundPool.load(context, R.raw.floor_tom, 1)
         }
     }
-
 
     private fun hitAnimation(imageView: ImageView) {
         // ImageView의 색상을 검은색으로 설정
@@ -523,6 +513,7 @@ class OneSoundFragment : Fragment() {
 
 
 
+
     /**
      * Math관련 함수들
      * */
@@ -555,33 +546,59 @@ class OneSoundFragment : Fragment() {
         return CameraFragment.Point(cX, cY)
     }
 
-    private fun hitBass(rightFoot: PoseLandmark, width : Int, height : Int){
-        val position_x = rightFoot.position.x / width
-        val position_y = rightFoot.position.y / height
+    private fun settingPointEstimation(point : CameraFragment.Point, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> dp비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
 
-        println("before: "+beforeBass)
-        println("---" + position_y)
-        println("compare "+compareBass)
+        val updates = mutableMapOf(
+            "crash" to false,
+            "hiHat" to false,
+            "snare" to false
+        )
 
-        if(beforeBass > position_y){
-//            println("발 올라감")
-            if(compareBass - 0.04 > position_y && !rightBass){
-                Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
-                val soundId = soundMap["bass"]
-                soundId?.let {
-                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
-                    hitAnimation(bassHitImg)
-                    hitRingAnimation(bassHitRingImg)
-                }
-                rightBass = true
-            }
-        }else{
-            println("else")
-            compareBass = position_y
-            rightBass = false
+        if(position_y > 0.36){
+            updates["crash"] = true
+        }else if(position_y > 0.45){
+            updates["crash"] = true
+            updates["hiHat"] = true
+        }else if(position_y > 0.58){
+            updates["snare"] = true
         }
 
-        beforeBass = position_y
+        return updates
+    }
+
+
+    private fun hitPoint(point : CameraFragment.Point, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> 비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
+
+        if(position_y > 0.58){
+            if(hitEstimation["snare"] == false && position_x > 0.45 && position_x < 0.8){
+                // 사운드 재생
+                val soundId = soundMap["snare"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(snareHitImg)
+                    hitRingAnimation(snareHitRingImg)
+                }
+            }
+            hitEstimation["snare"] = true
+        }
+        return hitEstimation
+    }
+
+    private fun backPoint(point : CameraFragment.Point, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> dp비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
+
+        if(position_y < 0.35) {
+            hitEstimation["snare"] = false
+        }
+        return hitEstimation
     }
 
 }
