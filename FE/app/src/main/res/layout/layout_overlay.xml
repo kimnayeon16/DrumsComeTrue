@@ -146,6 +146,19 @@
 
 
     <ImageView
+        android:id="@+id/crash_hit_ring_img2"
+        android:layout_width="127dp"
+        android:layout_height="94dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        app:srcCompat="@drawable/crash_hit_ring" />
+
+    <ImageView
         android:id="@+id/bass_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -153,11 +166,11 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/ride_img"
-        app:layout_constraintHorizontal_bias="0.67"
+        app:layout_constraintHorizontal_bias="0.71"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        app:layout_constraintVertical_bias="0.966"
+        app:layout_constraintVertical_bias="0.92"
         app:srcCompat="@drawable/bass" />
 
     <ImageView
@@ -168,10 +181,10 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/ride_img"
-        app:layout_constraintHorizontal_bias="0.668"
+        app:layout_constraintHorizontal_bias="0.71"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.962"
+        app:layout_constraintVertical_bias="0.915"
         app:srcCompat="@drawable/bass_hit" />
 
     <ImageView
@@ -277,5 +290,109 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.368"
         app:srcCompat="@drawable/m_tom_hit" />
+
+    <ImageView
+        android:id="@+id/bass_hit_ring_img"
+        android:layout_width="246dp"
+        android:layout_height="257dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.684"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.929"
+        app:srcCompat="@drawable/bass_hit_ring" />
+
+    <ImageView
+        android:id="@+id/f_tom_hit_ring_img"
+        android:layout_width="87dp"
+        android:layout_height="95dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.7"
+        app:srcCompat="@drawable/f_tom_hit_ring" />
+
+    <ImageView
+        android:id="@+id/snare_hit_ring_img"
+        android:layout_width="207dp"
+        android:layout_height="64dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.23"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.632"
+        app:srcCompat="@drawable/snare_hit_ring" />
+
+    <ImageView
+        android:id="@+id/hihat_hit_ring_img"
+        android:layout_width="115dp"
+        android:layout_height="70dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.516"
+        app:srcCompat="@drawable/open_hihat_hit_ring" />
+
+    <ImageView
+        android:id="@+id/crash_hit_ring_img"
+        android:layout_width="127dp"
+        android:layout_height="94dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        app:srcCompat="@drawable/crash_hit_ring" />
+
+    <ImageView
+        android:id="@+id/ride_hit_ring_img"
+        android:layout_width="101dp"
+        android:layout_height="58dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.996"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.501"
+        app:srcCompat="@drawable/ride_hit_ring" />
+
+    <ImageView
+        android:id="@+id/h_tom_hit_ring_img"
+        android:layout_width="85dp"
+        android:layout_height="87dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        app:srcCompat="@drawable/h_tom_hit_ring" />
+
+    <ImageView
+        android:id="@+id/m_tom_hit_ring_img"
+        android:layout_width="76dp"
+        android:layout_height="73dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.814"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.404"
+        app:srcCompat="@drawable/m_tom_hit_ring" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

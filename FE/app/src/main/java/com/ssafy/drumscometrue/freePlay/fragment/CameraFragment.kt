@@ -145,6 +145,16 @@ class CameraFragment : Fragment() {
     private lateinit var crashImg : ImageView
     private lateinit var rideImg : ImageView
 
+    private lateinit var snareRingImg : ImageView
+    private lateinit var bassRingImg : ImageView
+    private lateinit var hihatRingImg : ImageView
+    private lateinit var fTomRingImg : ImageView
+    private lateinit var hTomRingImg : ImageView
+    private lateinit var mTomRingImg : ImageView
+    private lateinit var crashRingImg : ImageView
+    private lateinit var rideRingImg : ImageView
+
+
     //ML_Kit테스트
     // 포즈 인식 클라이언트에 적용되는 옵션
     private val options by lazy {
@@ -503,6 +513,14 @@ class CameraFragment : Fragment() {
         crashImg = fragmentCameraBinding.layoutOverlay.crashHitImg
         rideImg = fragmentCameraBinding.layoutOverlay.rideHitImg
 
+        snareRingImg = fragmentCameraBinding.layoutOverlay.snareHitRingImg
+        bassRingImg = fragmentCameraBinding.layoutOverlay.bassHitRingImg
+        hihatRingImg = fragmentCameraBinding.layoutOverlay.hihatHitRingImg
+        fTomRingImg = fragmentCameraBinding.layoutOverlay.fTomHitRingImg
+        hTomRingImg =fragmentCameraBinding.layoutOverlay.hTomHitRingImg
+        mTomRingImg = fragmentCameraBinding.layoutOverlay.mTomHitRingImg
+        crashRingImg = fragmentCameraBinding.layoutOverlay.crashHitRingImg
+        rideRingImg = fragmentCameraBinding.layoutOverlay.rideHitRingImg
     }
 
     /** SoundPool설정 */
@@ -626,6 +644,7 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                     hitAnimation(crashImg)
+                    hitRingAnimation(crashRingImg)
                 }
             }
             if(hitEstimation["ride"] == false && position_x < 0.18){
@@ -635,6 +654,7 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                     hitAnimation(rideImg)
+                    hitRingAnimation(rideRingImg)
                 }
             }
             hitEstimation["crash"] = true
@@ -649,6 +669,7 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                     hitAnimation(hTomImg)
+                    hitRingAnimation(hTomRingImg)
                 }
             }
             if (hitEstimation["mTom"] == false && position_x > 0.19 && position_x < 0.34) {
@@ -658,6 +679,7 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 0.8f, 0.7f, 1, 0, 1.0f)
                     hitAnimation(mTomImg)
+                    hitRingAnimation(mTomRingImg)
                 }
             }
             hitEstimation["hTom"] = true
@@ -674,6 +696,7 @@ class CameraFragment : Fragment() {
                     soundId?.let {
                         soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                         hitAnimation(hihatImg)
+                        hitRingAnimation(hihatRingImg)
                     }
                 }else{
                     Log.d("closedHat Hit","closedHat Hit")
@@ -682,6 +705,7 @@ class CameraFragment : Fragment() {
                     soundId?.let {
                         soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                         hitAnimation(hihatImg)
+                        hitRingAnimation(hihatRingImg)
                     }
                 }
             }
@@ -695,6 +719,7 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                     hitAnimation(snareImg)
+                    hitRingAnimation(snareRingImg)
                 }
             }
             if(hitEstimation["floorTom"] == false && position_x < 0.3){
@@ -704,6 +729,7 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                     hitAnimation(fTomImg)
+                    hitRingAnimation(fTomRingImg)
 
                 }
             }
@@ -726,6 +752,7 @@ class CameraFragment : Fragment() {
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                 hitAnimation(hihatImg)
+                hitRingAnimation(hihatRingImg)
             }
             leftHihat = true
         }
@@ -740,7 +767,7 @@ class CameraFragment : Fragment() {
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                 hitAnimation(bassImg)
-
+                hitRingAnimation(bassRingImg)
             }
             rightBass = true
         }
@@ -763,6 +790,7 @@ class CameraFragment : Fragment() {
                     soundPool.stop(soundIdOpen)
                 }
                 hitAnimation(hihatImg)
+                hitRingAnimation(hihatRingImg)
             }
             leftHihat = true
         }
@@ -777,6 +805,8 @@ class CameraFragment : Fragment() {
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                 hitAnimation(bassImg)
+                hitRingAnimation(bassRingImg)
+
             }
             rightBass = true
         }
@@ -877,6 +907,11 @@ class CameraFragment : Fragment() {
         imageView.startAnimation(set)
     }
 
+    private fun hitRingAnimation(ring: ImageView){
+        val ringAnimation = AnimationUtils.loadAnimation(context, R.anim.hit_ring_animation)
+        ring.startAnimation(ringAnimation)
+    }
+
 
 
 
@@ -973,6 +1008,7 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                     hitAnimation(crashImg)
+                    hitRingAnimation(crashRingImg)
                 }
             }
 
@@ -986,6 +1022,7 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                     hitAnimation(hTomImg)
+                    hitRingAnimation(hTomRingImg)
                 }
             }
             if (hitEstimation["mTom"] == false && position_x > 0.15 && position_x < 0.35) {
@@ -998,6 +1035,8 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 0.8f, 0.7f, 1, 0, 1.0f)
                     hitAnimation(mTomImg)
+                    hitRingAnimation(mTomRingImg)
+
                 }
             }
             hitEstimation["crash"] = true
@@ -1016,6 +1055,8 @@ class CameraFragment : Fragment() {
                     soundId?.let {
                         soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                         hitAnimation(hihatImg)
+                        hitRingAnimation(hihatRingImg)
+
                     }
                 }else{
                     //클로즈 하이햇을 쳤으므로 변수에 담기
@@ -1027,6 +1068,8 @@ class CameraFragment : Fragment() {
                     soundId?.let {
                         soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                         hitAnimation(hihatImg)
+                        hitRingAnimation(hihatRingImg)
+
                     }
                 }
             }
@@ -1040,6 +1083,8 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                     hitAnimation(rideImg)
+                    hitRingAnimation(rideRingImg)
+
                 }
             }
             hitEstimation["hiHat"] = true
@@ -1056,6 +1101,7 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                     hitAnimation(snareImg)
+                    hitRingAnimation(snareRingImg)
                 }
             }
             if(hitEstimation["floorTom"] == false && position_x > 0.05 && position_x < 0.25){
@@ -1068,6 +1114,8 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                     hitAnimation(fTomImg)
+                    hitRingAnimation(fTomRingImg)
+
                 }
             }
             hitEstimation["snare"] = true
