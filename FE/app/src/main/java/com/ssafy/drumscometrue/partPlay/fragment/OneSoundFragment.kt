@@ -247,6 +247,7 @@ class OneSoundFragment : Fragment() {
                             start = true
                             // 10초 후에 실행할 코드를 여기에 작성합니다.
                             fragmentOneSoundBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
+                            fragmentOneSoundBinding.poseGuide.visibility = View.INVISIBLE
                             fragmentOneSoundBinding.layoutOverlay.bassImg.visibility = View.VISIBLE
                             fragmentOneSoundBinding.layoutOverlay.hihatImg.visibility = View.VISIBLE
                             fragmentOneSoundBinding.layoutOverlay.snareImg.visibility = View.VISIBLE

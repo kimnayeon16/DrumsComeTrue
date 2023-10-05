@@ -297,6 +297,7 @@ class CameraFragment : Fragment() {
                             start = true
                             // 10초 후에 실행할 코드를 여기에 작성합니다.
                             fragmentCameraBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
+                            fragmentCameraBinding.poseGuide.visibility = View.INVISIBLE
                             fragmentCameraBinding.layoutOverlay.bassImg.visibility = View.VISIBLE
                             fragmentCameraBinding.layoutOverlay.crashImg.visibility = View.VISIBLE
                             fragmentCameraBinding.layoutOverlay.fTomImg.visibility = View.VISIBLE

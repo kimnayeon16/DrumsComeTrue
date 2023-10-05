@@ -260,6 +260,7 @@ class HihatFragment : Fragment() {
                             start = true
                             // 10초 후에 실행할 코드를 여기에 작성합니다.
                             fragmentHihatBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
+                            fragmentHihatBinding.poseGuide.visibility = View.INVISIBLE
                             fragmentHihatBinding.layoutOverlay.bassImg.visibility = View.VISIBLE
                             fragmentHihatBinding.layoutOverlay.hihatImg.visibility = View.VISIBLE
                             fragmentHihatBinding.layoutOverlay.snareImg.visibility = View.VISIBLE
