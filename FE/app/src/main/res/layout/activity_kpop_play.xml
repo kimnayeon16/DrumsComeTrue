@@ -8,6 +8,16 @@
     android:orientation="vertical"
     tools:context=".kpop.KpopPlayActivity">
 
+    <ProgressBar
+        android:id="@+id/progressSong"
+        style="@style/KpopProgressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_weight="4"
+        android:max="100"
+        tools:progress="60"
+        />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/find_id_ui_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -18,16 +28,6 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph"
         tools:context=".freePlay.FreePlayActivity" />
-
-    <ProgressBar
-        android:id="@+id/progressSong"
-        style="@style/KpopProgressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_weight="4"
-        android:max="100"
-        tools:progress="60"
-        />
 
     <FrameLayout
         android:id="@+id/board"
@@ -42,6 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         />
+
+
 
     <LinearLayout
         android:id="@+id/finishSign"
@@ -74,26 +76,38 @@
             android:textSize="20sp"
             android:gravity="center"
             />
-        <TextView
+        <RatingBar
+            android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="총 hit 개수"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:gravity="center"
-            />
-        <TextView
-            android:id="@+id/totalHit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:text="0"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:gravity="center"
-            />
+            android:progressTint="#FFC107"
+            android:numStars="3"
+            android:rating="0"
+            android:stepSize="0.1"
+        />
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:text="총 hit 개수"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="20sp"-->
+<!--            android:gravity="center"-->
+<!--            />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/totalHit"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:text="0"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="20sp"-->
+<!--            android:gravity="center"-->
+<!--            />-->
 
         <ProgressBar
             android:id="@+id/progressBar"

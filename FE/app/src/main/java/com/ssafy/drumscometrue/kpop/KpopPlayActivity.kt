@@ -20,6 +20,7 @@ import kotlin.concurrent.timer
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.RatingBar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.ssafy.drumscometrue.SharedViewModel
@@ -119,11 +120,17 @@ class KpopPlayActivity : AppCompatActivity() {
             var finishSign: LinearLayout = findViewById(R.id.finishSign)
             var finishSong: TextView = findViewById(R.id.finishSong)
             var progressBar : ProgressBar = findViewById(R.id.progressBar)
-            var totalHit : TextView = findViewById(R.id.totalHit)
+//            var totalHit : TextView = findViewById(R.id.totalHit)
             finishSign.visibility = View.VISIBLE
             finishSong.text = "$song"
             var total = sharedViewModel1.totalHit
-            totalHit.text = "${total}개"
+            val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
+            val successCount = total
+            val totalCount = 60
+            val rhythmRating = successCount.toFloat() / totalCount.toFloat()
+            ratingBar.rating = rhythmRating
+
+//            totalHit.text = "${total}개"
             //로딩 페이지 - progressBar 타이머 업데이트
             val progressBarUpdateTimer = Timer()
             val progressBarUpdateInterval = 1000L

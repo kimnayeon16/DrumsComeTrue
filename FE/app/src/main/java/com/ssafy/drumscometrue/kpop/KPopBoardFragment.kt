@@ -182,82 +182,58 @@ class KPopBoardFragment : Fragment() {
                 animator.addUpdateListener { animation ->
                         val xPosition = animation.animatedValue as Float
                         // X 좌표가 40dp +- 1일 때의 처리
-                        if (xPosition >= correctHit - 1.5 && xPosition <= correctHit + 1.5 && boolean == 0) {
+                        if (xPosition >= correctHit + 1.25 && xPosition <= correctHit + 1.5 && boolean == 0) {
                             boolean = 1
                             if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
                                 System.out.println("3에서 발생 xPosition : $xPosition")
-                                //만약 지금 친 드럼이 hihat이라면
                                 totalHit += 1
                                 System.out.println("$totalHit : 3에서 발생 총개수")
                                 var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
-                                //hit 표시
                                 hit?.visibility = View.VISIBLE
-
-                                var good = rootView?.findViewById<TextView>(R.id.good)
+                                var good = rootView?.findViewById<ImageView>(R.id.good)
                                 good?.visibility = View.VISIBLE
 
-                                var good1 = rootView?.findViewById<ImageView>(R.id.good1)
-                                good1?.visibility = View.VISIBLE
-
-                                //0.2초 뒤 사라지게 하고 값도 제거
                                 handler.postDelayed({
                                     hit?.visibility = View.INVISIBLE
                                     good?.visibility = View.INVISIBLE
-                                    good1?.visibility = View.INVISIBLE
                                     sharedViewModel.data = ""
                                     sharedViewModel.data4 = ""
                                     dataFromCameraFragment = ""
                                     dataFromCameraFragment4 = ""
                                 }, 100)
                             }
-                        }else if (xPosition >= correctHit - 1.25 && xPosition <= correctHit + 1.25 && boolean == 0) {
+                        }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 1.25 && boolean == 0) {
                             boolean = 1
                             if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
                                 System.out.println("3에서 발생 xPosition : $xPosition")
-                                //만약 지금 친 드럼이 hihat이라면
                                 totalHit += 1
                                 System.out.println("$totalHit : 3에서 발생 총개수")
                                 var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
-                                //hit 표시
                                 hit?.visibility = View.VISIBLE
-
-                                var great = rootView?.findViewById<TextView>(R.id.great)
+                                var great = rootView?.findViewById<ImageView>(R.id.great)
                                 great?.visibility = View.VISIBLE
-                                var great1 = rootView?.findViewById<ImageView>(R.id.great1)
-                                great1?.visibility = View.VISIBLE
-
-                                //0.2초 뒤 사라지게 하고 값도 제거
                                 handler.postDelayed({
                                     hit?.visibility = View.INVISIBLE
                                     great?.visibility = View.INVISIBLE
-                                    great1?.visibility = View.INVISIBLE
                                     sharedViewModel.data = ""
                                     sharedViewModel.data4 = ""
                                     dataFromCameraFragment = ""
                                     dataFromCameraFragment4 = ""
                                 }, 100)
                             }
-                        }else if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
+                        }else if (xPosition >= correctHit - 0.5 && xPosition <= correctHit + 1 && boolean == 0) {
                             boolean = 1
                             if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
-                                System.out.println("3에서 발생 xPosition : $xPosition")
-                                //만약 지금 친 드럼이 hihat이라면
                                 totalHit += 1
                                 System.out.println("$totalHit : 3에서 발생 총개수")
                                 var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
-                                //hit 표시
                                 hit?.visibility = View.VISIBLE
-
-                                var perfect = rootView?.findViewById<TextView>(R.id.perfect)
+                                var perfect = rootView?.findViewById<ImageView>(R.id.perfect)
                                 perfect?.visibility = View.VISIBLE
-                                var perfect1 = rootView?.findViewById<TextView>(R.id.perfect1)
-                                perfect1?.visibility = View.VISIBLE
 
-                                //0.2초 뒤 사라지게 하고 값도 제거
                                 handler.postDelayed({
                                     hit?.visibility = View.INVISIBLE
                                     perfect?.visibility = View.INVISIBLE
-                                    perfect1?.visibility = View.INVISIBLE
                                     sharedViewModel.data = ""
                                     sharedViewModel.data4 = ""
                                     dataFromCameraFragment = ""
@@ -267,6 +243,8 @@ class KPopBoardFragment : Fragment() {
                         }
                 }
                 animator.start()
+
+
                 //하이햇1 - 곰세마리, 나비야, 거미
             } else if (drumValuesArray.toString() == "[3.1]") {
                 val drumHiHatFragment1 = DrumHiHatFragment1()
@@ -276,7 +254,6 @@ class KPopBoardFragment : Fragment() {
                 )
                 transaction.replace(R.id.drumContainer, drumHiHatFragment1)
 
-                // ValueAnimator 초기화
                 val animator = ValueAnimator.ofFloat(xPositionStart, xPositionEnd)
                 animator.duration = 3000 // 애니메이션 지속 시간 (밀리초)
 
@@ -284,7 +261,7 @@ class KPopBoardFragment : Fragment() {
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
 
                     // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
+                    if (xPosition >= correctHit + 1.25 && xPosition <= correctHit + 1.5 && boolean == 0) {
                         boolean = 1
                         System.out.println("3.1에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
@@ -292,13 +269,59 @@ class KPopBoardFragment : Fragment() {
                             totalHit+=1
                             System.out.println("$totalHit 3.1에서 발생 총개수")
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
-                            //hit 표시
                             hit?.visibility = View.VISIBLE
+                            var good = rootView?.findViewById<ImageView>(R.id.good)
+                            good?.visibility = View.VISIBLE
                             val drumHiHatFragment = DrumHiHatFragment()
                             transaction.replace(R.id.drumContainer, drumHiHatFragment)
                             //0.2초 뒤 사라지게 하고 값도 제거
                             Handler().postDelayed({
                                 hit?.visibility = View.INVISIBLE
+                                good?.visibility = View.INVISIBLE
+                                sharedViewModel.data = ""
+                                sharedViewModel.data4 = ""
+                                dataFromCameraFragment = ""
+                                dataFromCameraFragment4 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 1.25 && boolean == 0) {
+                        boolean = 1
+                        System.out.println("3.1에서 발생 xPosition : $xPosition")
+                        //만약 지금 친 드럼이 hihat이라면
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
+                            totalHit+=1
+                            System.out.println("$totalHit 3.1에서 발생 총개수")
+                            var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                            hit?.visibility = View.VISIBLE
+                            var great = rootView?.findViewById<ImageView>(R.id.great)
+                            great?.visibility = View.VISIBLE
+                            val drumHiHatFragment = DrumHiHatFragment()
+                            transaction.replace(R.id.drumContainer, drumHiHatFragment)
+                            Handler().postDelayed({
+                                hit?.visibility = View.INVISIBLE
+                                great?.visibility = View.INVISIBLE
+                                sharedViewModel.data = ""
+                                sharedViewModel.data4 = ""
+                                dataFromCameraFragment = ""
+                                dataFromCameraFragment4 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit - 0.5 && xPosition <= correctHit + 1 && boolean == 0) {
+                        boolean = 1
+                        System.out.println("3.1에서 발생 xPosition : $xPosition")
+                        //만약 지금 친 드럼이 hihat이라면
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
+                            totalHit+=1
+                            System.out.println("$totalHit 3.1에서 발생 총개수")
+                            var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                            hit?.visibility = View.VISIBLE
+                            var perfect = rootView?.findViewById<ImageView>(R.id.perfect)
+                            perfect?.visibility = View.VISIBLE
+                            val drumHiHatFragment = DrumHiHatFragment()
+                            transaction.replace(R.id.drumContainer, drumHiHatFragment)
+                            Handler().postDelayed({
+                                hit?.visibility = View.INVISIBLE
+                                perfect?.visibility = View.INVISIBLE
                                 sharedViewModel.data = ""
                                 sharedViewModel.data4 = ""
                                 dataFromCameraFragment = ""
@@ -324,10 +347,28 @@ class KPopBoardFragment : Fragment() {
 
                 animator.addUpdateListener { animation ->
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
-//                    System.out.println("X Position: $xPosition")
 
-                    // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
+                    if (xPosition >= correctHit + 1.25 && xPosition <= correctHit + 1.5 && boolean == 0) {
+                        boolean = 1
+                        System.out.println("3.2에서 발생 xPosition : $xPosition")
+                        //만약 지금 친 드럼이 hihat이라면
+                        if(dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
+                            totalHit+=1
+                            System.out.println("$totalHit 3.2에서 발생 총개수")
+                            var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                            hit?.visibility = View.VISIBLE
+                            var good = rootView?.findViewById<ImageView>(R.id.good)
+                            good?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                hit?.visibility = View.INVISIBLE
+                                good?.visibility = View.INVISIBLE
+                                sharedViewModel.data = ""
+                                sharedViewModel.data4 = ""
+                                dataFromCameraFragment = ""
+                                dataFromCameraFragment4 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 1.25 && boolean == 0) {
                         boolean = 1
                         System.out.println("3.2에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
@@ -337,9 +378,32 @@ class KPopBoardFragment : Fragment() {
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                             //hit 표시
                             hit?.visibility = View.VISIBLE
+                            var great = rootView?.findViewById<ImageView>(R.id.great)
+                            great?.visibility = View.VISIBLE
                             //0.2초 뒤 사라지게 하고 값도 제거
                             Handler().postDelayed({
                                 hit?.visibility = View.INVISIBLE
+                                great?.visibility = View.INVISIBLE
+                                sharedViewModel.data = ""
+                                sharedViewModel.data4 = ""
+                                dataFromCameraFragment = ""
+                                dataFromCameraFragment4 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit - 0.5 && xPosition <= correctHit + 1 && boolean == 0) {
+                        boolean = 1
+                        System.out.println("3.2에서 발생 xPosition : $xPosition")
+                        //만약 지금 친 드럼이 hihat이라면
+                        if(dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
+                            totalHit+=1
+                            System.out.println("$totalHit 3.2에서 발생 총개수")
+                            var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                            hit?.visibility = View.VISIBLE
+                            var perfect = rootView?.findViewById<ImageView>(R.id.perfect)
+                            perfect?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                hit?.visibility = View.INVISIBLE
+                                perfect?.visibility = View.INVISIBLE
                                 sharedViewModel.data = ""
                                 sharedViewModel.data4 = ""
                                 dataFromCameraFragment = ""
@@ -349,6 +413,7 @@ class KPopBoardFragment : Fragment() {
                     }
                 }
                 animator.start()
+
 
                 //하이햇, 스네어 - 곰세마리, 나비야, 거미
             }else if (drumValuesArray.toString() == "[3,8]") {
@@ -368,10 +433,8 @@ class KPopBoardFragment : Fragment() {
 
                 animator.addUpdateListener { animation ->
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
-//                    System.out.println("X Position: $xPosition")
 
-                    // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
+                    if (xPosition >= correctHit + 1.25 && xPosition <= correctHit + 1.5 && boolean == 0) {
                         boolean = 1
                         System.out.println("3,8에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
@@ -379,11 +442,12 @@ class KPopBoardFragment : Fragment() {
                             totalHit+=1
                             System.out.println("$totalHit 3,8에서 하이햇 발생 총개수")
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
-                            //hit 표시
                             hit?.visibility = View.VISIBLE
-                            //0.2초 뒤 사라지게 하고 값도 제거
+                            var good = rootView?.findViewById<ImageView>(R.id.good)
+                            good?.visibility = View.VISIBLE
                             Handler().postDelayed({
                                 hit?.visibility = View.INVISIBLE
+                                good?.visibility = View.INVISIBLE
                                 sharedViewModel.data = ""
                                 sharedViewModel.data4 = ""
                                 dataFromCameraFragment = ""
@@ -394,11 +458,79 @@ class KPopBoardFragment : Fragment() {
                             totalHit+=1
                             System.out.println("$totalHit 3,8에서 스네어 발생 총개수")
                             var snare = rootView?.findViewById<TextView>(R.id.hitSnare)
-                            //hit 표시
                             snare?.visibility = View.VISIBLE
-                            //0.2초 뒤 사라지게 하고 값도 제거
+                            var good = rootView?.findViewById<ImageView>(R.id.good)
+                            good?.visibility = View.VISIBLE
                             Handler().postDelayed({
                                 snare?.visibility = View.INVISIBLE
+                                good?.visibility = View.INVISIBLE
+                                sharedViewModel.data1 = ""
+                                dataFromCameraFragment1 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 1.25 && boolean == 0) {
+                        boolean = 1
+                        System.out.println("3,8에서 발생 xPosition : $xPosition")
+                        //만약 지금 친 드럼이 hihat이라면
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
+                            totalHit+=1
+                            System.out.println("$totalHit 3,8에서 하이햇 발생 총개수")
+                            var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                            hit?.visibility = View.VISIBLE
+                            var great = rootView?.findViewById<ImageView>(R.id.great)
+                            great?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                hit?.visibility = View.INVISIBLE
+                                great?.visibility = View.INVISIBLE
+                                sharedViewModel.data = ""
+                                sharedViewModel.data4 = ""
+                                dataFromCameraFragment = ""
+                                dataFromCameraFragment4 = ""
+                            }, 200)
+                        }
+                        if(dataFromCameraFragment1 == "snare"){
+                            totalHit+=1
+                            System.out.println("$totalHit 3,8에서 스네어 발생 총개수")
+                            var snare = rootView?.findViewById<TextView>(R.id.hitSnare)
+                            snare?.visibility = View.VISIBLE
+                            var great = rootView?.findViewById<ImageView>(R.id.great)
+                            great?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                snare?.visibility = View.INVISIBLE
+                                great?.visibility = View.INVISIBLE
+                                sharedViewModel.data1 = ""
+                                dataFromCameraFragment1 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit - 0.5 && xPosition <= correctHit + 1 && boolean == 0) {
+                        boolean = 1
+                        System.out.println("3,8에서 발생 xPosition : $xPosition")
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
+                            totalHit+=1
+                            System.out.println("$totalHit 3,8에서 하이햇 발생 총개수")
+                            var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                            hit?.visibility = View.VISIBLE
+                            var perfect = rootView?.findViewById<ImageView>(R.id.perfect)
+                            perfect?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                hit?.visibility = View.INVISIBLE
+                                perfect?.visibility = View.INVISIBLE
+                                sharedViewModel.data = ""
+                                sharedViewModel.data4 = ""
+                                dataFromCameraFragment = ""
+                                dataFromCameraFragment4 = ""
+                            }, 200)
+                        }
+                        if(dataFromCameraFragment1 == "snare"){
+                            totalHit+=1
+                            System.out.println("$totalHit 3,8에서 스네어 발생 총개수")
+                            var snare = rootView?.findViewById<TextView>(R.id.hitSnare)
+                            snare?.visibility = View.VISIBLE
+                            var perfect = rootView?.findViewById<ImageView>(R.id.perfect)
+                            perfect?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                snare?.visibility = View.INVISIBLE
+                                perfect?.visibility = View.INVISIBLE
                                 sharedViewModel.data1 = ""
                                 dataFromCameraFragment1 = ""
                             }, 200)
@@ -429,17 +561,18 @@ class KPopBoardFragment : Fragment() {
 
 
                     // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
+                    if (xPosition >= correctHit + 1.25 && xPosition <= correctHit + 1.5 && boolean == 0) {
                         boolean = 1
                         //만약 지금 친 드럼이 hihat이라면
                         if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
                             totalHit+=1
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
-                            //hit 표시
                             hit?.visibility = View.VISIBLE
-                            //0.2초 뒤 사라지게 하고 값도 제거
+                            var good = rootView?.findViewById<ImageView>(R.id.good)
+                            good?.visibility = View.VISIBLE
                             Handler().postDelayed({
                                 hit?.visibility = View.INVISIBLE
+                                good?.visibility = View.INVISIBLE
                                 sharedViewModel.data = ""
                                 sharedViewModel.data4 = ""
                                 dataFromCameraFragment = ""
@@ -449,11 +582,74 @@ class KPopBoardFragment : Fragment() {
                         if(dataFromCameraFragment9 == "bass"){
                             totalHit+=1
                             var bass = rootView?.findViewById<TextView>(R.id.hitBass)
-                            //hit 표시
                             bass?.visibility = View.VISIBLE
-                            //0.2초 뒤 사라지게 하고 값도 제거
+                            var good = rootView?.findViewById<ImageView>(R.id.good)
+                            good?.visibility = View.VISIBLE
                             Handler().postDelayed({
                                 bass?.visibility = View.INVISIBLE
+                                good?.visibility = View.INVISIBLE
+                                sharedViewModel.data9 = ""
+                                dataFromCameraFragment9 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 1.25 && boolean == 0) {
+                        boolean = 1
+                        //만약 지금 친 드럼이 hihat이라면
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
+                            totalHit+=1
+                            var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                            hit?.visibility = View.VISIBLE
+                            var great = rootView?.findViewById<ImageView>(R.id.great)
+                            great?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                hit?.visibility = View.INVISIBLE
+                                great?.visibility = View.INVISIBLE
+                                sharedViewModel.data = ""
+                                sharedViewModel.data4 = ""
+                                dataFromCameraFragment = ""
+                                dataFromCameraFragment4 = ""
+                            }, 200)
+                        }
+                        if(dataFromCameraFragment9 == "bass"){
+                            totalHit+=1
+                            var bass = rootView?.findViewById<TextView>(R.id.hitBass)
+                            bass?.visibility = View.VISIBLE
+                            var great = rootView?.findViewById<ImageView>(R.id.great)
+                            great?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                bass?.visibility = View.INVISIBLE
+                                great?.visibility = View.INVISIBLE
+                                sharedViewModel.data9 = ""
+                                dataFromCameraFragment9 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit - 0.5 && xPosition <= correctHit + 1 && boolean == 0) {
+                        boolean = 1
+                        //만약 지금 친 드럼이 hihat이라면
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
+                            totalHit+=1
+                            var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                            hit?.visibility = View.VISIBLE
+                            var perfect = rootView?.findViewById<ImageView>(R.id.perfect)
+                            perfect?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                hit?.visibility = View.INVISIBLE
+                                perfect?.visibility = View.INVISIBLE
+                                sharedViewModel.data = ""
+                                sharedViewModel.data4 = ""
+                                dataFromCameraFragment = ""
+                                dataFromCameraFragment4 = ""
+                            }, 200)
+                        }
+                        if(dataFromCameraFragment9 == "bass"){
+                            totalHit+=1
+                            var bass = rootView?.findViewById<TextView>(R.id.hitBass)
+                            bass?.visibility = View.VISIBLE
+                            var perfect = rootView?.findViewById<ImageView>(R.id.perfect)
+                            perfect?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                bass?.visibility = View.INVISIBLE
+                                perfect?.visibility = View.INVISIBLE
                                 sharedViewModel.data9 = ""
                                 dataFromCameraFragment9 = ""
                             }, 200)
@@ -461,6 +657,8 @@ class KPopBoardFragment : Fragment() {
                     }
                 }
                 animator.start()
+
+
                 //크래쉬, 베이스 - 작은별, 거미
             }else if (drumValuesArray.toString() == "[1,10]") {
                 val drumCrashFragment = DrumCrashFragment()
@@ -479,20 +677,18 @@ class KPopBoardFragment : Fragment() {
 
                 animator.addUpdateListener { animation ->
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
-//                    System.out.println("X Position: $xPosition")
-
-                    // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
+                    if (xPosition >= correctHit + 1.25 && xPosition <= correctHit + 1.5 && boolean == 0) {
                         boolean = 1
                         //만약 지금 친 드럼이 hihat이라면
                         if(dataFromCameraFragment2 == "crash"){
                             totalHit+=1
                             var crash = rootView?.findViewById<TextView>(R.id.hitCrash)
-                            //hit 표시
                             crash?.visibility = View.VISIBLE
-                            //0.2초 뒤 사라지게 하고 값도 제거
+                            var good = rootView?.findViewById<ImageView>(R.id.good)
+                            good?.visibility = View.VISIBLE
                             Handler().postDelayed({
                                 crash?.visibility = View.INVISIBLE
+                                good?.visibility = View.INVISIBLE
                                 sharedViewModel.data2 = ""
                                 dataFromCameraFragment2 = ""
                             }, 200)
@@ -500,11 +696,70 @@ class KPopBoardFragment : Fragment() {
                         if(dataFromCameraFragment9 == "bass"){
                             totalHit+=1
                             var bass = rootView?.findViewById<TextView>(R.id.hitBass)
-                            //hit 표시
                             bass?.visibility = View.VISIBLE
-                            //0.2초 뒤 사라지게 하고 값도 제거
+                            var good = rootView?.findViewById<ImageView>(R.id.good)
+                            good?.visibility = View.VISIBLE
                             Handler().postDelayed({
                                 bass?.visibility = View.INVISIBLE
+                                good?.visibility = View.INVISIBLE
+                                sharedViewModel.data9 = ""
+                                dataFromCameraFragment9 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 1.25 && boolean == 0) {
+                        boolean = 1
+                        //만약 지금 친 드럼이 hihat이라면
+                        if(dataFromCameraFragment2 == "crash"){
+                            totalHit+=1
+                            var crash = rootView?.findViewById<TextView>(R.id.hitCrash)
+                            crash?.visibility = View.VISIBLE
+                            var great = rootView?.findViewById<ImageView>(R.id.great)
+                            great?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                crash?.visibility = View.INVISIBLE
+                                great?.visibility = View.INVISIBLE
+                                sharedViewModel.data2 = ""
+                                dataFromCameraFragment2 = ""
+                            }, 200)
+                        }
+                        if(dataFromCameraFragment9 == "bass"){
+                            totalHit+=1
+                            var bass = rootView?.findViewById<TextView>(R.id.hitBass)
+                            bass?.visibility = View.VISIBLE
+                            var great = rootView?.findViewById<ImageView>(R.id.great)
+                            great?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                bass?.visibility = View.INVISIBLE
+                                great?.visibility = View.INVISIBLE
+                                sharedViewModel.data9 = ""
+                                dataFromCameraFragment9 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit - 0.5 && xPosition <= correctHit + 1 && boolean == 0) {
+                        boolean = 1
+                        //만약 지금 친 드럼이 hihat이라면
+                        if(dataFromCameraFragment2 == "crash"){
+                            totalHit+=1
+                            var crash = rootView?.findViewById<TextView>(R.id.hitCrash)
+                            crash?.visibility = View.VISIBLE
+                            var perfect = rootView?.findViewById<ImageView>(R.id.good)
+                            perfect?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                crash?.visibility = View.INVISIBLE
+                                perfect?.visibility = View.INVISIBLE
+                                sharedViewModel.data2 = ""
+                                dataFromCameraFragment2 = ""
+                            }, 200)
+                        }
+                        if(dataFromCameraFragment9 == "bass"){
+                            totalHit+=1
+                            var bass = rootView?.findViewById<TextView>(R.id.hitBass)
+                            bass?.visibility = View.VISIBLE
+                            var perfect = rootView?.findViewById<ImageView>(R.id.good)
+                            perfect?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                bass?.visibility = View.INVISIBLE
+                                perfect?.visibility = View.INVISIBLE
                                 sharedViewModel.data9 = ""
                                 dataFromCameraFragment9 = ""
                             }, 200)
@@ -512,6 +767,8 @@ class KPopBoardFragment : Fragment() {
                     }
                 }
                 animator.start()
+
+
                 //크래쉬, 스네어 - 거미
             }else if (drumValuesArray.toString() == "[1,8]") {
                 val drumCrashFragment = DrumCrashFragment()
@@ -530,20 +787,17 @@ class KPopBoardFragment : Fragment() {
 
                 animator.addUpdateListener { animation ->
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
-//                    System.out.println("X Position: $xPosition")
-
-                    // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
+                    if (xPosition >= correctHit + 1.25 && xPosition <= correctHit + 1.5 && boolean == 0) {
                         boolean = 1
-                        //만약 지금 친 드럼이 hihat이라면
                         if(dataFromCameraFragment2 == "crash"){
                             totalHit+=1
                             var crash = rootView?.findViewById<TextView>(R.id.hitCrash)
-                            //hit 표시
                             crash?.visibility = View.VISIBLE
-                            //0.2초 뒤 사라지게 하고 값도 제거
+                            var good = rootView?.findViewById<ImageView>(R.id.good)
+                            good?.visibility = View.VISIBLE
                             Handler().postDelayed({
                                 crash?.visibility = View.INVISIBLE
+                                good?.visibility = View.INVISIBLE
                                 sharedViewModel.data2 = ""
                                 dataFromCameraFragment2 = ""
                             }, 200)
@@ -551,11 +805,76 @@ class KPopBoardFragment : Fragment() {
                         if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
                             totalHit+=1
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
-                            //hit 표시
                             hit?.visibility = View.VISIBLE
+                            var good = rootView?.findViewById<TextView>(R.id.good)
+                            good?.visibility = View.VISIBLE
                             //0.2초 뒤 사라지게 하고 값도 제거
                             Handler().postDelayed({
                                 hit?.visibility = View.INVISIBLE
+                                good?.visibility = View.INVISIBLE
+                                sharedViewModel.data = ""
+                                sharedViewModel.data4 = ""
+                                dataFromCameraFragment = ""
+                                dataFromCameraFragment4 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit + 1 && xPosition <= correctHit + 1.25 && boolean == 0) {
+                        boolean = 1
+                        //만약 지금 친 드럼이 hihat이라면
+                        if(dataFromCameraFragment2 == "crash"){
+                            totalHit+=1
+                            var crash = rootView?.findViewById<TextView>(R.id.hitCrash)
+                            crash?.visibility = View.VISIBLE
+                            var great = rootView?.findViewById<TextView>(R.id.good)
+                            great?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                crash?.visibility = View.INVISIBLE
+                                great?.visibility = View.INVISIBLE
+                                sharedViewModel.data2 = ""
+                                dataFromCameraFragment2 = ""
+                            }, 200)
+                        }
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
+                            totalHit+=1
+                            var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                            hit?.visibility = View.VISIBLE
+                            var great = rootView?.findViewById<TextView>(R.id.good)
+                            great?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                hit?.visibility = View.INVISIBLE
+                                great?.visibility = View.INVISIBLE
+                                sharedViewModel.data = ""
+                                sharedViewModel.data4 = ""
+                                dataFromCameraFragment = ""
+                                dataFromCameraFragment4 = ""
+                            }, 200)
+                        }
+                    }else if (xPosition >= correctHit - 0.5 && xPosition <= correctHit + 1 && boolean == 0) {
+                        boolean = 1
+                        //만약 지금 친 드럼이 hihat이라면
+                        if(dataFromCameraFragment2 == "crash"){
+                            totalHit+=1
+                            var crash = rootView?.findViewById<TextView>(R.id.hitCrash)
+                            crash?.visibility = View.VISIBLE
+                            var perfect = rootView?.findViewById<TextView>(R.id.perfect)
+                            perfect?.visibility = View.VISIBLE
+                            //0.2초 뒤 사라지게 하고 값도 제거
+                            Handler().postDelayed({
+                                crash?.visibility = View.INVISIBLE
+                                perfect?.visibility = View.INVISIBLE
+                                sharedViewModel.data2 = ""
+                                dataFromCameraFragment2 = ""
+                            }, 200)
+                        }
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
+                            totalHit+=1
+                            var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                            hit?.visibility = View.VISIBLE
+                            var perfect = rootView?.findViewById<TextView>(R.id.perfect)
+                            perfect?.visibility = View.VISIBLE
+                            Handler().postDelayed({
+                                hit?.visibility = View.INVISIBLE
+                                perfect?.visibility = View.INVISIBLE
                                 sharedViewModel.data = ""
                                 sharedViewModel.data4 = ""
                                 dataFromCameraFragment = ""
