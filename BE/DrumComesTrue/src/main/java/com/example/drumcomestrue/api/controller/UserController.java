@@ -39,27 +39,10 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 
-
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
 		userService.login(loginRequest);
 		return new ResponseEntity<>("ok", HttpStatus.OK);
-	}
-
-
-	@GetMapping("/verify/{phoneNumber}")
-	public ResponseEntity<FindResponse> verify(@PathVariable("phoneNumber") String phoneNumber){
-		return ResponseEntity.ok().body(userService.verify(phoneNumber));
-	}
-
-	@GetMapping("/findId/{verifyNumber}")
-	public ResponseEntity<FindIdResponse> findId(@PathVariable("verifyNumber") String verifyNumber){
-		return ResponseEntity.ok().body(userService.findId(verifyNumber));
-	}
-
-	@GetMapping("/findPw/{verifyNumber}")
-	public ResponseEntity<FindPwResponse> findPw(@PathVariable("verifyNumber") String verifyNumber){
-		return ResponseEntity.ok().body(userService.findPw(verifyNumber));
 	}
 
 	@GetMapping("/myPage/{userPk}")
@@ -67,7 +50,3 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.viewPage(userPk));
 	}
 }
-
-
-
-

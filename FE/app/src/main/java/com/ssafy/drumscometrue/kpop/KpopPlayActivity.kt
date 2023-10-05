@@ -8,6 +8,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+//import android.support.v4.media.MediaBrowserCompat.MediaItem
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.ssafy.drumscometrue.SharedViewModel
 import com.ssafy.drumscometrue.databinding.ActivityKpopPlayBinding
 import org.w3c.dom.Text
@@ -39,9 +41,13 @@ class KpopPlayActivity : AppCompatActivity() {
     //3,2,1 카운트 및 노래 시작 시간을 위한 timer
     private var timerTask: Timer ?= null
 
+    private val handler = Handler()
+
     //곡제목
     private var songName: String ? = null
     private lateinit var binding: ActivityKpopPlayBinding
+
+    private var exoPlayer: SimpleExoPlayer? = null
 
 //    private lateinit var sharedViewModel1: SharedViewModel
 
@@ -53,6 +59,11 @@ class KpopPlayActivity : AppCompatActivity() {
 
         binding = ActivityKpopPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val displayMetrics = resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+
+        System.out.println("screenWidth $screenWidth")
 
         val song = intent.getStringExtra("song")
         val score = intent.getStringExtra("score")
@@ -178,7 +189,6 @@ class KpopPlayActivity : AppCompatActivity() {
             else -> R.raw.rooftop // 기본값으로 설정할 리소스 ID
         }
 
-        //startTime = 500
         startTime = startTime.toString().toInt()*100
         //0.01초마다 작업 수행
         timerTask = timer(period = 10){
@@ -188,16 +198,24 @@ class KpopPlayActivity : AppCompatActivity() {
 //                    countTime.text = "${sec-1}"
                 } else if (sec == 1){
 //                    countTime.text = "Start"
-                } else{
+                } else if(sec == 0){
 //                    countTime.text = ""
 //                    countTime.setPadding(0, 0, 0, 0)
                     timerTask?.cancel() //timeTask 종료
-                    mediaPlayer = MediaPlayer.create(this@KpopPlayActivity, soundResId) //음악 시작
-                    mediaPlayer?.start()
+                    playMusic(soundResId)
+
+//                    mediaPlayer = MediaPlayer.create(this@KpopPlayActivity, soundResId) //음악 시작
+//                    mediaPlayer?.start()
                 }
             }
             startTime--
         }
+    }
+
+    private fun playMusic(soundResId: Int) {
+        mediaPlayer = MediaPlayer.create(this@KpopPlayActivity, soundResId) //음악 시작
+        mediaPlayer?.seekTo(0)
+        mediaPlayer?.start()
     }
 
     override fun onStop(){

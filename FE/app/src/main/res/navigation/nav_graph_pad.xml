@@ -63,7 +63,7 @@
 
     <fragment
         android:id="@+id/pad_play_fragment"
-        android:name="com.ssafy.drumscometrue.freePlay.fragment.PadPlayFragment"
+        android:name="com.ssafy.drumscometrue.partPlay.fragment.PadPlayFragment"
         android:label="PadPlayFragment">
 
         <action

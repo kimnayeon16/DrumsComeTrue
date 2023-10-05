@@ -7,14 +7,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 import com.ssafy.drumscometrue.R
-import com.ssafy.drumscometrue.freePlay.FreePlayActivity
+import com.ssafy.drumscometrue.partPlay.OneSoundActivity
+import com.ssafy.drumscometrue.partPlay.fragment.OneSoundFragment
 
 class VideoAdapter(private val videoItems: List<VideoItem>) :
     RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
@@ -25,6 +26,7 @@ class VideoAdapter(private val videoItems: List<VideoItem>) :
         val tutorSubtitle: TextView = itemView.findViewById(R.id.tutor_subtitle)
         val tutorTitle: TextView = itemView.findViewById(R.id.tutor_title)
         val tutorImage: ImageView = itemView.findViewById(R.id.tutor_image)
+        val tutorBtn: TextView = itemView.findViewById(R.id.num_btn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
@@ -34,7 +36,9 @@ class VideoAdapter(private val videoItems: List<VideoItem>) :
         val btn = itemView.findViewById<Button>(R.id.tutor_btn)
         btn.setOnClickListener{
             println("클릭 이벤트")
-            val intent = Intent(itemView.context, FreePlayActivity::class.java)
+            val intent = Intent(itemView.context, OneSoundActivity::class.java)
+            intent.putExtra("num", itemView.findViewById<TextView>(R.id.num_btn).text)
+            println(itemView.findViewById<TextView>(R.id.num_btn).text)
             itemView.context.startActivity(intent)
         }
 
@@ -56,7 +60,7 @@ class VideoAdapter(private val videoItems: List<VideoItem>) :
         holder.tutorDescription.text = videoItem.description
         holder.tutorSubtitle.text = videoItem.subtitle
         holder.tutorTitle.text = videoItem.title
-
+        holder.tutorBtn.text = videoItem.btn
         holder.youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 youTubePlayer.cueVideo(videoItem.videoId, 0f)

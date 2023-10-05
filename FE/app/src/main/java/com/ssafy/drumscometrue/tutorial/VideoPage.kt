@@ -12,6 +12,7 @@ import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.freePlay.FreePlayActivity
 
 class VideoPage : Fragment() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

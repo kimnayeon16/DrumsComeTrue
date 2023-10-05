@@ -27,13 +27,16 @@ import android.os.Handler
 import android.os.SystemClock
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -59,6 +62,7 @@ import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
 import com.ssafy.drumscometrue.SharedViewModel
 import com.ssafy.drumscometrue.databinding.FragmentCameraBinding
 import com.ssafy.drumscometrue.freePlay.OverlayView
+import com.ssafy.drumscometrue.kpop.KPopCountFragment
 import kotlinx.coroutines.delay
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.ExecutorService
@@ -140,15 +144,6 @@ class CameraFragment : Fragment() {
     private lateinit var mTomImg : ImageView
     private lateinit var crashImg : ImageView
     private lateinit var rideImg : ImageView
-
-    private lateinit var snareHitImg : ImageView
-    private lateinit var bassHitImg : ImageView
-    private lateinit var hihatHitImg : ImageView
-    private lateinit var fTomHitImg : ImageView
-    private lateinit var hTomHitImg : ImageView
-    private lateinit var mTomHitImg : ImageView
-    private lateinit var crashHitImg : ImageView
-    private lateinit var rideHitImg : ImageView
 
     //ML_Kit테스트
     // 포즈 인식 클라이언트에 적용되는 옵션
@@ -245,14 +240,15 @@ class CameraFragment : Fragment() {
                     val rightPointWrist = Point(rightWrist.position.x , rightWrist.position.y)
                     val rightPointHand = Point(rightHand.position.x , rightHand.position.y)
 
-                    val leftDistance = calculateDistance(leftPointElbow, leftPointWrist) * 0.8F
-                    val rightDistance = calculateDistance(rightPointElbow, rightPointWrist) * 0.8F
+                    val leftDistance = calculateDistance(leftPointElbow, leftPointWrist) * 0.6F
+                    val rightDistance = calculateDistance(rightPointElbow, rightPointWrist) * 0.6F
 
                     val leftPoint = findPointOnLine(leftPointHand, leftPointElbow, leftDistance)
                     val rightPoint = findPointOnLine(rightPointHand, rightPointElbow, rightDistance)
 
                     val width = image.width
                     val height = image.height
+
 
 
                     // 화면에 그려주기
@@ -267,18 +263,24 @@ class CameraFragment : Fragment() {
 
                     if(!start){
                         val handler = Handler()
-
+                        leftHandEstimation = settingPointEstimation(leftPoint, height, width)
+                        rightHandEstimation = settingPointEstimation(rightPoint, height, width)
                         handler.postDelayed({
-                            // 5초 후에 실행할 코드를 여기에 작성합니다.
-                            settingEstimation(leftHand, height, width)
-                            settingEstimation(rightHand, height, width)
-//                            settingLeftHihat(leftFoot,height,width)
-//                            settingRightBass(rightFoot,height,width)
                             setLeftKnee = leftKnee.position.y
                             setRightKnee  = rightKnee.position.y
                             start = true
+                            // 10초 후에 실행할 코드를 여기에 작성합니다.
                             fragmentCameraBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
-                        }, 5000)
+                            fragmentCameraBinding.layoutOverlay.bassImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.crashImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.fTomImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.hihatImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.hTomImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.mTomImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.rideImg.visibility = View.VISIBLE
+                            fragmentCameraBinding.layoutOverlay.snareImg.visibility = View.VISIBLE
+
+                        }, 10000)
                     }else{
                         leftHandEstimation = hitPoint(leftPoint, leftHandEstimation, height, width)
                         rightHandEstimation = hitPoint(rightPoint, rightHandEstimation, height, width)
@@ -337,6 +339,17 @@ class CameraFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+
+        val childFragmentManager = childFragmentManager
+        val transaction = childFragmentManager.beginTransaction()
+
+        // 추가하려는 자식 프래그먼트를 생성합니다.
+        val childFragment = KPopCountFragment()
+
+        // 자식 프래그먼트를 추가하거나 교체합니다.
+        transaction.replace(R.id.count, childFragment)
+        transaction.commit()
+
         println("onCreate")
         setSound()
     }
@@ -370,6 +383,17 @@ class CameraFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 튜토리얼에서 넘어온 경우에만 퀘스트 텍스트를 설정
+        if (arguments?.getBoolean("fromTutorial", false) == true) {
+            val questText = TextView(requireContext())
+            questText.text = "튜토리얼 1 페이지\n연습하기 버튼을 누르세요"
+            questText.gravity = Gravity.CENTER
+            questText.setTextColor(Color.WHITE)
+
+            // board에 퀘스트 텍스트 추가
+            val board = view.findViewById<FrameLayout>(R.id.board)
+            board.addView(questText)
+        }
         // Initialize our background executor
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
@@ -461,16 +485,24 @@ class CameraFragment : Fragment() {
     }
 
     private fun setImg() {
-        snareImg = fragmentCameraBinding.layoutOverlay.snareImg
-        bassImg = fragmentCameraBinding.layoutOverlay.bassImg
-        hihatImg = fragmentCameraBinding.layoutOverlay.hihatImg
-        fTomImg = fragmentCameraBinding.layoutOverlay.fTomImg
-        hTomImg = fragmentCameraBinding.layoutOverlay.hTomImg
-        mTomImg = fragmentCameraBinding.layoutOverlay.mTomImg
-        crashImg = fragmentCameraBinding.layoutOverlay.crashImg
-        rideImg = fragmentCameraBinding.layoutOverlay.rideImg
+//        snareImg = fragmentCameraBinding.layoutOverlay.snareImg
+//        bassImg = fragmentCameraBinding.layoutOverlay.bassImg
+//        hihatImg = fragmentCameraBinding.layoutOverlay.hihatImg
+//        fTomImg = fragmentCameraBinding.layoutOverlay.fTomImg
+//        hTomImg = fragmentCameraBinding.layoutOverlay.hTomImg
+//        mTomImg = fragmentCameraBinding.layoutOverlay.mTomImg
+//        crashImg = fragmentCameraBinding.layoutOverlay.crashImg
+//        rideImg = fragmentCameraBinding.layoutOverlay.rideImg
+//
+        snareImg = fragmentCameraBinding.layoutOverlay.snareHitImg
+        bassImg = fragmentCameraBinding.layoutOverlay.bassHitImg
+        hihatImg = fragmentCameraBinding.layoutOverlay.hihatHitImg
+        fTomImg = fragmentCameraBinding.layoutOverlay.fTomHitImg
+        hTomImg = fragmentCameraBinding.layoutOverlay.hTomHitImg
+        mTomImg = fragmentCameraBinding.layoutOverlay.mTomHitImg
+        crashImg = fragmentCameraBinding.layoutOverlay.crashHitImg
+        rideImg = fragmentCameraBinding.layoutOverlay.rideHitImg
 
-        bassHitImg = fragmentCameraBinding.layoutOverlay.bassHitImg
     }
 
     /** SoundPool설정 */
@@ -816,29 +848,6 @@ class CameraFragment : Fragment() {
     }
 
 
-    /**
-     * 각도 계산
-     */
-//    fun angle(pointA: Point, pointB: Point, pointC: Point): Double {
-//        val vectorAB = Point(pointB.x - pointA.x, pointB.y - pointA.y)
-//        val vectorCB = Point(pointB.x - pointC.x, pointB.y - pointC.y)
-//
-//        val dotProduct = (vectorAB.x * vectorCB.x) + (vectorAB.y * vectorCB.y)
-//        val magnitudeAB = Math.sqrt((vectorAB.x * vectorAB.x) + (vectorAB.y * vectorAB.y))
-//        val magnitudeCB = Math.sqrt((vectorCB.x * vectorCB.x) + (vectorCB.y * vectorCB.y))
-//
-//        val cosTheta = dotProduct / (magnitudeAB * magnitudeCB)
-//
-//        // 아크코사인을 사용하여 라디안 단위의 각도를 계산합니다.
-//        val angleRad = Math.acos(cosTheta)
-//
-//        // 라디안 각도를 도로 변환합니다.
-//        val angleDeg = Math.toDegrees(angleRad)
-//
-//        return angleDeg
-//    }
-
-
 
     private fun hitAnimation(imageView: ImageView) {
         // ImageView의 색상을 검은색으로 설정
@@ -906,6 +915,44 @@ class CameraFragment : Fragment() {
         return Point(cX, cY)
     }
 
+    private fun settingPointEstimation(point : Point, width : Int, height : Int) : MutableMap<String, Boolean>{
+        //px -> dp비율로 변환하기
+        val position_x = point.x / width
+        val position_y = point.y / height
+
+        val updates = mutableMapOf(
+            "crash" to false,
+            "ride" to false,
+            "hiHat" to false,
+            "hTom" to false,
+            "mTom" to false,
+            "floorTom" to false,
+            "snare" to false
+        )
+
+        if(position_y > 0.36){
+            updates["crash"] = true
+            updates["hTom"] = true
+            updates["mTom"] = true
+        }else if(position_y > 0.45){
+            updates["crash"] = true
+            updates["ride"] = true
+            updates["hiHat"] = true
+            updates["hTom"] = true
+            updates["mTom"] = true
+        }else if(position_y > 0.58){
+            updates["crash"] = true
+            updates["ride"] = true
+            updates["hiHat"] = true
+            updates["hTom"] = true
+            updates["mTom"] = true
+            updates["floorTom"] = true
+            updates["snare"] = true
+        }
+
+        return updates
+    }
+
 
     private fun hitPoint(point : Point, hitEstimation : MutableMap<String, Boolean>, width : Int, height : Int) : MutableMap<String, Boolean>{
         //px -> 비율로 변환하기
@@ -957,9 +1004,9 @@ class CameraFragment : Fragment() {
             hitEstimation["hTom"] = true
             hitEstimation["mTom"] = true
         }
-        if(position_y > 0.47) {
+        if(position_y > 0.45) {
             if(hitEstimation["hiHat"] == false && position_x > 0.8){
-                if(leftHihat){
+                if(!leftHihat){
                     //오픈하이햇을 쳤으므로 변수에 담기
                     sharedViewModel.data = "openHiHat"
                     Log.d("board frag로 보낼 데이터","${sharedViewModel.data}")
@@ -998,7 +1045,7 @@ class CameraFragment : Fragment() {
             hitEstimation["hiHat"] = true
             hitEstimation["ride"] = true
         }
-        if(position_y > 0.58){
+        if(position_y > 0.61){
             if(hitEstimation["snare"] == false && position_x > 0.45 && position_x < 0.8){
                 //라이드를 쳤으므로 변수에 담기
                 sharedViewModel.data1 = "snare"
@@ -1043,13 +1090,13 @@ class CameraFragment : Fragment() {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(position_y < 0.46) {
+        if(position_y < 0.44) {
             hitEstimation["hiHat"] = false
             hitEstimation["ride"] = false
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(position_y < 0.56){
+        if(position_y < 0.59){
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }

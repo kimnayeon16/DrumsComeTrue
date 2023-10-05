@@ -30,7 +30,7 @@ class KPopCountFragment : Fragment() {
                     countTime?.text = "${sec-1}"
                 } else if (sec == 1){
                     countTime?.text = "Start!"
-                } else{
+                } else if (sec == 0){
                     countTime?.text = ""
                     countTime?.setPadding(0, 0, 0, 0)
 

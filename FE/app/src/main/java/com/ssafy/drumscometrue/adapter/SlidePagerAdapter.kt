@@ -3,6 +3,7 @@ package com.ssafy.drumscometrue.adapter
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.ssafy.drumscometrue.persistentbottom.MusicFragment
 import com.ssafy.drumscometrue.persistentbottom.PersistentFragment
 import com.ssafy.drumscometrue.tutorial.MetronomeFragment
 import com.ssafy.drumscometrue.tutorial.RecordFragment
@@ -18,8 +19,8 @@ class SlidePagerAdapter(fragment: PersistentFragment) : FragmentStateAdapter(fra
         Log.d("SlidePagerAdapter", "createFragment for position: $position")
         return when (position) {
             0 -> {
-                Log.d("SlidePagerAdapter", "Creating RecordFragment")
-                RecordFragment()
+                Log.d("SlidePagerAdapter", "Creating SelectFragment")
+                MusicFragment()
             }
             1 -> {
                 Log.d("SlidePagerAdapter", "Creating MetronomeFragment")

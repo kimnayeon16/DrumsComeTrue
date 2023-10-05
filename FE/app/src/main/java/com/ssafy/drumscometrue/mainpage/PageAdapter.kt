@@ -39,12 +39,12 @@ class PageAdapter(
     class PageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val pageImageView: ImageView = itemView.findViewById(R.id.page_image)
         private val pageTitleView: TextView = itemView.findViewById(R.id.page_title)
-        private val pageDescriptionView: TextView = itemView.findViewById(R.id.page_description)
+//        private val pageDescriptionView: TextView = itemView.findViewById(R.id.page_description)
 
         fun bind(page: PageData) {
             pageImageView.setImageResource(page.img)
             pageTitleView.text = page.title
-            pageDescriptionView.text = page.description
+//            pageDescriptionView.text = page.description
         }
     }
 }

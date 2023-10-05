@@ -96,7 +96,6 @@ class LoginActivity : AppCompatActivity() {
 
         loginBtn = findViewById(R.id.login)
         kakaoLoginImg = findViewById(R.id.kakao_login)
-        naverLoginImg = findViewById(R.id.naver_login)
 
         // Retrofit 초기화
         gson = GsonBuilder().setLenient().create()
@@ -117,9 +116,6 @@ class LoginActivity : AppCompatActivity() {
         loginBtn.setOnClickListener { handleLoginButtonClick() }
         joinBtn.setOnClickListener { handleJoinButtonClick() }
         kakaoLoginImg.setOnClickListener { handleKakaoLoginButtonClick() }
-
-        val drumTestBtn = findViewById<Button>(R.id.drum_test)
-        drumTestBtn.setOnClickListener { handleDrumTestButtonClick() }
     }
 
     // 로그인
@@ -178,6 +174,14 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.d("Resp onFailure?", "실행됨")
+                    // 로그인 실패 다이얼로그 띄우기
+                    val dialog = AlertDialog.Builder(this@LoginActivity)
+                        .setTitle("로그인 실패")
+                        .setMessage("서버 에러")
+                        .setPositiveButton("확인") { _, _ -> }
+                        .create()
+
+                    dialog.show()
                 }
             })
     }
@@ -206,6 +210,7 @@ class LoginActivity : AppCompatActivity() {
     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
             Log.e(TAG, "카카오계정으로 로그인 실패", error)
+
         } else if (token != null) {
             Log.i(TAG, "카카오계정으로 로그인 성공 ${token}")
 
