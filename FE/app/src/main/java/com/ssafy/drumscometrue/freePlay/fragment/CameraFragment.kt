@@ -154,6 +154,11 @@ class CameraFragment : Fragment() {
     private lateinit var crashRingImg : ImageView
     private lateinit var rideRingImg : ImageView
 
+    private var compareBass : Float = 0F
+    private var compareHihat : Float = 0F
+    private var beforeBass: Float = 0F
+    private var beforeHihat: Float = 0F
+
 
     //ML_Kit테스트
     // 포즈 인식 클라이언트에 적용되는 옵션
@@ -250,8 +255,17 @@ class CameraFragment : Fragment() {
                     val rightPointWrist = Point(rightWrist.position.x , rightWrist.position.y)
                     val rightPointHand = Point(rightHand.position.x , rightHand.position.y)
 
-                    val leftDistance = calculateDistance(leftPointElbow, leftPointWrist) * 0.6F
-                    val rightDistance = calculateDistance(rightPointElbow, rightPointWrist) * 0.6F
+                    var leftScare: Float = 0.1F
+                    var rightScare: Float = 0.1F
+
+                    if(leftHand.position.y/image.width < 0.5){
+                        leftScare = 0.65F
+                    }
+                    if(rightHand.position.y/image.width < 0.55){
+                        rightScare = 0.65F
+                    }
+                    val leftDistance = calculateDistance(leftPointElbow, leftPointWrist) * leftScare
+                    val rightDistance = calculateDistance(rightPointElbow, rightPointWrist) * rightScare
 
                     val leftPoint = findPointOnLine(leftPointHand, leftPointElbow, leftDistance)
                     val rightPoint = findPointOnLine(rightPointHand, rightPointElbow, rightDistance)
@@ -276,8 +290,10 @@ class CameraFragment : Fragment() {
                         leftHandEstimation = settingPointEstimation(leftPoint, height, width)
                         rightHandEstimation = settingPointEstimation(rightPoint, height, width)
                         handler.postDelayed({
-                            setLeftKnee = leftKnee.position.y
-                            setRightKnee  = rightKnee.position.y
+//                            setLeftKnee = leftKnee.position.y
+//                            setRightKnee  = rightKnee.position.y
+                            compareBass = rightKnee.position.y / width
+                            compareHihat = leftKnee.position.y
                             start = true
                             // 10초 후에 실행할 코드를 여기에 작성합니다.
                             fragmentCameraBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
@@ -297,15 +313,12 @@ class CameraFragment : Fragment() {
                         leftHandEstimation = backPoint(leftPoint, leftHandEstimation, height, width)
                         rightHandEstimation = backPoint(rightPoint, rightHandEstimation, height, width)
 
-                        hitLeftHihat2(leftKnee, setLeftKnee, height, width)
-                        hitRightBass2(rightKnee, setRightKnee, height, width)
-                        backLeftHihat2(leftKnee, setLeftKnee, height, width)
-                        backRightBass2(rightKnee, setRightKnee, height, width)
 
-//                        hitLeftHihat(leftFoot, height, width)
-//                        hitRightBass(rightFoot, height, width)
-//                        backLeftHihat(leftFoot, height, width)
-//                        backRightBass(rightFoot, height, width)
+                        hitBass(rightKnee, height, width)
+                        hitLeftHihat2(leftKnee, setLeftKnee, height, width)
+//                        hitRightBass2(rightKnee, setRightKnee, height, width)
+                        backLeftHihat2(leftKnee, setLeftKnee, height, width)
+//                        backRightBass2(rightKnee, setRightKnee, height, width)
 
                     }
                 }
@@ -997,8 +1010,8 @@ class CameraFragment : Fragment() {
         //어떤 드럼을 쳤는지 판별하기 위한 변수(KPopoBoardFragment로 보내기)
         val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
-        if(position_y > 0.36) {
-            if(hitEstimation["crash"] == false && position_x > 0.65 && position_x < 0.85){
+        if(position_y > 0.31) {
+            if(hitEstimation["crash"] == false && position_x > 0.65 && position_x < 0.95){
                 //Crash를 쳤으므로 변수에 담기
                 sharedViewModel.data2 = "Crash"
                 Log.d("board frag로 보낼 데이터","${sharedViewModel.data2}")
@@ -1044,7 +1057,7 @@ class CameraFragment : Fragment() {
             hitEstimation["mTom"] = true
         }
         if(position_y > 0.45) {
-            if(hitEstimation["hiHat"] == false && position_x > 0.8){
+            if(hitEstimation["hiHat"] == false && position_x > 0.7){
                 if(!leftHihat){
                     //오픈하이햇을 쳤으므로 변수에 담기
                     sharedViewModel.data = "openHiHat"
@@ -1053,7 +1066,7 @@ class CameraFragment : Fragment() {
                     // 사운드 재생
                     val soundId = soundMap["openHat"]
                     soundId?.let {
-                        soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                        soundPool.play(it, 0.7f, 0.7f, 1, 0, 1.0f)
                         hitAnimation(hihatImg)
                         hitRingAnimation(hihatRingImg)
 
@@ -1066,7 +1079,7 @@ class CameraFragment : Fragment() {
                     // 사운드 재생
                     val soundId = soundMap["closedHat"]
                     soundId?.let {
-                        soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                        soundPool.play(it, 0.5f, 0.5f, 1, 0, 1.0f)
                         hitAnimation(hihatImg)
                         hitRingAnimation(hihatRingImg)
 
@@ -1090,7 +1103,7 @@ class CameraFragment : Fragment() {
             hitEstimation["hiHat"] = true
             hitEstimation["ride"] = true
         }
-        if(position_y > 0.61){
+        if(position_y > 0.58){
             if(hitEstimation["snare"] == false && position_x > 0.45 && position_x < 0.8){
                 //라이드를 쳤으므로 변수에 담기
                 sharedViewModel.data1 = "snare"
@@ -1129,7 +1142,7 @@ class CameraFragment : Fragment() {
         val position_x = point.x / width
         val position_y = point.y / height
 
-        if(position_y < 0.35) {
+        if(position_y < 0.3) {
             hitEstimation["crash"] = false
             hitEstimation["ride"] = false
             hitEstimation["hiHat"] = false
@@ -1144,7 +1157,7 @@ class CameraFragment : Fragment() {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(position_y < 0.59){
+        if(position_y < 0.565){
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
@@ -1152,5 +1165,35 @@ class CameraFragment : Fragment() {
         return hitEstimation
     }
 
+    private fun hitBass(rightFoot: PoseLandmark, width : Int, height : Int){
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
+
+        val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        println("before: "+beforeBass)
+        println("---" + position_y)
+        println("compare "+compareBass)
+
+        if(beforeBass > position_y){
+//            println("발 올라감")
+            if(compareBass - 0.03 > position_y && !rightBass){
+                Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
+                sharedViewModel.data9 = "closedHat"
+                val soundId = soundMap["bass"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(bassImg)
+                }
+                rightBass = true
+            }
+        }else{
+            println("else")
+            compareBass = position_y
+            rightBass = false
+        }
+
+        beforeBass = position_y
+    }
 
 }
