@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.drumscometrue.R
 import com.ssafy.drumscometrue.kpop.Kpop
 
-class kPopAdapter(val context: Context, val kpopList: ArrayList<Kpop>, val itemClick: (Kpop) -> Unit):
+class kPopAdapter(val context: Context, private val kpopList: List<Kpop>, val itemClick: (Kpop) -> Unit):
     RecyclerView.Adapter<kPopAdapter.Holder>() {
 
     inner class Holder(itemView: View?, itemClick: (Kpop) -> Unit): RecyclerView.ViewHolder(itemView!!) {
@@ -37,7 +37,7 @@ class kPopAdapter(val context: Context, val kpopList: ArrayList<Kpop>, val itemC
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.kpop_list_item, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.kpop_card_item, parent, false)
         return Holder(view, itemClick)
     }
 
