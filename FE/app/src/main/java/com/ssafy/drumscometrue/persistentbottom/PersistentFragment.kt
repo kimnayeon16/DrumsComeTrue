@@ -37,7 +37,7 @@ class PersistentFragment : Fragment(R.layout.fragment_persistent) {
 
         // TabLayout과 ViewPager2 연결
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = if (position == 0) "음악선택" else if (position == 1) "녹음" else "메트로놈"
+            tab.text = if (position == 0) "음악선택" else "메트로놈"
         }.attach()
 
         // TabLayout의 indicator 색상 변경 리스너
@@ -45,8 +45,7 @@ class PersistentFragment : Fragment(R.layout.fragment_persistent) {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
                     0 -> binding.tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.colorForMusicSelect, null))
-                    1 -> binding.tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.colorForRecord, null))
-                    2 -> binding.tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.colorForMetronome, null))
+                    1 -> binding.tabLayout.setSelectedTabIndicatorColor(resources.getColor(R.color.colorForMetronome, null))
                 }
             }
 
