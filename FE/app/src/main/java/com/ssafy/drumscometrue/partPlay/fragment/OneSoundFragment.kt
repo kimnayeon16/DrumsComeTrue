@@ -42,6 +42,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.ssafy.drumscometrue.R
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.pose.Pose
@@ -81,7 +82,7 @@ class OneSoundFragment : Fragment() {
 
     private val oneSoundFragment:OneSoundFragment = this
 
-    private lateinit var receivedData: String
+//    private lateinit var receivedData: String
 
 
     //카메라 미리보기 및 이미지 분석과 관련된 변수들 -> glSurfaceView로 변경해도 될듯
@@ -126,7 +127,10 @@ class OneSoundFragment : Fragment() {
     private lateinit var crashImg : ImageView
     private lateinit var rideImg : ImageView
 
-
+    private var compareBass : Float = 0F
+    private var compareHihat : Float = 0F
+    private var beforeBass: Float = 0F
+    private var beforeHihat: Float = 0F
 
     //ML_Kit테스트
     // 포즈 인식 클라이언트에 적용되는 옵션
@@ -155,15 +159,6 @@ class OneSoundFragment : Fragment() {
         override fun analyze(imageProxy: ImageProxy) {
             val mediaImage = imageProxy.image ?: return //이미지 없으면 중단
 
-//            val imageRotation = degreesToFirebaseRotation(imageProxy.imageInfo.rotationDegrees)
-//            // ML_Kit에 전달할 입력 이미지 설정, 회전정보 함께 전달
-//            val image = FirebaseVisionImage.fromMediaImage(mediaImage, imageRotation)
-
-            // Firebase ML Kit Vision API의 FirebaseVisionImage를 InputImage로 변환
-//            val inputImage = InputImage.fromBitmap(
-//                image.bitmap,
-//                imageProxy.imageInfo.rotationDegrees
-//            )
 
             val inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
 
@@ -231,38 +226,44 @@ class OneSoundFragment : Fragment() {
 
                     val width = image.width
                     val height = image.height
-
                     if(!start){
                         val handler = Handler()
                         leftHandEstimation = settingPointEstimation(leftPoint, height, width)
                         rightHandEstimation = settingPointEstimation(rightPoint, height, width)
                         handler.postDelayed({
-                            setLeftKnee = leftKnee.position.y
-                            setRightKnee  = rightKnee.position.y
+//                            setLeftKnee = leftKnee.position.y
+//                            setRightKnee  = rightKnee.position.y
+                            compareBass = rightKnee.position.y / width
+                            compareHihat = leftKnee.position.y
                             start = true
                             // 10초 후에 실행할 코드를 여기에 작성합니다.
                             fragmentOneSoundBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
                             fragmentOneSoundBinding.layoutOverlay.bassImg.visibility = View.VISIBLE
+                            fragmentOneSoundBinding.layoutOverlay.hihatImg.visibility = View.VISIBLE
+                            fragmentOneSoundBinding.layoutOverlay.snareImg.visibility = View.VISIBLE
+
+                            fragmentOneSoundBinding.layoutOverlay.hihatImg.setColorFilter(Color.BLACK)
+
+                            fragmentOneSoundBinding.layoutOverlay.snareImg.setColorFilter(Color.BLACK)
+
                             fragmentOneSoundBinding.layoutOverlay.crashImg.visibility = View.VISIBLE
                             fragmentOneSoundBinding.layoutOverlay.fTomImg.visibility = View.VISIBLE
-                            fragmentOneSoundBinding.layoutOverlay.hihatImg.visibility = View.VISIBLE
                             fragmentOneSoundBinding.layoutOverlay.hTomImg.visibility = View.VISIBLE
                             fragmentOneSoundBinding.layoutOverlay.mTomImg.visibility = View.VISIBLE
                             fragmentOneSoundBinding.layoutOverlay.rideImg.visibility = View.VISIBLE
-                            fragmentOneSoundBinding.layoutOverlay.snareImg.visibility = View.VISIBLE
+
 
                         }, 10000)
                     }else{
-                        leftHandEstimation = hitPoint(leftPoint, leftHandEstimation, height, width)
-                        rightHandEstimation = hitPoint(rightPoint, rightHandEstimation, height, width)
-                        leftHandEstimation = backPoint(leftPoint, leftHandEstimation, height, width)
-                        rightHandEstimation = backPoint(rightPoint, rightHandEstimation, height, width)
+//                        leftHandEstimation = hitPoint(leftPoint, leftHandEstimation, height, width)
+//                        rightHandEstimation = hitPoint(rightPoint, rightHandEstimation, height, width)
+//                        leftHandEstimation = backPoint(leftPoint, leftHandEstimation, height, width)
+//                        rightHandEstimation = backPoint(rightPoint, rightHandEstimation, height, width)
 
-                        hitLeftHihat2(leftKnee, setLeftKnee, height, width)
-                        hitRightBass2(rightKnee, setRightKnee, height, width)
-                        backLeftHihat2(leftKnee, setLeftKnee, height, width)
-                        backRightBass2(rightKnee, setRightKnee, height, width)
 
+                        hitBass(rightKnee, height, width)
+//                        hitLeftHihat2(leftKnee, setLeftKnee, height, width)
+//                        backLeftHihat2(leftKnee, setLeftKnee, height, width)
                     }
                 }
                 // overlayView를 화면에 다시 그리도록 invalidate메서드 호출
@@ -305,9 +306,6 @@ class OneSoundFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-
-        receivedData = arguments?.getString("receivedData").toString()
-
 
         val childFragmentManager = childFragmentManager
         val transaction = childFragmentManager.beginTransaction()
@@ -505,20 +503,6 @@ class OneSoundFragment : Fragment() {
             leftHihat = true
         }
     }
-    private fun hitRightBass2(rightFoot : PoseLandmark, setRightKnee:Float, width : Int, height : Int){
-        val position_x = rightFoot.position.x / width
-        val position_y = rightFoot.position.y / height
-        if(rightBass == false && position_y > setRightKnee/height-0.01){
-
-            Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
-            val soundId = soundMap["bass"]
-            soundId?.let {
-                soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
-                hitAnimation(bassImg)
-            }
-            rightBass = true
-        }
-    }
 
     private fun backLeftHihat2(leftFoot : PoseLandmark, setLeftKnee:Float, width : Int, height : Int){
         val position_x = leftFoot.position.x / width
@@ -686,6 +670,34 @@ class OneSoundFragment : Fragment() {
             hitEstimation["floorTom"] = false
         }
         return hitEstimation
+    }
+
+    private fun hitBass(rightFoot: PoseLandmark, width : Int, height : Int){
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
+
+        println("before: "+beforeBass)
+        println("---" + position_y)
+        println("compare "+compareBass)
+
+        if(beforeBass > position_y){
+//            println("발 올라감")
+            if(compareBass - 0.04 > position_y && !rightBass){
+                Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
+                val soundId = soundMap["bass"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(bassImg)
+                }
+                rightBass = true
+            }
+        }else{
+            println("else")
+            compareBass = position_y
+            rightBass = false
+        }
+
+        beforeBass = position_y
     }
 
 }
