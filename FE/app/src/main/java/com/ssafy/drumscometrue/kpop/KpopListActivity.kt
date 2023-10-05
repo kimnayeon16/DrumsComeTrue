@@ -16,12 +16,6 @@ import kotlin.math.abs
 class KpopListActivity : AppCompatActivity() {
 
     private lateinit var viewPager: ViewPager2
-    private val backgroundResources = arrayOf(
-        R.drawable.back_img,
-        R.drawable.back_img_main,
-        R.drawable.back_img_main2,
-        R.drawable.back_img_main3,
-        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +31,10 @@ class KpopListActivity : AppCompatActivity() {
 
         private fun initViews() {
             val kpopList = listOf<Kpop>(
-                Kpop("작은별", "작은별", "img_seoul_night", "Star", 5610, 683, 48000, "레벨1"),
-                Kpop("곰 세마리", "북극곰", "img_three_bears", "ThreeBears", 6590, 470, 38000, "레벨2"),
-                Kpop("나비야", "나비", "img_butterfly", "Butterfly", 6517, 483, 42000, "레벨2"),
-                Kpop("거미가 줄을 타고 올라갑니다", "거미", "img_spider", "Spider", 4455, 383, 46000, "레벨3")
+                Kpop("작은별", "작은별", "img_star", "Star", 6293, 683, 48000, "레벨1"),
+                Kpop("곰 세마리", "북극곰", "img_three_bears", "ThreeBears", 6550, 480, 38000, "레벨2"),
+                Kpop("나비야", "나비", "img_butterfly", "Butterfly", 7000, 483, 42000, "레벨2"),
+                Kpop("거미가 줄을 타고 올라갑니다", "거미", "img_spider", "Spider", 4838, 383, 46000, "레벨3")
             )
 
 
@@ -61,7 +55,6 @@ class KpopListActivity : AppCompatActivity() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     // 페이지가 선택될 때마다 배경을 설정합니다.
-                    viewPager.setBackgroundResource(backgroundResources[position])
                 }
             })
 

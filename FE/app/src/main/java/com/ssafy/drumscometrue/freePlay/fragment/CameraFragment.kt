@@ -1046,7 +1046,7 @@ class CameraFragment : Fragment() {
         if(position_y > 0.31) {
             if(hitEstimation["crash"] == false && position_x > 0.65 && position_x < 0.95){
                 //Crash를 쳤으므로 변수에 담기
-                sharedViewModel.data2 = "Crash"
+                sharedViewModel.data2 = "crash"
                 Log.d("board frag로 보낼 데이터","${sharedViewModel.data2}")
                 Log.d("Crash","Crash Hit")
                 // 사운드 재생
@@ -1207,7 +1207,7 @@ class CameraFragment : Fragment() {
         if(beforeBass > position_y){
             if(compareBass - 0.03 > position_y && !rightBass){
                 Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
-                sharedViewModel.data9 = "closedHat"
+                sharedViewModel.data9 = "bass"
                 val soundId = soundMap["bass"]
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
