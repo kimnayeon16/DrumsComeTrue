@@ -260,6 +260,8 @@ class CameraFragment : Fragment() {
 
                     if(leftHand.position.y/image.width < 0.5){
                         leftScare = 0.65F
+                    }else if(leftHand.position.y/image.width < 0.5){
+
                     }
                     if(rightHand.position.y/image.width < 0.55){
                         rightScare = 0.65F
@@ -1045,7 +1047,7 @@ class CameraFragment : Fragment() {
         val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         if(position_y > 0.35) {
-            if(hitEstimation["crash"] == false && position_x > 0.62 && position_x<0.92){
+            if(hitEstimation["crash"] == false && position_x > 0.62 && position_x<0.8){
                 //Crash를 쳤으므로 변수에 담기
                 sharedViewModel.data2 = "crash"
                 Log.d("board frag로 보낼 데이터","${sharedViewModel.data2}")
