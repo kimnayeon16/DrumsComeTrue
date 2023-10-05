@@ -145,6 +145,11 @@ class CameraFragment : Fragment() {
     private lateinit var crashImg : ImageView
     private lateinit var rideImg : ImageView
 
+    private var compareBass : Float = 0F
+    private var compareHihat : Float = 0F
+    private var beforeBass: Float = 0F
+    private var beforeHihat: Float = 0F
+
 
     //ML_Kit테스트
     // 포즈 인식 클라이언트에 적용되는 옵션
@@ -276,8 +281,10 @@ class CameraFragment : Fragment() {
                         leftHandEstimation = settingPointEstimation(leftPoint, height, width)
                         rightHandEstimation = settingPointEstimation(rightPoint, height, width)
                         handler.postDelayed({
-                            setLeftKnee = leftKnee.position.y
-                            setRightKnee  = rightKnee.position.y
+//                            setLeftKnee = leftKnee.position.y
+//                            setRightKnee  = rightKnee.position.y
+                            compareBass = rightKnee.position.y / width
+                            compareHihat = leftKnee.position.y
                             start = true
                             // 10초 후에 실행할 코드를 여기에 작성합니다.
                             fragmentCameraBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
@@ -297,15 +304,12 @@ class CameraFragment : Fragment() {
                         leftHandEstimation = backPoint(leftPoint, leftHandEstimation, height, width)
                         rightHandEstimation = backPoint(rightPoint, rightHandEstimation, height, width)
 
-                        hitLeftHihat2(leftKnee, setLeftKnee, height, width)
-                        hitRightBass2(rightKnee, setRightKnee, height, width)
-                        backLeftHihat2(leftKnee, setLeftKnee, height, width)
-                        backRightBass2(rightKnee, setRightKnee, height, width)
 
-//                        hitLeftHihat(leftFoot, height, width)
-//                        hitRightBass(rightFoot, height, width)
-//                        backLeftHihat(leftFoot, height, width)
-//                        backRightBass(rightFoot, height, width)
+                        hitBass(rightKnee, height, width)
+                        hitLeftHihat2(leftKnee, setLeftKnee, height, width)
+//                        hitRightBass2(rightKnee, setRightKnee, height, width)
+                        backLeftHihat2(leftKnee, setLeftKnee, height, width)
+//                        backRightBass2(rightKnee, setRightKnee, height, width)
 
                     }
                 }
@@ -1043,7 +1047,7 @@ class CameraFragment : Fragment() {
             hitEstimation["hiHat"] = true
             hitEstimation["ride"] = true
         }
-        if(position_y > 0.61){
+        if(position_y > 0.58){
             if(hitEstimation["snare"] == false && position_x > 0.45 && position_x < 0.8){
                 //라이드를 쳤으므로 변수에 담기
                 sharedViewModel.data1 = "snare"
@@ -1094,7 +1098,7 @@ class CameraFragment : Fragment() {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(position_y < 0.59){
+        if(position_y < 0.565){
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
@@ -1102,5 +1106,32 @@ class CameraFragment : Fragment() {
         return hitEstimation
     }
 
+    private fun hitBass(rightFoot: PoseLandmark, width : Int, height : Int){
+        val position_x = rightFoot.position.x / width
+        val position_y = rightFoot.position.y / height
+
+        println("before: "+beforeBass)
+        println("---" + position_y)
+        println("compare "+compareBass)
+
+        if(beforeBass > position_y){
+//            println("발 올라감")
+            if(compareBass - 0.03 > position_y && !rightBass){
+                Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
+                val soundId = soundMap["bass"]
+                soundId?.let {
+                    soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+                    hitAnimation(bassImg)
+                }
+                rightBass = true
+            }
+        }else{
+            println("else")
+            compareBass = position_y
+            rightBass = false
+        }
+
+        beforeBass = position_y
+    }
 
 }
