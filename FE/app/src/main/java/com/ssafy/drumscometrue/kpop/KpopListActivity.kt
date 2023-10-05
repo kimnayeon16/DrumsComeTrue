@@ -15,6 +15,7 @@ import kotlin.math.abs
 
 class KpopListActivity : AppCompatActivity() {
 
+<<<<<<< Updated upstream
     private lateinit var viewPager: ViewPager2
     private val backgroundResources = arrayOf(
         R.drawable.back_img,
@@ -22,6 +23,16 @@ class KpopListActivity : AppCompatActivity() {
         R.drawable.back_img_main2,
         R.drawable.back_img_main3,
         )
+=======
+    private var kpopList = arrayListOf<Kpop>(
+        Kpop("작은별", "작은별", "img_seoul_night", "Star", 6293, 683, 48000, "레벨1"),
+        Kpop("곰 세마리", "북극곰", "img_three_bears", "ThreeBears", 6550, 480, 38000, "레벨2"),
+        Kpop("나비야", "나비", "img_butterfly", "Butterfly", 7000, 483, 42000, "레벨2"),
+        Kpop("거미가 줄을 타고 올라갑니다", "거미", "img_spider", "Spider", 4838, 383, 46000, "레벨3")
+    )
+
+
+>>>>>>> Stashed changes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
