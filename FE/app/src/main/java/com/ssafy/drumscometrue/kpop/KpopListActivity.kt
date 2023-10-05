@@ -17,6 +17,10 @@ class KpopListActivity : AppCompatActivity() {
 
     private lateinit var viewPager: ViewPager2
 
+//    private val backgroundResources = arrayOf(
+//        R.drawable.back_img,
+//        )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.kpop_slide_list)
@@ -51,12 +55,15 @@ class KpopListActivity : AppCompatActivity() {
             }
             viewPager.adapter = adapter
 
-            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    // 페이지가 선택될 때마다 배경을 설정합니다.
-                }
-            })
+
+//            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//                override fun onPageSelected(position: Int) {
+//                    super.onPageSelected(position)
+//                    // 페이지가 선택될 때마다 배경을 설정합니다.
+//                    viewPager.setBackgroundResource(backgroundResources[position])
+//                }
+//            })
+
 
             viewPager.setPageTransformer(object : ViewPager2.PageTransformer {
                 override fun transformPage(page: View, position: Float) {
