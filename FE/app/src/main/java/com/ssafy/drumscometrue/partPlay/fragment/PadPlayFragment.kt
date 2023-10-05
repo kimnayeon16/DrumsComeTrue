@@ -1,9 +1,12 @@
 package com.ssafy.drumscometrue.partPlay.fragment
 
 import android.annotation.SuppressLint
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
 import android.graphics.Color
 import android.media.AudioAttributes
 import android.media.SoundPool
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
@@ -16,6 +19,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
@@ -425,26 +429,30 @@ class PadPlayFragment : Fragment() {
         }
     }
 
+//    @RequiresApi(Build.VERSION_CODES.Q)
     private fun hitAnimation(imageView: ImageView) {
-        // ImageView의 색상을 검은색으로 설정
-        imageView.setColorFilter(Color.BLACK)
+//        // ImageView의 색상을 검은색으로 설정
+//        imageView.setColorFilter(Color.parseColor("#ff0000"))
+//        imageView.setColorFilter(BlendModeColorFilter(Color.RED, BlendMode.COLOR_DODGE))
 
-        // 상하로 흔들리는 애니메이션
-        val shakeAnimation = AnimationUtils.loadAnimation(context, R.anim.hit_animation)
+        // 칠 때 애니메이션
+        val hitAnimtaion = AnimationUtils.loadAnimation(context, R.anim.hit_animation)
 
         // 크기가 변하는 애니메이션
         val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
 
         // 두 애니메이션을 합쳐서 동시에 실행
         val set = AnimationSet(true)
-        set.addAnimation(shakeAnimation)
-        set.addAnimation(scaleAnimation)
+        set.addAnimation(hitAnimtaion)
+//        set.addAnimation(scaleAnimation)
         set.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
 
             override fun onAnimationEnd(animation: Animation?) {
                 // 애니메이션이 끝나면 색상 필터 제거
-                imageView.clearColorFilter()
+//                imageView.clearColorFilter()
+
+                
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}
