@@ -1110,6 +1110,8 @@ class CameraFragment : Fragment() {
         val position_x = rightFoot.position.x / width
         val position_y = rightFoot.position.y / height
 
+        val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
         println("before: "+beforeBass)
         println("---" + position_y)
         println("compare "+compareBass)
@@ -1118,6 +1120,7 @@ class CameraFragment : Fragment() {
 //            println("발 올라감")
             if(compareBass - 0.03 > position_y && !rightBass){
                 Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
+                sharedViewModel.data9 = "closedHat"
                 val soundId = soundMap["bass"]
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)

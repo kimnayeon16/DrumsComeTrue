@@ -67,12 +67,12 @@ class KPopBoardFragment : Fragment() {
         val song = arguments?.getString("song")
         prelude = arguments?.getLong("prelude") ?: 0L
         interval = arguments?.getLong("interval") ?: 0L
-        val songTextView = rootView?.findViewById<TextView>(R.id.songName)
+//        val songTextView = rootView?.findViewById<TextView>(R.id.songName)
 
-        if(song != null){
-            songTextView?.text = song
-            aa = songTextView
-        }
+//        if(song != null){
+//            songTextView?.text = song
+//            aa = songTextView
+//        }
 
         if (score != null) {
             val assetManager = resources.assets //asset 폴더에 접근하기 위해
@@ -138,7 +138,7 @@ class KPopBoardFragment : Fragment() {
                 scheduleNextFragment()
             }, interval)
         }else{
-            sharedViewModel.totalHit = totalHit/2
+            sharedViewModel.totalHit = totalHit
         }
     }
 
@@ -151,6 +151,8 @@ class KPopBoardFragment : Fragment() {
     private fun updateDrumFragment(timeInSeconds: Double , drumValuesArray: JSONArray) {
         if(isAdded){
             var transaction = childFragmentManager.beginTransaction()
+
+            var boolean = 0
 
             //어떤 드럼을 쳤는지
             var dataFromCameraFragment = sharedViewModel.data
@@ -181,12 +183,13 @@ class KPopBoardFragment : Fragment() {
                 animator.addUpdateListener { animation ->
                         val xPosition = animation.animatedValue as Float
                         // X 좌표가 40dp +- 1일 때의 처리
-                        if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
-                            if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment == "closedHat"){
+                        if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1 && boolean == 0) {
+                            boolean = 1
+                            if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
                                 System.out.println("3에서 발생 xPosition : $xPosition")
                                 //만약 지금 친 드럼이 hihat이라면
                                 totalHit += 1
-                                System.out.println("$totalHit : 3에서 발생")
+                                System.out.println("$totalHit : 3에서 발생 총개수")
                                 var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                                 //hit 표시
                                 hit?.visibility = View.VISIBLE
@@ -219,12 +222,13 @@ class KPopBoardFragment : Fragment() {
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
 
                     // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
+                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1 && boolean == 0) {
+                        boolean = 1
                         System.out.println("3.1에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
-                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment == "closedHat"){
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
                             totalHit+=1
-                            System.out.println("$totalHit 3.1에서 발생")
+                            System.out.println("$totalHit 3.1에서 발생 총개수")
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                             //hit 표시
                             hit?.visibility = View.VISIBLE
@@ -259,12 +263,13 @@ class KPopBoardFragment : Fragment() {
 //                    System.out.println("X Position: $xPosition")
 
                     // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
+                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1 && boolean == 0) {
+                        boolean = 1
                         System.out.println("3.2에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
-                        if(dataFromCameraFragment == "openHiHat" || dataFromCameraFragment == "closedHat"){
+                        if(dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
                             totalHit+=1
-                            System.out.println("$totalHit 3.2에서 발생")
+                            System.out.println("$totalHit 3.2에서 발생 총개수")
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                             //hit 표시
                             hit?.visibility = View.VISIBLE
@@ -300,12 +305,13 @@ class KPopBoardFragment : Fragment() {
 //                    System.out.println("X Position: $xPosition")
 
                     // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
+                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1 && boolean == 0) {
+                        boolean = 1
                         System.out.println("3,8에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
-                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment == "closedHat"){
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
                             totalHit+=1
-                            System.out.println("$totalHit 3,8에서 하이햇 발생")
+                            System.out.println("$totalHit 3,8에서 하이햇 발생 총개수")
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                             //hit 표시
                             hit?.visibility = View.VISIBLE
@@ -318,7 +324,7 @@ class KPopBoardFragment : Fragment() {
                         }
                         if(dataFromCameraFragment1 == "snare"){
                             totalHit+=1
-                            System.out.println("$totalHit 3,8에서 스네어 발생")
+                            System.out.println("$totalHit 3,8에서 스네어 발생 총개수")
                             var snare = rootView?.findViewById<TextView>(R.id.hitSnare)
                             //hit 표시
                             snare?.visibility = View.VISIBLE
@@ -355,9 +361,10 @@ class KPopBoardFragment : Fragment() {
 
 
                     // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
+                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1 && boolean == 0) {
+                        boolean = 1
                         //만약 지금 친 드럼이 hihat이라면
-                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment == "closedHat"){
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
                             totalHit+=1
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                             //hit 표시
@@ -405,7 +412,8 @@ class KPopBoardFragment : Fragment() {
 //                    System.out.println("X Position: $xPosition")
 
                     // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
+                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1 && boolean == 0) {
+                        boolean = 1
                         //만약 지금 친 드럼이 hihat이라면
                         if(dataFromCameraFragment2 == "crash"){
                             totalHit+=1
@@ -455,7 +463,8 @@ class KPopBoardFragment : Fragment() {
 //                    System.out.println("X Position: $xPosition")
 
                     // X 좌표가 40dp +- 1일 때의 처리
-                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
+                    if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1 && boolean == 0) {
+                        boolean = 1
                         //만약 지금 친 드럼이 hihat이라면
                         if(dataFromCameraFragment2 == "crash"){
                             totalHit+=1
@@ -469,7 +478,7 @@ class KPopBoardFragment : Fragment() {
                                 dataFromCameraFragment2 = ""
                             }, 100)
                         }
-                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment == "closedHat"){
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
                             totalHit+=1
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                             //hit 표시
