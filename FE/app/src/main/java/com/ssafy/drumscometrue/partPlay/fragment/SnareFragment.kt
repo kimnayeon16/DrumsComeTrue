@@ -201,15 +201,30 @@ class SnareFragment : Fragment() {
                     val leftWrist = pose.getPoseLandmark(15)
 
 
-                    val leftPointElbow = CameraFragment.Point(leftElbow.position.x , leftElbow.position.y)
-                    val leftPointWrist = CameraFragment.Point(leftWrist.position.x , leftWrist.position.y)
-                    val leftPointHand = CameraFragment.Point(leftHand.position.x , leftHand.position.y)
-                    val rightPointElbow = CameraFragment.Point(rightElbow.position.x , rightElbow.position.y)
-                    val rightPointWrist = CameraFragment.Point(rightWrist.position.x , rightWrist.position.y)
-                    val rightPointHand = CameraFragment.Point(rightHand.position.x , rightHand.position.y)
+                    val leftPointElbow =
+                        CameraFragment.Point(leftElbow.position.x, leftElbow.position.y)
+                    val leftPointWrist =
+                        CameraFragment.Point(leftWrist.position.x, leftWrist.position.y)
+                    val leftPointHand =
+                        CameraFragment.Point(leftHand.position.x, leftHand.position.y)
+                    val rightPointElbow =
+                        CameraFragment.Point(rightElbow.position.x, rightElbow.position.y)
+                    val rightPointWrist =
+                        CameraFragment.Point(rightWrist.position.x, rightWrist.position.y)
+                    val rightPointHand =
+                        CameraFragment.Point(rightHand.position.x, rightHand.position.y)
 
-                    val leftDistance = calculateDistance(leftPointElbow, leftPointWrist) * 0.8F
-                    val rightDistance = calculateDistance(rightPointElbow, rightPointWrist) * 0.8F
+                    var leftScare: Float = 0.1F
+                    var rightScare: Float = 0.1F
+
+                    if(leftHand.position.y/image.width < 0.5){
+                        leftScare = 0.65F
+                    }
+                    if(rightHand.position.y/image.width < 0.55){
+                        rightScare = 0.65F
+                    }
+                    val leftDistance = calculateDistance(leftPointElbow, leftPointWrist) * leftScare
+                    val rightDistance = calculateDistance(rightPointElbow, rightPointWrist) * rightScare
 
                     val leftPoint = findPointOnLine(leftPointHand, leftPointElbow, leftDistance)
                     val rightPoint = findPointOnLine(rightPointHand, rightPointElbow, rightDistance)
@@ -575,7 +590,7 @@ class SnareFragment : Fragment() {
         val position_x = point.x / width
         val position_y = point.y / height
 
-        if(position_y > 0.58){
+        if(position_y > 0.575){
             if(hitEstimation["snare"] == false && position_x > 0.45 && position_x < 0.8){
                 // 사운드 재생
                 val soundId = soundMap["snare"]
@@ -595,7 +610,7 @@ class SnareFragment : Fragment() {
         val position_x = point.x / width
         val position_y = point.y / height
 
-        if(position_y < 0.35) {
+        if(position_y < 0.56) {
             hitEstimation["snare"] = false
         }
         return hitEstimation
