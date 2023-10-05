@@ -71,6 +71,7 @@ class KpopPlayActivity : AppCompatActivity() {
         val interval = intent.getLongExtra("interval", 0)
         val songTotalTime = intent.getLongExtra("songTotalTime", 0)
         val level = intent.getStringExtra("level")
+        val totalHit = intent.getIntExtra("totalHit", 0)
         //곡제목 변수에 activity에서 받은 값 넣기
         songName = song
 
@@ -126,8 +127,9 @@ class KpopPlayActivity : AppCompatActivity() {
             var total = sharedViewModel1.totalHit
             val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
             val successCount = total
-            val totalCount = 60
+            val totalCount = totalHit
             val rhythmRating = successCount.toFloat() / totalCount.toFloat()
+            System.out.print("rhythmRating ?????!!!!!! $rhythmRating")
             ratingBar.rating = rhythmRating
 
 //            totalHit.text = "${total}개"
