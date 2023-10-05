@@ -925,6 +925,39 @@ class CameraFragment : Fragment() {
         ring.startAnimation(ringAnimation)
     }
 
+    private fun hitBassAnimation(imageView: ImageView) {
+        // ImageView의 색상을 검은색으로 설정
+//        imageView.setColorFilter(Color.BLACK)
+
+        // 상하로 흔들리는 애니메이션
+        val shakeAnimation = AnimationUtils.loadAnimation(context, R.anim.hit_animation_bass)
+
+        // 크기가 변하는 애니메이션
+//        val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
+
+        // 두 애니메이션을 합쳐서 동시에 실행
+        val set = AnimationSet(true)
+        set.addAnimation(shakeAnimation)
+//        set.addAnimation(scaleAnimation)
+        set.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                // 애니메이션이 끝나면 색상 필터 제거
+//                imageView.clearColorFilter()
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+
+        imageView.startAnimation(set)
+    }
+
+    private fun hitBassRingAnimation(ring: ImageView){
+        val ringAnimation = AnimationUtils.loadAnimation(context, R.anim.hit_ring_animation_bass)
+        ring.startAnimation(ringAnimation)
+    }
+
 
 
 
@@ -1171,24 +1204,19 @@ class CameraFragment : Fragment() {
 
         val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
-        println("before: "+beforeBass)
-        println("---" + position_y)
-        println("compare "+compareBass)
-
         if(beforeBass > position_y){
-//            println("발 올라감")
             if(compareBass - 0.03 > position_y && !rightBass){
                 Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
                 sharedViewModel.data9 = "closedHat"
                 val soundId = soundMap["bass"]
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
-                    hitAnimation(bassImg)
+                    hitBassAnimation(bassImg)
+                    hitBassRingAnimation(fTomRingImg)
                 }
                 rightBass = true
             }
         }else{
-            println("else")
             compareBass = position_y
             rightBass = false
         }
