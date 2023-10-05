@@ -1184,7 +1184,7 @@ class CameraFragment : Fragment() {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(position_y < 0.48) {
+        if(position_y < 0.46) {
             hitEstimation["hiHat"] = false
             hitEstimation["ride"] = false
             hitEstimation["floorTom"] = false
