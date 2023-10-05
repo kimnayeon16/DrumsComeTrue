@@ -8,5 +8,6 @@ data class Kpop(
     val prelude: Long, //전주 시간
     val interval: Long, //간격
     val songTotalTime: Long, //노래 전체 시간
-    val level: String
+    val level: String,
+    val totalHit: Int
 )
