@@ -10,7 +10,9 @@
         android:id="@+id/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:text="회원가입"
+        android:fontFamily="@font/bmhannapro"
         android:textAlignment="center"
         android:textColor="#ADAEAE"
         android:textSize="40sp"
@@ -27,6 +29,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/gradient_background"
+        android:fontFamily="@font/bmhannapro"
         android:text="회원가입"
         android:textColor="#ACADAD"
         android:textSize="20sp"
@@ -41,6 +44,7 @@
         android:id="@+id/user_pwd_check"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/bmhannaair"
         android:background="@drawable/gradient_background2"
         android:ems="10"
         android:hint="비밀번호 확인"
@@ -56,6 +60,7 @@
 
     <EditText
         android:id="@+id/user_id"
+        android:fontFamily="@font/bmhannaair"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:background="@drawable/gradient_background2"
@@ -74,6 +79,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/user_id_dp_check"
         android:layout_width="110dp"
+        android:fontFamily="@font/bmhannaair"
         android:layout_height="wrap_content"
         android:background="@drawable/gradient_background"
         android:text="중복 확인"
@@ -92,6 +98,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/gradient_background2"
         android:ems="10"
+        android:fontFamily="@font/bmhannaair"
         android:hint="비밀번호"
         android:inputType="text"
         android:padding="10dp"
@@ -109,6 +116,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/gradient_background2"
         android:ems="10"
+        android:fontFamily="@font/bmhannaair"
         android:hint="닉네임"
         android:inputType="text"
         android:padding="10dp"
