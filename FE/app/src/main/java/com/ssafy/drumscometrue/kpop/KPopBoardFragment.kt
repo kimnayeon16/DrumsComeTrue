@@ -182,7 +182,7 @@ class KPopBoardFragment : Fragment() {
                 animator.addUpdateListener { animation ->
                         val xPosition = animation.animatedValue as Float
                         // X 좌표가 40dp +- 1일 때의 처리
-                        if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
+                        if (xPosition >= correctHit - 1.5 && xPosition <= correctHit + 1.5 && boolean == 0) {
                             boolean = 1
                             if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
                                 System.out.println("3에서 발생 xPosition : $xPosition")
@@ -192,16 +192,77 @@ class KPopBoardFragment : Fragment() {
                                 var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                                 //hit 표시
                                 hit?.visibility = View.VISIBLE
-//                            dp40 += 100
+
+                                var good = rootView?.findViewById<TextView>(R.id.good)
+                                good?.visibility = View.VISIBLE
+
+                                var good1 = rootView?.findViewById<ImageView>(R.id.good1)
+                                good1?.visibility = View.VISIBLE
 
                                 //0.2초 뒤 사라지게 하고 값도 제거
                                 handler.postDelayed({
                                     hit?.visibility = View.INVISIBLE
+                                    good?.visibility = View.INVISIBLE
+                                    good1?.visibility = View.INVISIBLE
                                     sharedViewModel.data = ""
                                     sharedViewModel.data4 = ""
                                     dataFromCameraFragment = ""
                                     dataFromCameraFragment4 = ""
-                                }, 50)
+                                }, 100)
+                            }
+                        }else if (xPosition >= correctHit - 1.25 && xPosition <= correctHit + 1.25 && boolean == 0) {
+                            boolean = 1
+                            if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
+                                System.out.println("3에서 발생 xPosition : $xPosition")
+                                //만약 지금 친 드럼이 hihat이라면
+                                totalHit += 1
+                                System.out.println("$totalHit : 3에서 발생 총개수")
+                                var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                                //hit 표시
+                                hit?.visibility = View.VISIBLE
+
+                                var great = rootView?.findViewById<TextView>(R.id.great)
+                                great?.visibility = View.VISIBLE
+                                var great1 = rootView?.findViewById<ImageView>(R.id.great1)
+                                great1?.visibility = View.VISIBLE
+
+                                //0.2초 뒤 사라지게 하고 값도 제거
+                                handler.postDelayed({
+                                    hit?.visibility = View.INVISIBLE
+                                    great?.visibility = View.INVISIBLE
+                                    great1?.visibility = View.INVISIBLE
+                                    sharedViewModel.data = ""
+                                    sharedViewModel.data4 = ""
+                                    dataFromCameraFragment = ""
+                                    dataFromCameraFragment4 = ""
+                                }, 100)
+                            }
+                        }else if (xPosition >= correctHit - 1 && xPosition <= correctHit + 1 && boolean == 0) {
+                            boolean = 1
+                            if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment4 == "closedHat"){
+                                System.out.println("3에서 발생 xPosition : $xPosition")
+                                //만약 지금 친 드럼이 hihat이라면
+                                totalHit += 1
+                                System.out.println("$totalHit : 3에서 발생 총개수")
+                                var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
+                                //hit 표시
+                                hit?.visibility = View.VISIBLE
+
+                                var perfect = rootView?.findViewById<TextView>(R.id.perfect)
+                                perfect?.visibility = View.VISIBLE
+                                var perfect1 = rootView?.findViewById<TextView>(R.id.perfect1)
+                                perfect1?.visibility = View.VISIBLE
+
+                                //0.2초 뒤 사라지게 하고 값도 제거
+                                handler.postDelayed({
+                                    hit?.visibility = View.INVISIBLE
+                                    perfect?.visibility = View.INVISIBLE
+                                    perfect1?.visibility = View.INVISIBLE
+                                    sharedViewModel.data = ""
+                                    sharedViewModel.data4 = ""
+                                    dataFromCameraFragment = ""
+                                    dataFromCameraFragment4 = ""
+                                }, 200)
                             }
                         }
                 }
@@ -242,7 +303,7 @@ class KPopBoardFragment : Fragment() {
                                 sharedViewModel.data4 = ""
                                 dataFromCameraFragment = ""
                                 dataFromCameraFragment4 = ""
-                            }, 50)
+                            }, 200)
                         }
                     }
                 }
@@ -283,7 +344,7 @@ class KPopBoardFragment : Fragment() {
                                 sharedViewModel.data4 = ""
                                 dataFromCameraFragment = ""
                                 dataFromCameraFragment4 = ""
-                            }, 50)
+                            }, 200)
                         }
                     }
                 }
@@ -327,7 +388,7 @@ class KPopBoardFragment : Fragment() {
                                 sharedViewModel.data4 = ""
                                 dataFromCameraFragment = ""
                                 dataFromCameraFragment4 = ""
-                            }, 50)
+                            }, 200)
                         }
                         if(dataFromCameraFragment1 == "snare"){
                             totalHit+=1
@@ -340,7 +401,7 @@ class KPopBoardFragment : Fragment() {
                                 snare?.visibility = View.INVISIBLE
                                 sharedViewModel.data1 = ""
                                 dataFromCameraFragment1 = ""
-                            }, 50)
+                            }, 200)
                         }
                     }
                 }
@@ -383,7 +444,7 @@ class KPopBoardFragment : Fragment() {
                                 sharedViewModel.data4 = ""
                                 dataFromCameraFragment = ""
                                 dataFromCameraFragment4 = ""
-                            }, 50)
+                            }, 200)
                         }
                         if(dataFromCameraFragment9 == "bass"){
                             totalHit+=1
@@ -395,7 +456,7 @@ class KPopBoardFragment : Fragment() {
                                 bass?.visibility = View.INVISIBLE
                                 sharedViewModel.data9 = ""
                                 dataFromCameraFragment9 = ""
-                            }, 50)
+                            }, 200)
                         }
                     }
                 }
@@ -434,7 +495,7 @@ class KPopBoardFragment : Fragment() {
                                 crash?.visibility = View.INVISIBLE
                                 sharedViewModel.data2 = ""
                                 dataFromCameraFragment2 = ""
-                            }, 50)
+                            }, 200)
                         }
                         if(dataFromCameraFragment9 == "bass"){
                             totalHit+=1
@@ -446,7 +507,7 @@ class KPopBoardFragment : Fragment() {
                                 bass?.visibility = View.INVISIBLE
                                 sharedViewModel.data9 = ""
                                 dataFromCameraFragment9 = ""
-                            }, 50)
+                            }, 200)
                         }
                     }
                 }
@@ -485,7 +546,7 @@ class KPopBoardFragment : Fragment() {
                                 crash?.visibility = View.INVISIBLE
                                 sharedViewModel.data2 = ""
                                 dataFromCameraFragment2 = ""
-                            }, 50)
+                            }, 200)
                         }
                         if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment4 == "closedHat"){
                             totalHit+=1
@@ -499,7 +560,7 @@ class KPopBoardFragment : Fragment() {
                                 sharedViewModel.data4 = ""
                                 dataFromCameraFragment = ""
                                 dataFromCameraFragment4 = ""
-                            }, 50)
+                            }, 200)
                         }
                     }
                 }

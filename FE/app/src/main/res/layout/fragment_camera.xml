@@ -33,14 +33,14 @@
         android:id="@+id/view_finder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:scaleType="fillStart" >
+        app:scaleType="fillStart" />
 
-        <include
-            android:id="@+id/layout_drum_pose"
-            layout="@layout/layout_drum_pose"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </androidx.camera.view.PreviewView>
+    <include
+        android:id="@+id/layout_drum_pose"
+        layout="@layout/layout_drum_pose"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
     <com.ssafy.drumscometrue.freePlay.OverlayView
         android:id="@+id/overlay"
