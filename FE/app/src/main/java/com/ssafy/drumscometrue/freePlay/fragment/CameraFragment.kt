@@ -1043,8 +1043,8 @@ class CameraFragment : Fragment() {
         //어떤 드럼을 쳤는지 판별하기 위한 변수(KPopoBoardFragment로 보내기)
         val sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
-        if(position_y > 0.31) {
-            if(hitEstimation["crash"] == false && position_x > 0.65 && position_x < 0.95){
+        if(position_y > 0.35) {
+            if(hitEstimation["crash"] == false && position_x > 0.62 && position_x<0.92){
                 //Crash를 쳤으므로 변수에 담기
                 sharedViewModel.data2 = "crash"
                 Log.d("board frag로 보낼 데이터","${sharedViewModel.data2}")
@@ -1058,7 +1058,7 @@ class CameraFragment : Fragment() {
                 }
             }
 
-            if (hitEstimation["hTom"] == false && position_x > 0.4 && position_x < 0.6) {
+            if (hitEstimation["hTom"] == false && position_x > 0.3 && position_x < 0.5) {
                 //하이탐?을 쳤으므로 변수에 담기
                 sharedViewModel.data6 = "hTom"
                 Log.d("board frag로 보낼 데이터","${sharedViewModel.data6}")
@@ -1071,7 +1071,7 @@ class CameraFragment : Fragment() {
                     hitRingAnimation(hTomRingImg)
                 }
             }
-            if (hitEstimation["mTom"] == false && position_x > 0.15 && position_x < 0.35) {
+            if (hitEstimation["mTom"] == false && position_x > 0.05 && position_x < 0.3) {
                 //미들탐 ?을 쳤으므로 변수에 담기
                 sharedViewModel.data7 = "mTom"
                 Log.d("board frag로 보낼 데이터","${sharedViewModel.data7}")
@@ -1089,8 +1089,8 @@ class CameraFragment : Fragment() {
             hitEstimation["hTom"] = true
             hitEstimation["mTom"] = true
         }
-        if(position_y > 0.45) {
-            if(hitEstimation["hiHat"] == false && position_x > 0.7){
+        if(position_y > 0.47) {
+            if(hitEstimation["hiHat"] == false && position_x > 0.79){
                 if(!leftHihat){
                     //오픈하이햇을 쳤으므로 변수에 담기
                     sharedViewModel.data = "openHiHat"
@@ -1136,7 +1136,7 @@ class CameraFragment : Fragment() {
             hitEstimation["hiHat"] = true
             hitEstimation["ride"] = true
         }
-        if(position_y > 0.58){
+        if(position_y > 0.575){
             if(hitEstimation["snare"] == false && position_x > 0.45 && position_x < 0.8){
                 //라이드를 쳤으므로 변수에 담기
                 sharedViewModel.data1 = "snare"
@@ -1175,7 +1175,7 @@ class CameraFragment : Fragment() {
         val position_x = point.x / width
         val position_y = point.y / height
 
-        if(position_y < 0.3) {
+        if(position_y < 0.345) {
             hitEstimation["crash"] = false
             hitEstimation["ride"] = false
             hitEstimation["hiHat"] = false
@@ -1184,13 +1184,13 @@ class CameraFragment : Fragment() {
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(position_y < 0.44) {
+        if(position_y < 0.48) {
             hitEstimation["hiHat"] = false
             hitEstimation["ride"] = false
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
-        if(position_y < 0.565){
+        if(position_y < 0.56){
             hitEstimation["floorTom"] = false
             hitEstimation["snare"] = false
         }
@@ -1206,7 +1206,7 @@ class CameraFragment : Fragment() {
 
         if(beforeBass > position_y){
 //            println("발 올라감")
-            if(compareBass - 0.04 > position_y && !rightBass){
+            if(compareBass - 0.032 > position_y && !rightBass){
                 Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
                 sharedViewModel.data9 = "bass"
                 val soundId = soundMap["bass"]

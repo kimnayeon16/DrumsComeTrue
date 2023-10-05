@@ -101,67 +101,67 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
             drawPointLine(canvas,pose.getPoseLandmark(19),leftPoint,stickPaint)
 
 
-            for (landmark in pose.allPoseLandmarks) {
-//                canvas.drawPoint(
-//                    landmark.position.x /imageHeight * width , // 좌표를 scaleFactor로 조정
-//                    landmark.position.y /imageWidth * height, // 좌표를 scaleFactor로 조정
-//                    pointPaint
-//                )
-
-                val leftShoulder = pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER)
-                val rightShoulder = pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER)
-                val leftElbow = pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW)
-                val rightElbow = pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW)
-                val leftWrist = pose.getPoseLandmark(PoseLandmark.LEFT_WRIST)
-                val rightWrist = pose.getPoseLandmark(PoseLandmark.RIGHT_WRIST)
-                val leftHip = pose.getPoseLandmark(PoseLandmark.LEFT_HIP)
-                val rightHip = pose.getPoseLandmark(PoseLandmark.RIGHT_HIP)
-                val leftKnee = pose.getPoseLandmark(PoseLandmark.LEFT_KNEE)
-                val rightKnee = pose.getPoseLandmark(PoseLandmark.RIGHT_KNEE)
-                val leftAnkle = pose.getPoseLandmark(PoseLandmark.LEFT_ANKLE)
-                val rightAnkle = pose.getPoseLandmark(PoseLandmark.RIGHT_ANKLE)
-
-                val leftPinky = pose.getPoseLandmark(PoseLandmark.LEFT_PINKY)
-                val rightPinky = pose.getPoseLandmark(PoseLandmark.RIGHT_PINKY)
-                val leftIndex = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX)
-                val rightIndex = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX)
-                val leftThumb = pose.getPoseLandmark(PoseLandmark.LEFT_THUMB)
-                val rightThumb = pose.getPoseLandmark(PoseLandmark.RIGHT_THUMB)
-                val leftHeel = pose.getPoseLandmark(PoseLandmark.LEFT_HEEL)
-                val rightHeel = pose.getPoseLandmark(PoseLandmark.RIGHT_HEEL)
-                val leftFootIndex = pose.getPoseLandmark(PoseLandmark.LEFT_FOOT_INDEX)
-                val rightFootIndex = pose.getPoseLandmark(PoseLandmark.RIGHT_FOOT_INDEX)
-
-
-//                drawLine(canvas, leftShoulder, rightShoulder, linePaint)
-//                drawLine(canvas, leftHip, rightHip, linePaint)
-
-                // Left body
-                drawLine(canvas, leftShoulder, leftElbow, linePaint)
-                drawLine(canvas, leftElbow, leftWrist, linePaint)
-                drawLine(canvas, leftShoulder, leftHip, linePaint)
-                drawLine(canvas, leftHip, leftKnee, linePaint)
-                drawLine(canvas, leftKnee, leftAnkle, linePaint)
-                drawLine(canvas, leftWrist, leftThumb, linePaint)
-                drawLine(canvas, leftWrist, leftPinky, linePaint)
-                drawLine(canvas, leftWrist, leftIndex, linePaint)
-                drawLine(canvas, leftIndex, leftPinky, linePaint)
-                drawLine(canvas, leftAnkle, leftHeel, linePaint)
-                drawLine(canvas, leftHeel, leftFootIndex, linePaint)
-
-                // Right body
-                drawLine(canvas, rightShoulder, rightElbow, linePaint)
-                drawLine(canvas, rightElbow, rightWrist, linePaint)
-                drawLine(canvas, rightShoulder, rightHip, linePaint)
-                drawLine(canvas, rightHip, rightKnee, linePaint)
-                drawLine(canvas, rightKnee, rightAnkle, linePaint)
-                drawLine(canvas, rightWrist, rightThumb, linePaint)
-                drawLine(canvas, rightWrist, rightPinky, linePaint)
-                drawLine(canvas, rightWrist, rightIndex, linePaint)
-                drawLine(canvas, rightIndex, rightPinky, linePaint)
-                drawLine(canvas, rightAnkle, rightHeel, linePaint)
-                drawLine(canvas, rightHeel, rightFootIndex, linePaint)
-            }
+//            for (landmark in pose.allPoseLandmarks) {
+////                canvas.drawPoint(
+////                    landmark.position.x /imageHeight * width , // 좌표를 scaleFactor로 조정
+////                    landmark.position.y /imageWidth * height, // 좌표를 scaleFactor로 조정
+////                    pointPaint
+////                )
+//
+//                val leftShoulder = pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER)
+//                val rightShoulder = pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER)
+//                val leftElbow = pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW)
+//                val rightElbow = pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW)
+//                val leftWrist = pose.getPoseLandmark(PoseLandmark.LEFT_WRIST)
+//                val rightWrist = pose.getPoseLandmark(PoseLandmark.RIGHT_WRIST)
+//                val leftHip = pose.getPoseLandmark(PoseLandmark.LEFT_HIP)
+//                val rightHip = pose.getPoseLandmark(PoseLandmark.RIGHT_HIP)
+//                val leftKnee = pose.getPoseLandmark(PoseLandmark.LEFT_KNEE)
+//                val rightKnee = pose.getPoseLandmark(PoseLandmark.RIGHT_KNEE)
+//                val leftAnkle = pose.getPoseLandmark(PoseLandmark.LEFT_ANKLE)
+//                val rightAnkle = pose.getPoseLandmark(PoseLandmark.RIGHT_ANKLE)
+//
+//                val leftPinky = pose.getPoseLandmark(PoseLandmark.LEFT_PINKY)
+//                val rightPinky = pose.getPoseLandmark(PoseLandmark.RIGHT_PINKY)
+//                val leftIndex = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX)
+//                val rightIndex = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX)
+//                val leftThumb = pose.getPoseLandmark(PoseLandmark.LEFT_THUMB)
+//                val rightThumb = pose.getPoseLandmark(PoseLandmark.RIGHT_THUMB)
+//                val leftHeel = pose.getPoseLandmark(PoseLandmark.LEFT_HEEL)
+//                val rightHeel = pose.getPoseLandmark(PoseLandmark.RIGHT_HEEL)
+//                val leftFootIndex = pose.getPoseLandmark(PoseLandmark.LEFT_FOOT_INDEX)
+//                val rightFootIndex = pose.getPoseLandmark(PoseLandmark.RIGHT_FOOT_INDEX)
+//
+//
+////                drawLine(canvas, leftShoulder, rightShoulder, linePaint)
+////                drawLine(canvas, leftHip, rightHip, linePaint)
+//
+//                // Left body
+//                drawLine(canvas, leftShoulder, leftElbow, linePaint)
+//                drawLine(canvas, leftElbow, leftWrist, linePaint)
+//                drawLine(canvas, leftShoulder, leftHip, linePaint)
+//                drawLine(canvas, leftHip, leftKnee, linePaint)
+//                drawLine(canvas, leftKnee, leftAnkle, linePaint)
+//                drawLine(canvas, leftWrist, leftThumb, linePaint)
+//                drawLine(canvas, leftWrist, leftPinky, linePaint)
+//                drawLine(canvas, leftWrist, leftIndex, linePaint)
+//                drawLine(canvas, leftIndex, leftPinky, linePaint)
+//                drawLine(canvas, leftAnkle, leftHeel, linePaint)
+//                drawLine(canvas, leftHeel, leftFootIndex, linePaint)
+//
+//                // Right body
+//                drawLine(canvas, rightShoulder, rightElbow, linePaint)
+//                drawLine(canvas, rightElbow, rightWrist, linePaint)
+//                drawLine(canvas, rightShoulder, rightHip, linePaint)
+//                drawLine(canvas, rightHip, rightKnee, linePaint)
+//                drawLine(canvas, rightKnee, rightAnkle, linePaint)
+//                drawLine(canvas, rightWrist, rightThumb, linePaint)
+//                drawLine(canvas, rightWrist, rightPinky, linePaint)
+//                drawLine(canvas, rightWrist, rightIndex, linePaint)
+//                drawLine(canvas, rightIndex, rightPinky, linePaint)
+//                drawLine(canvas, rightAnkle, rightHeel, linePaint)
+//                drawLine(canvas, rightHeel, rightFootIndex, linePaint)
+//            }
         }
     }
 
