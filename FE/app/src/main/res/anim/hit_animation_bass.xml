@@ -1,0 +1,23 @@
+<!-- res/anim/heartbeat_and_rings.xml -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/overshoot_interpolator">
+    <!-- Heartbeat effect (scale up and down) -->
+    <scale
+        android:fromXScale="1.0"
+        android:fromYScale="1.0"
+        android:toXScale="1.5"
+        android:toYScale="1.5"
+        android:pivotX="50%"
+        android:pivotY="80%"
+        android:duration="150"
+        />
+
+    <!-- Rings: Show and fade out -->
+    <alpha
+        android:fromAlpha="0.0"
+        android:toAlpha="0.8"
+        android:duration="150"
+        android:repeatMode="reverse"
+        android:repeatCount="1"/>
+
+</set>

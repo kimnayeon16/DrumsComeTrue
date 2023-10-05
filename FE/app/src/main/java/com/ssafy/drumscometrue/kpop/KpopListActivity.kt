@@ -14,13 +14,14 @@ import com.ssafy.drumscometrue.mainpage.PageAdapter
 import kotlin.math.abs
 
 class KpopListActivity : AppCompatActivity() {
+
     private lateinit var viewPager: ViewPager2
     private val backgroundResources = arrayOf(
         R.drawable.back_img,
         R.drawable.back_img_main,
         R.drawable.back_img_main2,
         R.drawable.back_img_main3,
-    )
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

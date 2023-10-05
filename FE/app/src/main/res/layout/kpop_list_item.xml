@@ -6,8 +6,7 @@
     android:paddingHorizontal="20dp"
     android:paddingVertical="10dp"
     android:background="@color/black">
-
-
+    
     <ImageView
         android:id="@+id/img_rv_photo"
         android:layout_width="80dp"
