@@ -141,6 +141,14 @@ class CameraFragment : Fragment() {
     private lateinit var crashImg : ImageView
     private lateinit var rideImg : ImageView
 
+    private lateinit var snareHitImg : ImageView
+    private lateinit var bassHitImg : ImageView
+    private lateinit var hihatHitImg : ImageView
+    private lateinit var fTomHitImg : ImageView
+    private lateinit var hTomHitImg : ImageView
+    private lateinit var mTomHitImg : ImageView
+    private lateinit var crashHitImg : ImageView
+    private lateinit var rideHitImg : ImageView
 
     //ML_Kit테스트
     // 포즈 인식 클라이언트에 적용되는 옵션
@@ -461,6 +469,8 @@ class CameraFragment : Fragment() {
         mTomImg = fragmentCameraBinding.layoutOverlay.mTomImg
         crashImg = fragmentCameraBinding.layoutOverlay.crashImg
         rideImg = fragmentCameraBinding.layoutOverlay.rideImg
+
+        bassHitImg = fragmentCameraBinding.layoutOverlay.bassHitImg
     }
 
     /** SoundPool설정 */
@@ -662,6 +672,7 @@ class CameraFragment : Fragment() {
                 soundId?.let {
                     soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                     hitAnimation(fTomImg)
+
                 }
             }
             hitEstimation["snare"] = true
@@ -697,6 +708,7 @@ class CameraFragment : Fragment() {
             soundId?.let {
                 soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
                 hitAnimation(bassImg)
+
             }
             rightBass = true
         }
@@ -830,24 +842,24 @@ class CameraFragment : Fragment() {
 
     private fun hitAnimation(imageView: ImageView) {
         // ImageView의 색상을 검은색으로 설정
-        imageView.setColorFilter(Color.BLACK)
+//        imageView.setColorFilter(Color.BLACK)
 
         // 상하로 흔들리는 애니메이션
         val shakeAnimation = AnimationUtils.loadAnimation(context, R.anim.hit_animation)
 
         // 크기가 변하는 애니메이션
-        val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
+//        val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
 
         // 두 애니메이션을 합쳐서 동시에 실행
         val set = AnimationSet(true)
         set.addAnimation(shakeAnimation)
-        set.addAnimation(scaleAnimation)
+//        set.addAnimation(scaleAnimation)
         set.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
 
             override fun onAnimationEnd(animation: Animation?) {
                 // 애니메이션이 끝나면 색상 필터 제거
-                imageView.clearColorFilter()
+//                imageView.clearColorFilter()
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}
