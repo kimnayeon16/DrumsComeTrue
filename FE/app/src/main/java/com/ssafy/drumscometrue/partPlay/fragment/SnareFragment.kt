@@ -250,6 +250,7 @@ class SnareFragment : Fragment() {
                             start = true
                             // 10초 후에 실행할 코드를 여기에 작성합니다.
                             fragmentSnareBinding.layoutDrumPose.drumPose.visibility = View.INVISIBLE
+                            fragmentSnareBinding.poseGuide.visibility = View.INVISIBLE
                             fragmentSnareBinding.layoutOverlay.bassImg.visibility = View.VISIBLE
                             fragmentSnareBinding.layoutOverlay.hihatImg.visibility = View.VISIBLE
                             fragmentSnareBinding.layoutOverlay.snareImg.visibility = View.VISIBLE

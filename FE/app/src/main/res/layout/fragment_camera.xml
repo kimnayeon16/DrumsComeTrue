@@ -73,4 +73,20 @@
         android:layout_gravity="center"
         />
 
+    <TextView
+        android:id="@+id/poseGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:text="초록색 선 안에 \n 몸을 맞춰 앉아주세요!"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:background="@drawable/count_background"
+        android:visibility="visible"
+        />
+
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
