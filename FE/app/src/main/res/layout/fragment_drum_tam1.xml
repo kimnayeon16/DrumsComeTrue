@@ -6,8 +6,8 @@
     tools:context=".kpop.DrumTam1Fragment">
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="@drawable/kpop_tick_tam1"
         android:layout_marginTop="35dp"/>
 

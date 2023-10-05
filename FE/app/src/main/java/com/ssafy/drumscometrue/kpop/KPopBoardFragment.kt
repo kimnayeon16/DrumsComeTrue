@@ -109,7 +109,7 @@ class KPopBoardFragment : Fragment() {
         // 마진을 계산하고 설정합니다.
         margin = (resources.displayMetrics.widthPixels * ratio).toInt()
 //        dp40 = margin
-        dp40 = 35
+        dp40 = 20
 
         val finishLine = rootView.findViewById<TextView>(R.id.finishLine)
         val layoutParams = finishLine.layoutParams as ViewGroup.MarginLayoutParams
@@ -164,9 +164,11 @@ class KPopBoardFragment : Fragment() {
             var dataFromCameraFragment8 = sharedViewModel.data8
             var dataFromCameraFragment9 = sharedViewModel.data9
 
+            dp40 = 20
+
             //하이햇 - 곰세마리, 나비야, 거미
             if (drumValuesArray.toString() == "[3]") {
-                val drumHiHatFragment = DrumHiHatFragment(0)
+                val drumHiHatFragment = DrumHiHatFragment()
                 transaction.setCustomAnimations(
                     R.anim.enter_from_right, // 오른쪽에서 왼쪽으로 들어오는 애니메이션
                     0 // 왼쪽으로 나가는 애니메이션
@@ -176,21 +178,20 @@ class KPopBoardFragment : Fragment() {
                 // ValueAnimator 초기화
                 val animator = ValueAnimator.ofFloat(xPositionStart, xPositionEnd)
                 animator.duration = 3000 // 애니메이션 지속 시간 (밀리초)
-
                 animator.addUpdateListener { animation ->
-                    val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표 //100 99 88 0
-                    // X 좌표가 40dp +- 1일 때의 처리
-                        if (xPosition >= dp40 - 2 && xPosition <= dp40 + 2) { //== 39dp ~ 41dp
-                            System.out.println("xPosition : $xPosition")
-                            //만약 지금 친 드럼이 hihat이라면
-                            if (dataFromCameraFragment == "openHiHat") {
+                        val xPosition = animation.animatedValue as Float
+                        // X 좌표가 40dp +- 1일 때의 처리
+                        if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
+                            if (dataFromCameraFragment == "openHiHat" || dataFromCameraFragment == "closedHat"){
+                                System.out.println("3에서 발생 xPosition : $xPosition")
+                                //만약 지금 친 드럼이 hihat이라면
                                 totalHit += 1
                                 System.out.println("$totalHit : 3에서 발생")
                                 var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                                 //hit 표시
                                 hit?.visibility = View.VISIBLE
-                                val drumHiHatFragment = DrumHiHatFragment(1)
-//                            transaction.replace(R.id.drumContainer, drumHiHatFragment)
+//                            dp40 += 100
+
                                 //0.2초 뒤 사라지게 하고 값도 제거
                                 handler.postDelayed({
                                     hit?.visibility = View.INVISIBLE
@@ -201,7 +202,6 @@ class KPopBoardFragment : Fragment() {
                         }
                 }
                 animator.start()
-
                 //하이햇1 - 곰세마리, 나비야, 거미
             } else if (drumValuesArray.toString() == "[3.1]") {
                 val drumHiHatFragment1 = DrumHiHatFragment1()
@@ -217,19 +217,19 @@ class KPopBoardFragment : Fragment() {
 
                 animator.addUpdateListener { animation ->
                     val xPosition = animation.animatedValue as Float // 현재 애니메이션 중인 x 좌표
-//                    System.out.println("X Position: $xPosition")
 
                     // X 좌표가 40dp +- 1일 때의 처리
                     if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
+                        System.out.println("3.1에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
-                        if(dataFromCameraFragment == "openHiHat"){
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment == "closedHat"){
                             totalHit+=1
                             System.out.println("$totalHit 3.1에서 발생")
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                             //hit 표시
                             hit?.visibility = View.VISIBLE
-//                            val drumHiHatFragment = DrumHiHatFragment(1)
-//                            transaction.replace(R.id.drumContainer, drumHiHatFragment)
+                            val drumHiHatFragment = DrumHiHatFragment()
+                            transaction.replace(R.id.drumContainer, drumHiHatFragment)
                             //0.2초 뒤 사라지게 하고 값도 제거
                             Handler().postDelayed({
                                 hit?.visibility = View.INVISIBLE
@@ -260,8 +260,9 @@ class KPopBoardFragment : Fragment() {
 
                     // X 좌표가 40dp +- 1일 때의 처리
                     if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
+                        System.out.println("3.2에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
-                        if(dataFromCameraFragment == "openHiHat"){
+                        if(dataFromCameraFragment == "openHiHat" || dataFromCameraFragment == "closedHat"){
                             totalHit+=1
                             System.out.println("$totalHit 3.2에서 발생")
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
@@ -280,14 +281,14 @@ class KPopBoardFragment : Fragment() {
 
                 //하이햇, 스네어 - 곰세마리, 나비야, 거미
             }else if (drumValuesArray.toString() == "[3,8]") {
-                val drumHiHatFragment = DrumHiHatFragment(0)
+                val drumHiHatFragment3 = DrumHiHatFragment3()
                 val drumSnareFragment = DrumSnareFragment()
 
                 transaction.setCustomAnimations(
                     R.anim.enter_from_right,
                     0
                 )
-                transaction.add(R.id.drumContainer, drumHiHatFragment)
+                transaction.add(R.id.drumContainer, drumHiHatFragment3)
                 transaction.add(R.id.drumContainer, drumSnareFragment)
 
                 // ValueAnimator 초기화
@@ -300,10 +301,9 @@ class KPopBoardFragment : Fragment() {
 
                     // X 좌표가 40dp +- 1일 때의 처리
                     if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
+                        System.out.println("3,8에서 발생 xPosition : $xPosition")
                         //만약 지금 친 드럼이 hihat이라면
-                        if(dataFromCameraFragment == "openHiHat"){
-                            System.out.println("dp40: $dp40")
-                            System.out.println("X Position: $xPosition")
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment == "closedHat"){
                             totalHit+=1
                             System.out.println("$totalHit 3,8에서 하이햇 발생")
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
@@ -336,7 +336,7 @@ class KPopBoardFragment : Fragment() {
 
                 //하이햇, 베이스 - 나비야, 거미
             } else if (drumValuesArray.toString() == "[3,10]") {
-                val drumHiHatFragment = DrumHiHatFragment(0)
+                val drumHiHatFragment = DrumHiHatFragment()
                 val drumBassFragment = DrumBassFragment()
 
                 transaction.setCustomAnimations(
@@ -357,7 +357,7 @@ class KPopBoardFragment : Fragment() {
                     // X 좌표가 40dp +- 1일 때의 처리
                     if (xPosition >= dp40 - 1 && xPosition <= dp40 + 1) {
                         //만약 지금 친 드럼이 hihat이라면
-                        if(dataFromCameraFragment == "openHiHat"){
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment == "closedHat"){
                             totalHit+=1
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                             //hit 표시
@@ -437,7 +437,7 @@ class KPopBoardFragment : Fragment() {
                 //크래쉬, 스네어 - 거미
             }else if (drumValuesArray.toString() == "[1,8]") {
                 val drumCrashFragment = DrumCrashFragment()
-                val drumhiHatFragment = DrumHiHatFragment(0)
+                val drumhiHatFragment = DrumHiHatFragment()
 
                 transaction.setCustomAnimations(
                     R.anim.enter_from_right,
@@ -469,7 +469,7 @@ class KPopBoardFragment : Fragment() {
                                 dataFromCameraFragment2 = ""
                             }, 100)
                         }
-                        if(dataFromCameraFragment == "openHiHat"){
+                        if(dataFromCameraFragment == "openHiHat"  || dataFromCameraFragment == "closedHat"){
                             totalHit+=1
                             var hit = rootView?.findViewById<TextView>(R.id.hitHiHat)
                             //hit 표시
