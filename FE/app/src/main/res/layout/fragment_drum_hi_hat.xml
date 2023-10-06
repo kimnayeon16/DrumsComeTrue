@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/hiHat"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="@drawable/kpop_tick_hihat"
         android:layout_marginTop="25dp"
         android:visibility="visible"/>

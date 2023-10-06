@@ -12,6 +12,8 @@
         android:layout_marginTop="2dp"
         android:background="@color/black"/>
 
+
+
 <!--    <ImageView-->
 <!--        android:layout_width="100dp"-->
 <!--        android:layout_height="90dp"-->
@@ -20,21 +22,37 @@
 <!--        android:rotation="135"-->
 <!--        android:src="@drawable/kpop_finish_line" />-->
 
-<!--    <ImageView-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="200dp"-->
-<!--        android:layout_marginTop="-35dp"-->
-<!--        android:layout_marginStart="-10dp"-->
-<!--        android:src="@drawable/kpop_finish_line2" />-->
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginStart="-10dp"
+        android:src="@drawable/kpop_finish_line3" />
+
+    <TextView
+        android:id="@+id/poseGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:text="초록색 선 안에 \n 몸을 맞춰 앉아주세요!"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:background="@drawable/count_background"
+        android:visibility="visible"
+        />
 
     <TextView
         android:id="@+id/finishLine"
         android:height="100dp"
         android:layout_width="10dp"
-        android:layout_height="120dp"
+        android:layout_height="100dp"
         android:background="#FFFFFF"
         android:padding="10dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="35dp"
         android:elevation="20dp"
         android:shadowColor="#F42121"
@@ -43,20 +61,20 @@
         android:shadowRadius="22"
         android:text=""
         android:textSize="24sp"
-        android:visibility="visible"
+        android:visibility="invisible"
         />
 
-    <TextView
-        android:id="@+id/songName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="75dp"
-        android:text="곡제목이에요"
-        android:textSize="24sp"
-        android:textColor="#673AB7"
-        android:visibility="visible"
-        />
+<!--    <TextView-->
+<!--        android:id="@+id/songName"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_marginStart="75dp"-->
+<!--        android:text="곡제목이에요"-->
+<!--        android:textSize="24sp"-->
+<!--        android:textColor="#673AB7"-->
+<!--        android:visibility="visible"-->
+<!--        />-->
 
     <TextView
         android:id="@+id/hitHiHat"
@@ -109,6 +127,32 @@
         android:textColor="#4FFFFF"
         android:visibility="invisible"
         />
+
+<!--    히트 판정 -->
+    <ImageView
+        android:id="@+id/perfect"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="45dp"
+        android:src="@drawable/kpop_hit_perfect"
+        android:visibility="invisible"/>
+    <ImageView
+        android:id="@+id/great"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="45dp"
+        android:src="@drawable/kpop_hit_great"
+        android:visibility="invisible"/>
+    <ImageView
+        android:id="@+id/good"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="45dp"
+        android:src="@drawable/kpop_hit_good"
+        android:visibility="invisible"/>
 
 
     <FrameLayout

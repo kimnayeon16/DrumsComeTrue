@@ -47,6 +47,7 @@
             android:id="@+id/explain_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/bmhannaair"
             android:text="TextView"
             android:textSize="20sp"
             android:textColor="@color/white"
@@ -57,6 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#65A50707"
+            android:fontFamily="@font/bmhannaair"
             android:text="G O !" />
     </LinearLayout>
 

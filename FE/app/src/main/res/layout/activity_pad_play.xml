@@ -23,7 +23,12 @@
             android:keepScreenOn="true"
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_graph_pad"
-            tools:context=".padPlay.PadPlayActivity" />
+            tools:context=".partPlay.PadPlayActivity" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/persistent_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -10,12 +10,11 @@
     <LinearLayout
         android:id="@+id/persistent_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="150dp"
         android:background="#ebebeb"
         android:orientation="vertical"
-        android:padding="16dp"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="100dp"
+        app:behavior_peekHeight="20dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <!-- ViewPager2 for sliding between "녹음" and "메트로놈" -->
@@ -25,17 +24,12 @@
             android:background="@color/black"
             app:tabTextColor="@color/not_selected_color"
             app:tabSelectedTextColor="@color/selected_color"
-            android:layout_height="30dp">
+            android:layout_height="20dp">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="음악선택" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="녹음" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"

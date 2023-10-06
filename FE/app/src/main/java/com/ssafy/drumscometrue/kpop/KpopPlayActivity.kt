@@ -20,9 +20,9 @@ import kotlin.concurrent.timer
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.RatingBar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.ssafy.drumscometrue.SharedViewModel
 import com.ssafy.drumscometrue.databinding.ActivityKpopPlayBinding
 import org.w3c.dom.Text
@@ -47,7 +47,7 @@ class KpopPlayActivity : AppCompatActivity() {
     private var songName: String ? = null
     private lateinit var binding: ActivityKpopPlayBinding
 
-    private var exoPlayer: SimpleExoPlayer? = null
+//    private var exoPlayer: SimpleExoPlayer? = null
 
 //    private lateinit var sharedViewModel1: SharedViewModel
 
@@ -71,6 +71,7 @@ class KpopPlayActivity : AppCompatActivity() {
         val interval = intent.getLongExtra("interval", 0)
         val songTotalTime = intent.getLongExtra("songTotalTime", 0)
         val level = intent.getStringExtra("level")
+        val totalHit = intent.getIntExtra("totalHit", 0)
         //곡제목 변수에 activity에서 받은 값 넣기
         songName = song
 
@@ -120,11 +121,19 @@ class KpopPlayActivity : AppCompatActivity() {
             var finishSign: LinearLayout = findViewById(R.id.finishSign)
             var finishSong: TextView = findViewById(R.id.finishSong)
             var progressBar : ProgressBar = findViewById(R.id.progressBar)
-            var totalHit : TextView = findViewById(R.id.totalHit)
+//            var totalHit : TextView = findViewById(R.id.totalHit)
             finishSign.visibility = View.VISIBLE
             finishSong.text = "$song"
-            var total = sharedViewModel1.totalHit
-            totalHit.text = "${total}개"
+            val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
+            val successCount = sharedViewModel1.totalHit
+            val totalCount = totalHit
+            System.out.println("successCount $successCount")
+            System.out.println("totalCouont $totalCount")
+            val rhythmRating = successCount.toFloat() / totalCount.toFloat() * 3
+            System.out.print("rhythmRating ?????!!!!!! $rhythmRating")
+            ratingBar.rating = rhythmRating
+
+//            totalHit.text = "${total}개"
             //로딩 페이지 - progressBar 타이머 업데이트
             val progressBarUpdateTimer = Timer()
             val progressBarUpdateInterval = 1000L

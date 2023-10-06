@@ -14,11 +14,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val backgroundImageView = findViewById<ImageView>(R.id.backgroundImageView)
         val loadingIcon = findViewById<ImageView>(R.id.loading_icon)
         val loadingText = findViewById<ImageView>(R.id.loading_text)
 
         // 애니메이션 리소스 로드
         val fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
+
+        // 백그라운드 이미지에 fade_in 애니메이션 적용
+        backgroundImageView.startAnimation(fadeInAnimation)
 
         // 애니메이션 리스너 추가
         fadeInAnimation.setAnimationListener(object : Animation.AnimationListener {
@@ -35,6 +39,5 @@ class MainActivity : AppCompatActivity() {
 
         loadingText.startAnimation(fadeInAnimation)
         loadingIcon.startAnimation(fadeInAnimation)
-
     }
 }
