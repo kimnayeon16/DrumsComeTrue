@@ -566,7 +566,7 @@ class OneSoundFragment : Fragment() {
 
         if(beforeBass > position_y){
 //            println("발 올라감")
-            if(compareBass - 0.04 > position_y && !rightBass){
+            if(compareBass - 0.035 > position_y && !rightBass){
                 Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
                 val soundId = soundMap["bass"]
                 soundId?.let {
@@ -574,6 +574,7 @@ class OneSoundFragment : Fragment() {
                     hitAnimation(bassHitImg)
                     hitRingAnimation(bassHitRingImg)
                 }
+                compareBass = position_y
                 rightBass = true
             }
         }else{
