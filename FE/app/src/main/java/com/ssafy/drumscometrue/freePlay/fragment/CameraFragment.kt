@@ -556,8 +556,8 @@ class CameraFragment : Fragment() {
                 .build()
 
             // 사운드 파일 미리 로드
-            soundMap["bass"] = soundPool.load(context, R.raw.bass2, 1)
-            soundMap["snare"] = soundPool.load(context, R.raw.snare, 1)
+            soundMap["bass"] = soundPool.load(context, R.raw.bass4, 1)
+            soundMap["snare"] = soundPool.load(context, R.raw.snare1, 1)
             soundMap["openHat"] = soundPool.load(context, R.raw.open_hat, 1)
             soundMap["closedHat"] = soundPool.load(context, R.raw.closed_hat, 1)
             soundMap["pedalHat"] = soundPool.load(context, R.raw.pedal_hat, 1)
@@ -1209,7 +1209,7 @@ class CameraFragment : Fragment() {
 
         if(beforeBass > position_y){
 //            println("발 올라감")
-            if(compareBass - 0.032 > position_y && !rightBass){
+            if(compareBass - 0.035 > position_y && !rightBass){
                 Log.d("[Foot] bass hit!","[Foot] bass hit! ${position_y}")
                 sharedViewModel.data9 = "bass"
                 val soundId = soundMap["bass"]
@@ -1218,6 +1218,7 @@ class CameraFragment : Fragment() {
                     hitBassAnimation(bassImg)
                     hitBassRingAnimation(fTomRingImg)
                 }
+                compareBass = position_y
                 rightBass = true
             }
         }else{

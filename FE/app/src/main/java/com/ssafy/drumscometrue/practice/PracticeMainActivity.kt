@@ -72,7 +72,7 @@ class PracticeMainActivity : AppCompatActivity() {
 
         // TextView의 텍스트 변경
         if(text == "Practice") {
-            textView.text = "Kpop 음악과 악보를 통해 \n게임을 즐기듯 연습하세요!\n"
+            textView.text = "음악과 악보를 통해 \n게임을 즐기듯 연습하세요!\n"
         } else {
             textView.text = "메트로놈과 스네어로 \n박자감각을 익혀보세요!\n"
         }
