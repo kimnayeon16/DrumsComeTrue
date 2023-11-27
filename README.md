@@ -72,6 +72,65 @@ BE
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Jenkins](https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white)
 
+<div align=left>
+<table>
+    <tr>
+        <td><b>Back-End</b></td>
+        <td>
+            <img src="https://img.shields.io/badge/_-Java-red" />
+            <img src="https://img.shields.io/badge/Spring Boot-6DB33F?logo=springboot&logoColor=white">
+            <img src="https://img.shields.io/badge/JPA Hibernate-59666C?logo=Hibernate&logoColor=white">
+            <img src="https://img.shields.io/badge/Spring Security-6DB33F?logo=springsecurity&logoColor=white">
+            <img src="https://img.shields.io/badge/JWT-000000?logo=jsonwebtokens&logoColor=white">
+            <img src="https://img.shields.io/badge/_-OAuth-gray" />
+            <img src="https://img.shields.io/badge/MySQL-c49a6c?logo=MySQL&logoColor=white" />
+            <img src="https://img.shields.io/badge/Redis-a41e11?logo=Redis&logoColor=white" />
+        </td>
+    </tr>
+    <tr>
+        <td><b>Front-end</b></td>
+        <td>
+            <img src="https://img.shields.io/badge/Kotlin-E34F26?logo=Kotlin&logoColor=white" />
+        </td>
+    </tr>
+    <tr>
+        <td><b>Infra</b></td>
+        <td>
+            <img src="https://img.shields.io/badge/Termius-000000?logo=termius&logoColor=white">
+            <img src="https://img.shields.io/badge/AWS EC2-FF9900?logo=amazonec2&logoColor=white">
+            <img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white">
+            <img src="https://img.shields.io/badge/Jenkins-D24939?logo=jenkins&logoColor=white">
+            <img src="https://img.shields.io/badge/NGINX-009639?logo=nginx&logoColor=white">
+            <img src="https://img.shields.io/badge/amazonS3-7b1d13?logo=amazonS3&logoColor=white">
+        </td>
+    </tr>
+    <tr>
+        <td><b>외부 SDK</b></td>
+        <td>
+            <img src="https://img.shields.io/badge/_-ML_Kit-black" />
+        </td>
+    </tr>
+    <tr>
+    <tr>
+        <td><b>VC</b></td>
+        <td>
+            <img src="https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white">
+            <img src="https://img.shields.io/badge/GitLab-FC6D26?logo=gitlab&logoColor=white">
+            <img src="https://img.shields.io/badge/Figma-F24E1E?logo=figma&logoColor=white">
+        </td>
+    </tr>
+    <tr>
+        <td><b>Tools</b></td>
+        <td>
+            <img src="https://img.shields.io/badge/Jira Software-0052CC?logo=jirasoftware&logoColor=white">
+            <img src="https://img.shields.io/badge/Mattermost-0058CC?logo=mattermost&logoColor=white">
+            <img src="https://img.shields.io/badge/Notion-000000?logo=notion&logoColor=white">
+        </td>
+    </tr>
+</table>
+</div>
+
+
 ## 화면 구성
 
 
