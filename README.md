@@ -90,7 +90,7 @@ BE
             <img src="https://img.shields.io/badge/Jira Software-0052CC?logo=jirasoftware&logoColor=white">
             <img src="https://img.shields.io/badge/Mattermost-0058CC?logo=mattermost&logoColor=white">
             <img src="https://img.shields.io/badge/Notion-000000?logo=notion&logoColor=white">
-            <img src="https://img.shields.io/badge/Discord-%235865F2.svg?&logoColor=white">
+            <img src="https://img.shields.io/badge/Discord-%235865F2.svg?&logo=discord&logoColor=white">
         </td>
     </tr>
 </table>
