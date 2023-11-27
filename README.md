@@ -88,7 +88,7 @@ BE
         </td>
     </tr>
     <tr>
-        <td><b>Front-end</b></td>
+        <td><b>Front-End</b></td>
         <td>
             <img src="https://img.shields.io/badge/Kotlin-E34F26?logo=Kotlin&logoColor=white" />
         </td>
