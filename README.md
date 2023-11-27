@@ -37,15 +37,6 @@ BE
 
 
 ## 사용 기술
-<!-- ### Environment
-![Intellij](https://img.shields.io/badge/intellijidea-000000?style=for-the-badge&logo=intellijidea&logoColor=white)
- <img src="https://img.shields.io/badge/Android Studio Code-007ACC?style=for-the-badge&logo=Android Studio&logoColor=white"> <img src="https://img.shields.io/badge/gitlab-6666c4?style=for-the-badge&logo=gitlab&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> 
-
-### Config
-![Gradle](https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white)
- -->
-
-<!-- ### Development -->
 <div align=left>
 <table>
     <tr>
@@ -99,7 +90,7 @@ BE
             <img src="https://img.shields.io/badge/Jira Software-0052CC?logo=jirasoftware&logoColor=white">
             <img src="https://img.shields.io/badge/Mattermost-0058CC?logo=mattermost&logoColor=white">
             <img src="https://img.shields.io/badge/Notion-000000?logo=notion&logoColor=white">
-            <img src="https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white">
+            <img src="https://img.shields.io/badge/Discord-%235865F2.svg?&logoColor=white">
         </td>
     </tr>
 </table>
