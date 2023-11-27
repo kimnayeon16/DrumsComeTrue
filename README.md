@@ -42,13 +42,6 @@
 <br/>
 
 ## 👨‍👩‍👧‍👧 팀 소개
-
-|![팀장](https://secure.gravatar.com/avatar/4d5b40714cbd62edcde8c9b9f1ad2069?s=80&d=identicon)|![정재욱](https://secure.gravatar.com/avatar/9169f2910f62eee22e3523b967c4488a?s=80&d=identicon)|![이진서](https://secure.gravatar.com/avatar/45843f55cd93f74403a407c238c58f0b?s=80&d=identicon)|![김나연](https://secure.gravatar.com/avatar/64d908094f43b3fb9b889ddb71289c03?s=80&d=identicon)|![이상욱](https://secure.gravatar.com/avatar/d763275dc5f853e080a72c06853ebddd?s=80&d=identicon)|![천지호](https://secure.gravatar.com/avatar/d763275dc5f853e080a72c06853ebddd?s=80&d=identicon)
-|-|-|-|-|-|-|
-|팀장 우수인 FE<br>@wbo1026<hr>|팀원 천지호 FE<br>@<hr>|팀원 김나연 FE<br>@nayeon0016<hr>|팀원 이상욱 FE<br>@<hr>|팀원 정재욱 BE<br>@wodnr8462<hr>|팀원 이진서 BE<br>@lalaququ<hr>|
-<br/>
-
-
 <table> 
 <tr> 
 <td height="140px" align="center"> <a href="https://github.com/SuInWoo"> <img src="https://avatars.githubusercontent.com/u/116135258?v=4" width="120px" /> <br><br> 우수인 <br>(FrontEnd)<br/> </a> <br></td>  
