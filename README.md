@@ -10,10 +10,9 @@
 <h4><strong>Drums Come True</strong>는 사용자에게 모션 인식을 통한 드럼을 연주 할 수 있는 경험을 제공합니다.</h4>
 
 <h4>Drums Come True는 크게 다음과 같은 기능을 지원합니다</h4>
-<div align="center">
+<div>
 <h4>[Drums Come True 프로젝트 소개 UCC 보러가기](https://www.youtube.com/watch?v=0o1SzXWC2Oo)</h4>
 </div>
-<h4>[희소식 프로젝트 소개 UCC 보러가기](https://youtu.be/quZkcdVOYRY)</h4>
 
 
 <table>
@@ -24,13 +23,13 @@
 </tr>
 <tr>
 <td>
-  <img src="./img/자유연주.jpg" width="100%"/>
+  <img src="./IMG/자유연주.jpg" width="100%"/>
 </td> 
 <td>
-  <img src="./img/튜토리얼.jpg" width="100%"/>
+  <img src="./IMG/튜토리얼.jpg" width="100%"/>
 </td>
 <td>
-  <img src="./img/연습하기.jpg" width="100%"/>
+  <img src="./IMG/연습하기.jpg" width="100%"/>
 </td>  
 </tr>
 </table>
