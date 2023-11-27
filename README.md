@@ -7,9 +7,11 @@
 ## 🥁 프로젝트 소개
 <h4>SSAFY 9기 특화프로젝트 : 모션인식 모델을 사용한 드럼 연주 서비스 앱</h4>
 
-<h4><strong>Drums Come True</strong>는 사용자에게 모션 인식을 통한 드럼을 연주 할 수 있는 경험을 제공합니다.</h4>
+<h4><strong>Drums Come True</strong>는 사용자에게 모션 인식을 통한 드럼을 연주할 수 있는 경험을 제공합니다.</h4>
 
-<h4>Drums Come True는 크게 다음과 같은 기능을 지원합니다</h4>
+<h4>Drums Come True는 크게 다음과 같은 기능을 지원합니다.</h4>
+
+<br/>
 <div>
 <h4>[Drums Come True 프로젝트 소개 UCC 보러가기](https://www.youtube.com/watch?v=0o1SzXWC2Oo)</h4>
 </div>
@@ -33,6 +35,7 @@
 </td>  
 </tr>
 </table>
+<br/>
 
 ## 📅 프로젝트 기간
 ### 23.08.21 ~ 23.10.06
@@ -159,8 +162,9 @@ ml 키트에 대해 적고
 
 #### 2-1. 동요 연주하기
 - 단계 별 4가지 동요 제공
-- 동요 음원과 악보를 통해 재미있는 리듬 게임을 즐기기
-- Good, Perfect
+- 동요 음원과 악보를 통한 리듬 게임
+- Good, Great, Perfect로 hit 판정
+- hit 수에 따른 별점 매기기
 <table>
 <tr>
 <td>
@@ -177,6 +181,10 @@ ml 키트에 대해 적고
 </td>
 </tr>
 </table>
+<div style="display: flex;">
+<img src="./IMG/동요연주.gif" width="25%" style="margin-right:12px;" />
+<img src="./IMG/스네어연주.gif" width="25%" />
+</div>
 
 
 #### 2-2. 스네어 연주하기
