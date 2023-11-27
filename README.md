@@ -13,7 +13,7 @@
 
 <br/>
 <div>
-<h4>[Drums Come True 프로젝트 소개 UCC 보러가기](https://www.youtube.com/watch?v=0o1SzXWC2Oo)</h4>
+<h4>📺 [Drums Come True 프로젝트 소개 UCC 보러가기](https://www.youtube.com/watch?v=0o1SzXWC2Oo)</h4>
 </div>
 
 
