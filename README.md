@@ -53,14 +53,6 @@ BE
 
 
 
-#### - Front-End
-<img src="https://img.shields.io/badge/Kotlin-E34F26?style=for-the-badge&logo=Kotlin&logoColor=white">
-
-
-### 외부 API
-<img src="https://img.shields.io/badge/ML_Kit-black?style=for-the-badge&logo=&logoColor=blue">
-
-
 ### Management
 ![Jira](https://img.shields.io/badge/jira-%230A0FFF.svg?style=for-the-badge&logo=jira&logoColor=white)
 
@@ -68,9 +60,7 @@ BE
 <img src="https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white">
 <img src="https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white">
 
-### Deploy
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-![Jenkins](https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white)
+
 
 <div align=left>
 <table>
@@ -125,6 +115,7 @@ BE
             <img src="https://img.shields.io/badge/Jira Software-0052CC?logo=jirasoftware&logoColor=white">
             <img src="https://img.shields.io/badge/Mattermost-0058CC?logo=mattermost&logoColor=white">
             <img src="https://img.shields.io/badge/Notion-000000?logo=notion&logoColor=white">
+            <img src="https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white">
         </td>
     </tr>
 </table>
