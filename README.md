@@ -49,6 +49,19 @@
 <br/>
 
 
+<table> 
+<tr> 
+<td height="140px" align="center"> <a href="https://github.com/SuInWoo"> <img src="https://avatars.githubusercontent.com/u/116135258?v=4" width="120px" /> <br><br> 우수인 <br>(BackEnd)<br/> </a> <br></td>  
+<td height="140px" align="center"> <a href="https://github.com/kimnayeon16"> <img src="https://avatars.githubusercontent.com/u/87288958?v=4" width="120px" /> <br><br> 김나연 <br>(FrontEnd) </a> <br></td> 
+<td height="140px" align="center"> <a href="https://github.com/Kim-Yejinn"> <img src="https://avatars.githubusercontent.com/u/123815209?v=4" width="120px" /> <br><br> 이상욱 <br>(BackEnd)<br/> </a> <br></td> 
+<td height="140px" align="center"> <a href="https://github.com/seondy"> <img src="https://avatars.githubusercontent.com/u/122539170?v=4" width="120px" /> <br><br> 이진서 <br>(FrontEnd) </a> <br></td>
+<td height="140px" align="center"> <a href="https://github.com/woogieme"> <img src="https://avatars.githubusercontent.com/u/63395794?v=4" width="120px" /> <br><br> 정재욱 <br>(BackEnd) </a> <br></td> 
+<td height="140px" align="center"> <a href="https://github.com/elle6044"> <img src="https://avatars.githubusercontent.com/u/123047819?v=4" width="120px" /> <br><br> 천지호 <br>(BackEnd) </a> <br></td> </tr> 
+</table>
+
+<br />
+
+
 ## 📃 시작 가이드
 ### 요구사항
 버전에 맞는 환경이 필요합니다.
