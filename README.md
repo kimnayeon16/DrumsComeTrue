@@ -37,15 +37,15 @@ BE
 
 
 ## 사용 기술
-### Environment
+<!-- ### Environment
 ![Intellij](https://img.shields.io/badge/intellijidea-000000?style=for-the-badge&logo=intellijidea&logoColor=white)
  <img src="https://img.shields.io/badge/Android Studio Code-007ACC?style=for-the-badge&logo=Android Studio&logoColor=white"> <img src="https://img.shields.io/badge/gitlab-6666c4?style=for-the-badge&logo=gitlab&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> 
 
 ### Config
 ![Gradle](https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white)
+ -->
 
-
-### Development
+<!-- ### Development -->
 <div align=left>
 <table>
     <tr>
