@@ -2,33 +2,50 @@
 <div align="center">
   <img src="./IMG/메인사진.png" width="80%"/>
 </div>
+<br/>
 
 ## 🥁 프로젝트 소개
-SSAFY 9기 특화프로젝트 - 모션인식 모델을 사용한 드럼 연주 서비스 앱
-**본 프로젝트는 사용자에게 모션 인식을 통한 드럼을 연주 할 수 있는 경험을 제공합니다.**
+<h4>SSAFY 9기 특화프로젝트 : 모션인식 모델을 사용한 드럼 연주 서비스 앱</h4>
+
+<h4><strong>Drums Come True</strong>는 사용자에게 모션 인식을 통한 드럼을 연주 할 수 있는 경험을 제공합니다.</h4>
+
+<h4>Drums Come True는 크게 다음과 같은 기능을 지원합니다</h4>
+
+<h4>[Drums Come True 프로젝트 소개 UCC 보러가기] (https://www.youtube.com/watch?v=0o1SzXWC2Oo)</h4>
 
 
-
-**Drums Come True**는 크게 다음과 같은 기능을 지원합니다
-1. 자유 연주
-2. 튜토리얼
-3. 연습
-
+<table>
+<tr> 
+<th>자유 연주</th>
+<th>튜토리얼</th>
+<th>연습</th>
+</tr>
+<tr>
+<td>
+  <img src="./img/자유연주.jpg" width="100%"/>
+</td> 
+<td>
+  <img src="./img/튜토리얼.jpg" width="100%"/>
+</td>
+<td>
+  <img src="./img/연습하기.jpg" width="100%"/>
+</td>  
+</tr>
+</table>
 
 ## 📅 프로젝트 기간
 ### 23.08.21 ~ 23.10.06
-> **SSAFY 9기 특화프로젝트 - 모션인식 모델을 사용한 드럼 연주 서비스 앱 <br>
-개발 기간 : 23.08.21~23.10.06**
+<br/>
 
 ## 👨‍👩‍👧‍👧 팀 소개
 
 |![팀장](https://secure.gravatar.com/avatar/4d5b40714cbd62edcde8c9b9f1ad2069?s=80&d=identicon)|![정재욱](https://secure.gravatar.com/avatar/9169f2910f62eee22e3523b967c4488a?s=80&d=identicon)|![이진서](https://secure.gravatar.com/avatar/45843f55cd93f74403a407c238c58f0b?s=80&d=identicon)|![김나연](https://secure.gravatar.com/avatar/64d908094f43b3fb9b889ddb71289c03?s=80&d=identicon)|![이상욱](https://secure.gravatar.com/avatar/d763275dc5f853e080a72c06853ebddd?s=80&d=identicon)|![천지호](https://secure.gravatar.com/avatar/d763275dc5f853e080a72c06853ebddd?s=80&d=identicon)
 |-|-|-|-|-|-|
 |팀장 우수인 FE<br>@wbo1026<hr>|팀원 천지호 FE<br>@<hr>|팀원 김나연 FE<br>@nayeon0016<hr>|팀원 이상욱 FE<br>@<hr>|팀원 정재욱 BE<br>@wodnr8462<hr>|팀원 이진서 BE<br>@lalaququ<hr>|
+<br/>
 
 
-
-## 시작 가이드
+## 📃 시작 가이드
 ### 요구사항
 버전에 맞는 환경이 필요합니다.
 
@@ -45,9 +62,9 @@ BE
 | JDK | 11 |
 | Springboot | 2.7.14 |
 | gradle | 8.1.1 |
+<br/>
 
-
-## 사용 기술
+## ⚙ 사용 기술
 <div align=left>
 <table>
     <tr>
@@ -107,35 +124,103 @@ BE
 </table>
 </div>
 
-
-## 화면 구성
-
-
-
+## ⛏ 주요 활용 기술
+ml 키트에 대해 적고
+선정 이유 적기
 
 
+<br/>
+
+## 🎵 주요 기능
+### 1. 자유 연주
+- AI 모션인식을 통해 8가지의 가상 드럼을 실제처럼 연주
+- 사용자가 보유한 음원파일을 선택해 사용자가 연주하고 싶은 곡의 음악을 들으며 연주
+- 메트로놈을 이용해 정확한 박자 연습
+
+#### 1-1. 자세 잡기
+- 10초 동안 초록색 선에 맞춰 자세 잡기
+<br />
+<img src="./IMG/자유연주자세잡기.gif" width="25%" />
+
+#### 1-2. 자유 연주
+- 8가지의 가상 드럼을 자유자재로 연주
+<br />
+<img src="./IMG/자유연주.gif" width="25%" />
+  
+
+<br/>
+
+### 2. 연습하기
+<div style="display: flex;">
+<img src="./IMG/kpop.jpg" width="25%" style="margin-right:12px;" />
+<img src="./IMG/메트로놈스네어.jpg" width="25%" />
+</div>
+
+#### 2-1. 동요 연주하기
+- 단계 별 4가지 동요 제공
+- 동요 음원과 악보를 통해 재미있는 리듬 게임을 즐기기
+- Good, Perfect
+<table>
+<tr>
+<td>
+<img src="./IMG/곰세마리.jpg" />
+</td>
+<td>
+<img src="./IMG/나비야.jpg" />
+</td>
+<td>
+<img src="./IMG/작은별.jpg" />
+</td>
+<td>
+<img src="./IMG/거미.jpg" />
+</td>
+</tr>
+</table>
 
 
+#### 2-2. 스네어 연주하기
+- 메트로놈과 스네어 한개를 통해 기본적인 스냅과 박자를 익히기<br/>
+<img src="./IMG/스네어연주.gif" width="25%" />
 
+<br/>
 
+### 3. 튜토리얼
+- 스네어, 하이햇, 베이스 연주 익히기
+  - 드럼에서 가장 기본적이고 많이 사용되는 구성 요소로 드럼에 대해 집중적으로 연습
+- 실제 드럼 연주 영상과 설명을 통한 기본 지식 습득
+- 연습하기를 클릭해 해당하는 드럼 연주
+<table>
+<tr> 
+<th>스네어 연주법</th>
+<th>하이햇 연주법</th>
+<th>베이스드럼 연주법</th>
+</tr>
+<tr>
+<td>
+  <img src="./IMG/튜토리얼1.jpg" width="100%"/>
+</td> 
+<td>
+  <img src="./IMG/튜토리얼2.jpg" width="100%"/>
+</td>
+<td>
+  <img src="./IMG/튜토리얼3.jpg" width="100%"/>
+</td>
+</tr>
+<tr>
+<td>
+  <img src="./IMG/튜토리얼스네어.gif" width="100%"/>
+</td> 
+<td>
+  <img src="./IMG/튜토리얼하이햇.gif" width="100%"/>
+</td>
+<td>
+  <img src="./IMG/튜토리얼베이스.gif" width="100%"/>
+</td>
+</tr>
+</table>
 
+<br/>
 
-## 주요 기능
-### 자유 연주
-**AI 모션인식**을 통해 가상의 드럼을 실제 처럼 연주해보세요. <br>
-**나만의 곡**을 이용해 내가 연주하고 싶었던 곡을 연주해보세요!
-<br>
-**메트로놈**을 이용하면 정확한 박자를 연습할 수 있습니다.<br>
-
-### 연습
-동요 음원과 악보를 통해 재미있는 게임을 즐길 수 있습니다.<br>
-또, 메트로놈과 스네어 한개를 통해 기본적인 스냅과 박자를 익히세요!.<br>
-
-
-
-### 튜토리얼
-실제 드럼 연주 영상과 설명을 통해 드럼에 대한 기본지식을 익히고, 어플 사용법을 배울 수 있습니다.<br>
-
-### ERD
+## ERD
 ![ERD](./IMG/erd.PNG)
 
