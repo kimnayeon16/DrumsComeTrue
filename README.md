@@ -3,25 +3,30 @@
   <img src="./IMG/메인사진.png" width="80%"/>
 </div>
 
-# 📅 프로젝트 기간
-### 23.08.21 ~ 23.10.06
-> **SSAFY 9기 특화프로젝트 - 모션인식 모델을 사용한 드럼 연주 서비스 앱 <br>
-개발 기간 : 23.08.21~23.10.06**
-
-## 팀 소개
-
-|![팀장](https://secure.gravatar.com/avatar/4d5b40714cbd62edcde8c9b9f1ad2069?s=80&d=identicon)|![정재욱](https://secure.gravatar.com/avatar/9169f2910f62eee22e3523b967c4488a?s=80&d=identicon)|![이진서](https://secure.gravatar.com/avatar/45843f55cd93f74403a407c238c58f0b?s=80&d=identicon)|![김나연](https://secure.gravatar.com/avatar/64d908094f43b3fb9b889ddb71289c03?s=80&d=identicon)|![이상욱](https://secure.gravatar.com/avatar/d763275dc5f853e080a72c06853ebddd?s=80&d=identicon)|![천지호](https://secure.gravatar.com/avatar/d763275dc5f853e080a72c06853ebddd?s=80&d=identicon)
-|-|-|-|-|-|-|
-|팀장 우수인 FE<br>@wbo1026<hr>|팀원 천지호 FE<br>@<hr>|팀원 김나연 FE<br>@nayeon0016<hr>|팀원 이상욱 FE<br>@<hr>|팀원 정재욱 BE<br>@wodnr8462<hr>|팀원 이진서 BE<br>@lalaququ<hr>|
-
-## 프로젝트 소개
-
+## 🥁 프로젝트 소개
+SSAFY 9기 특화프로젝트 - 모션인식 모델을 사용한 드럼 연주 서비스 앱
 **본 프로젝트는 사용자에게 모션 인식을 통한 드럼을 연주 할 수 있는 경험을 제공합니다.**
+
+
 
 **Drums Come True**는 크게 다음과 같은 기능을 지원합니다
 1. 자유 연주
 2. 튜토리얼
 3. 연습
+
+
+## 📅 프로젝트 기간
+### 23.08.21 ~ 23.10.06
+> **SSAFY 9기 특화프로젝트 - 모션인식 모델을 사용한 드럼 연주 서비스 앱 <br>
+개발 기간 : 23.08.21~23.10.06**
+
+## 👨‍👩‍👧‍👧 팀 소개
+
+|![팀장](https://secure.gravatar.com/avatar/4d5b40714cbd62edcde8c9b9f1ad2069?s=80&d=identicon)|![정재욱](https://secure.gravatar.com/avatar/9169f2910f62eee22e3523b967c4488a?s=80&d=identicon)|![이진서](https://secure.gravatar.com/avatar/45843f55cd93f74403a407c238c58f0b?s=80&d=identicon)|![김나연](https://secure.gravatar.com/avatar/64d908094f43b3fb9b889ddb71289c03?s=80&d=identicon)|![이상욱](https://secure.gravatar.com/avatar/d763275dc5f853e080a72c06853ebddd?s=80&d=identicon)|![천지호](https://secure.gravatar.com/avatar/d763275dc5f853e080a72c06853ebddd?s=80&d=identicon)
+|-|-|-|-|-|-|
+|팀장 우수인 FE<br>@wbo1026<hr>|팀원 천지호 FE<br>@<hr>|팀원 김나연 FE<br>@nayeon0016<hr>|팀원 이상욱 FE<br>@<hr>|팀원 정재욱 BE<br>@wodnr8462<hr>|팀원 이진서 BE<br>@lalaququ<hr>|
+
+
 
 ## 시작 가이드
 ### 요구사항
