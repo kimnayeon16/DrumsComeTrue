@@ -46,7 +46,7 @@
 <tr> 
 <td height="140px" align="center"> <a href="https://github.com/SuInWoo"> <img src="https://avatars.githubusercontent.com/u/116135258?v=4" width="120px" /> <br><br> 우수인 <br>(FrontEnd)<br/> </a> <br></td>  
 <td height="140px" align="center"> <a href="https://github.com/kimnayeon16"> <img src="https://avatars.githubusercontent.com/u/87288958?v=4" width="120px" /> <br><br> 김나연 <br>(FrontEnd) </a> <br></td> 
-<td height="140px" align="center"> <a href="https://github.com/kimnayeon16"> <img src="https://avatars.githubusercontent.com/u/123815209?v=4" width="120px" /> <br><br> 이상욱 <br>(FrontEnd)<br/> </a> <br></td> 
+<td height="140px" align="center"> <a href="https://github.com/LeeSW-k"> <img src="https://avatars.githubusercontent.com/u/123815209?v=4" width="120px" /> <br><br> 이상욱 <br>(FrontEnd)<br/> </a> <br></td> 
 <td height="140px" align="center"> <a href="https://github.com/kimnayeon16"> <img src="https://avatars.githubusercontent.com/u/122539170?v=4" width="120px" /> <br><br> 이진서 <br>(BackEnd) </a> <br></td>
 <td height="140px" align="center"> <a href="https://github.com/woogieme"> <img src="https://avatars.githubusercontent.com/u/59531827?v=4" width="120px" /> <br><br> 정재욱 <br>(BackEnd) </a> <br></td> 
 <td height="140px" align="center"> <a href="https://github.com/kimnayeon16"> <img src="https://avatars.githubusercontent.com/u/123047819?v=4" width="120px" /> <br><br> 천지호 <br>(FrontEnd) </a> <br></td> </tr> 
@@ -136,8 +136,24 @@ BE
 <br/>
 
 ## ⛏ 주요 활용 기술
-ml 키트에 대해 적고
-선정 이유 적기
+### 모션인식을 사용한 이유
+1. 드럼 연주 모션을 학습시키고자 했으나
+    - 티쳐블 머신으로 만들고자 했으나 손목까지만 모션을 학습시킴
+      <br> → TensorFlow를 통해 학습을 시켜봤으나 유의미한 결과를 얻지 못함
+      <br> → 전문가 미팅을 통해 의미있는 모델을 구성하려면 최소 1만장은 학습을 시켜야 함을 알게 됨
+    
+
+### ML_Kit SDK를 사용한 이유
+포즈 감지를 안드로이드에서 지원하는 모델을 찾아봤을 때
+
+- MediaPipe와 ML_Kit가 있음
+1. 가장 유명한 MediaPipe를 통해 진행을 하였으나 정확성을 비교적 높으나 가장 Lite한 모델로도 실시간으로 사용시 0.5초 이상의 delay를 보임 delay를 줄이기 위해
+    1. 해상도 낮춰봄
+    2. MediaPipe의 모델 변경해봄
+
+2. ML_Kit를 사용하면 인식된 Pose가 계속 떨리면서 정확성이 너무 떨어졌음 하지만 0.1초 이하의 delay를 보임
+
+실시간으로 드럼을 연주하는 경험을 주기 위해서는 delay가 가장 중요하다고 보고 ML_Kit를 사용하여 진행하게 됨.
 
 
 <br/>
