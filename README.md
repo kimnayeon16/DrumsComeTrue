@@ -12,9 +12,6 @@
 <h4>Drums Come True는 크게 다음과 같은 기능을 지원합니다.</h4>
 
 <br/>
-<div>
-<h4>📺 [Drums Come True 프로젝트 소개 UCC 보러가기](https://www.youtube.com/watch?v=0o1SzXWC2Oo)</h4>
-</div>
 
 
 <table>
@@ -35,6 +32,9 @@
 </td>  
 </tr>
 </table>
+<div>
+<h4>📺 [Drums Come True 프로젝트 소개 UCC 보러가기](https://www.youtube.com/watch?v=0o1SzXWC2Oo)</h4>
+</div>
 <br/>
 
 ## 📅 프로젝트 기간
