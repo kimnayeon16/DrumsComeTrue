@@ -44,7 +44,7 @@
 ## 👨‍👩‍👧‍👧 팀 소개
 <table> 
 <tr> 
-<td height="140px" align="center"> <a href="https://github.com/SuInWoo"> <img src="https://avatars.githubusercontent.com/u/116135258?v=4" width="120px" /> <br><br> 우수인 <br>(FrontEnd)<br/> </a> <br></td>  
+<td height="140px" align="center"> <a href="https://github.com/SuInWoo"> <img src="https://avatars.githubusercontent.com/u/63344592?v=4" width="120px" /> <br><br> 우수인 <br>(FrontEnd)<br/> </a> <br></td>  
 <td height="140px" align="center"> <a href="https://github.com/kimnayeon16"> <img src="https://avatars.githubusercontent.com/u/87288958?v=4" width="120px" /> <br><br> 김나연 <br>(FrontEnd) </a> <br></td> 
 <td height="140px" align="center"> <a href="https://github.com/LeeSW-k"> <img src="https://avatars.githubusercontent.com/u/123815209?v=4" width="120px" /> <br><br> 이상욱 <br>(FrontEnd)<br/> </a> <br></td> 
 <td height="140px" align="center"> <a href="https://github.com/kimnayeon16"> <img src="https://avatars.githubusercontent.com/u/122539170?v=4" width="120px" /> <br><br> 이진서 <br>(BackEnd) </a> <br></td>
